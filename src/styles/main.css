@@ -1,0 +1,7 @@
+/* Orden fijo: tokens de marca → reset de marca → capas de Tailwind (sin preflight). */
+@import './tokens.css';
+@import './base.css';
+@import './common.css';
+
+@tailwind components;
+@tailwind utilities;

@@ -1,0 +1,20 @@
+{
+  "amountOptions": {
+    "items": [
+      { "id": "monto-1", "label": "Bs. 250", "amount": 250, "currency": "Bs." },
+      { "id": "monto-2", "label": "Bs. 500", "amount": 500, "currency": "Bs." },
+      { "id": "monto-3", "label": "Bs. 750", "amount": 750, "currency": "Bs." },
+      { "id": "monto-4", "label": "Bs. 1.000", "amount": 1000, "currency": "Bs." },
+      { "id": "otro", "label": "Otro monto", "amount": null, "currency": null, "custom": true }
+    ]
+  },
+  "paymentMethods": {
+    "items": [
+      { "id": "ipg", "name": "Botón de Pago IPG", "description": "Cuenta o tarjeta · Acreditación inmediata" },
+      { "id": "mobile", "name": "Pago móvil", "description": "Usa tu banco venezolano" },
+      { "id": "transfer", "name": "Transferencia", "description": "Validación al confirmar" }
+    ]
+  },
+  "limits": { "min": 250, "max": 10000000, "step": 250, "currency": "Bs.", "fee": 0 },
+  "settleFailReferenceOnce": "000000000"
+}

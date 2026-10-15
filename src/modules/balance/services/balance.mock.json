@@ -1,0 +1,8 @@
+{
+  "currency": "Bs.",
+  "wallets": [
+    { "plate": "AB123CD", "balance": 12.5, "status": "ACTIVE" },
+    { "plate": "AC456EF", "balance": 7.2, "status": "LOW_BALANCE" },
+    { "plate": "AD789GH", "balance": 0, "status": "ZERO_BALANCE" }
+  ]
+}

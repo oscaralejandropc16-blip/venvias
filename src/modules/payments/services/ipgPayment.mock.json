@@ -1,0 +1,28 @@
+{
+  "paymentMethods": [
+    { "id": 1, "name": "Cta. de Ahorro", "shortName": "Ahorro", "paymentDetailType": 0 },
+    { "id": 2, "name": "Cta. Corriente", "shortName": "Corriente", "paymentDetailType": 0 },
+    { "id": 3, "name": "Crédito Visa", "shortName": "Visa", "paymentDetailType": 0 },
+    { "id": 4, "name": "Crédito Mastercard", "shortName": "Mastercard", "paymentDetailType": 0 },
+    { "id": 21, "name": "Mastercard Digital", "shortName": "Mastercard Digital", "paymentDetailType": 0 }
+  ],
+  "otpLength": 8,
+  "otpAttempts": 3,
+  "deniedReason": "Fondos insuficientes. No se hizo ningún cargo.",
+  "triggers": {
+    "requestErrorByDocumentSuffix": {
+      "0000": "payer_rejected",
+      "1111": "bank_unavailable",
+      "2222": "method_unavailable",
+      "3333": "payment_in_progress"
+    },
+    "confirmByRepeatedDigit": {
+      "9": "denied",
+      "0": "otp_invalid",
+      "1": "otp_expired",
+      "2": "confirm_unknown",
+      "3": "settle_fail"
+    },
+    "settleFailOperationNumber": "000000000"
+  }
+}

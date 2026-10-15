@@ -1,0 +1,14 @@
+{
+  "items": [
+    { "id": "taguanes", "name": "Taguanes", "state": "Cojedes", "road": "Autopista José Antonio Páez (Troncal 5)", "latitude": 9.953410196, "longitude": -68.24117754 },
+    { "id": "playa-pintada", "name": "Playa Pintada", "state": "Miranda", "road": "Troncal 9", "latitude": 10.13059602, "longitude": -65.43498522 },
+    { "id": "paraguachon", "name": "Paraguachon", "state": "Zulia", "road": "Troncal 6 (Maracaibo – Paraguachon)", "latitude": 11.35625841, "longitude": -72.1183518 },
+    { "id": "punta-iguana", "name": "Punta Iguana", "state": "Zulia", "road": "Puente General Rafael Urdaneta", "latitude": 10.57632835, "longitude": -71.52886202 },
+    { "id": "punta-de-piedra", "name": "Punta de Piedra", "state": "Zulia", "road": "Puente General Rafael Urdaneta", "latitude": 10.57374763, "longitude": -71.61409429 },
+    { "id": "la-cascada", "name": "La Cascada", "state": "Portuguesa", "road": "Troncal 5", "latitude": 9.278454226, "longitude": -69.45069557 },
+    { "id": "la-lucia", "name": "La Lucia", "state": "Portuguesa", "road": "Troncal 5", "latitude": 9.660676431, "longitude": -69.23976182 },
+    { "id": "boconoito", "name": "Boconoito", "state": "Portuguesa", "road": "Troncal 5", "latitude": 8.855487309, "longitude": -69.9800058 },
+    { "id": "la-entrada", "name": "La Entrada", "state": "Carabobo", "road": "Autopista Valencia – Puerto Cabello", "latitude": 10.29821986, "longitude": -68.04142015 },
+    { "id": "guacara", "name": "Guacara", "state": "Carabobo", "road": "Autopista Regional del Centro", "latitude": 10.25202926, "longitude": -67.83483387 }
+  ]
+}
