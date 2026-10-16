@@ -200,26 +200,26 @@ export default defineComponent({
 
   <!-- Sección Mi Cuenta / Flotas: Banner Ejecutivo de Alto Nivel -->
   <section class="section wrap pt-0" aria-labelledby="account-title">
-    <div class="account-card bg-gradient-to-br from-[#122142] via-[#1a2f5c] to-[#0f1d38] text-white rounded-3xl p-8 md:p-12 shadow-xl shadow-slate-300/40 relative overflow-hidden">
-      <div class="split min-[900px]:grid-cols-[1.25fr_1fr] relative z-10 items-center">
+    <div class="account-card bg-white rounded-3xl p-8 md:p-12 shadow-xl shadow-slate-200/50 border border-slate-200/80 relative overflow-hidden">
+      <div class="split min-[900px]:grid-cols-[1.25fr_1fr] relative z-10 items-center gap-8">
         <div>
-          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-sky-300 border border-white/15 mb-4">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 mb-4">
             <AppIcon name="carro" :size="14" />
             Servicio Corporativo y Comercial
           </span>
-          <h2 id="account-title" class="text-white text-2xl md:text-3xl font-bold mb-3">
+          <h2 id="account-title" class="text-2xl md:text-3xl font-bold text-slate-900 mb-3 tracking-tight">
             ¿Varias placas o una flota? Gestiona todo en Mi Cuenta.
           </h2>
-          <p class="lead max-w-[46ch] mb-6 text-slate-300 text-base md:text-lg">
+          <p class="lead max-w-[46ch] mb-6 text-slate-600 text-base md:text-lg leading-relaxed">
             La cuenta es 100% opcional. Te permite consolidar pagos, activar recargas automáticas y descargar comprobantes fiscales para tu empresa.
           </p>
-          <RouterLink :to="accountRoute" class="btn btn--primario bg-white !text-marino-900 font-semibold shadow-lg hover:bg-slate-100">
+          <RouterLink :to="accountRoute" class="btn btn--primario shadow-lg">
             Conoce Mi cuenta
           </RouterLink>
         </div>
-        <ul class="plain-list gap-3.5 bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-white/10">
-          <li v-for="p in accountPerks" :key="p" class="flex items-start gap-3 text-slate-200 text-sm md:text-base font-medium">
-            <AppIcon name="check" :size="18" class="text-sky-400 mt-0.5 flex-shrink-0" />
+        <ul class="plain-list gap-3.5 bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-100 shadow-sm">
+          <li v-for="p in accountPerks" :key="p" class="flex items-start gap-3 text-slate-800 text-sm md:text-base font-medium">
+            <AppIcon name="check" :size="18" class="text-blue-600 mt-0.5 flex-shrink-0" />
             <span>{{ p }}</span>
           </li>
         </ul>
