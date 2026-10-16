@@ -228,6 +228,8 @@ export default defineComponent({
 .how__panel {
   background: var(--marino-900); color: #fff; border-radius: var(--radius-xl);
   padding: clamp(28px, 5vw, 64px) clamp(16px, 5vw, 64px) clamp(20px, 3vw, 40px); overflow: hidden;
+  box-shadow: 0 20px 45px -10px rgba(18, 33, 66, 0.25), 0 10px 20px -5px rgba(18, 33, 66, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .how__panel :focus-visible { outline-color: var(--azul-300); }
 

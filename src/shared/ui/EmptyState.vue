@@ -31,7 +31,11 @@ export default defineComponent({
 <style scoped>
 .empty {
   display: grid; gap: var(--space-4); justify-items: start;
-  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radius-md);
-  padding: var(--space-6); color: var(--marino-900);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 1.25rem;
+  padding: clamp(24px, 4vw, 36px);
+  color: var(--marino-900);
+  box-shadow: 0 10px 25px -5px rgba(18, 33, 66, 0.06), 0 8px 10px -6px rgba(18, 33, 66, 0.04);
 }
 </style>
