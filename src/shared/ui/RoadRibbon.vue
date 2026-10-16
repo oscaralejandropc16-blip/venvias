@@ -26,5 +26,23 @@ export default defineComponent({
 
 <style scoped>
 .road { width: 100%; height: 100%; display: block; }
-.road__lane { fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 26 22; vector-effect: non-scaling-stroke; }
+.road__lane {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 26 22;
+  vector-effect: non-scaling-stroke;
+  animation: roadFlow 1.4s linear infinite;
+}
+@keyframes roadFlow {
+  to {
+    stroke-dashoffset: -48;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .road__lane {
+    animation: none;
+  }
+}
 </style>

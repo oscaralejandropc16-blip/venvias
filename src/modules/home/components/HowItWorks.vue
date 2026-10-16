@@ -377,10 +377,22 @@ export default defineComponent({
 .how--plain .how__stop { color: var(--texto-suave); }
 .how--plain .how__stop.is-active { color: var(--marino-900); }
 /* Próxima: disco blanco · hecha: anillo marino · actual: disco marino lleno */
-.how--plain .how__pin { background: #fff; color: var(--texto-suave); border-color: var(--texto-suave); }
-.how--plain .how__pin:hover { border-color: var(--marino-900); }
-.how--plain .how__pin.is-done { border-color: var(--marino-900); color: var(--marino-900); }
-.how--plain .how__pin.is-active { background: var(--marino-900); border-color: var(--marino-900); color: #fff; box-shadow: 0 0 0 3px #fff; }
+.how--plain .how__pin.is-active {
+  background: var(--marino-900);
+  border-color: var(--marino-900);
+  color: #fff;
+  transform: scale(1.18);
+  box-shadow: 0 0 0 3px #fff, 0 0 0 7px rgba(18, 33, 66, 0.22);
+  animation: plainPinPulse 2s ease-in-out infinite;
+}
+@keyframes plainPinPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 3px #fff, 0 0 0 6px rgba(18, 33, 66, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 0 3px #fff, 0 0 0 12px rgba(18, 33, 66, 0.04);
+  }
+}
 .how--plain .how__pin:focus-visible { outline-color: var(--azul-700); }
 
 /* Factura compacta en móvil: la foto sigue a la vista */

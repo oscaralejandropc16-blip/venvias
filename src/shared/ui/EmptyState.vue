@@ -37,5 +37,22 @@ export default defineComponent({
   padding: clamp(24px, 4vw, 36px);
   color: var(--marino-900);
   box-shadow: 0 10px 25px -5px rgba(18, 33, 66, 0.06), 0 8px 10px -6px rgba(18, 33, 66, 0.04);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s;
+}
+.empty:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 36px -8px rgba(18, 33, 66, 0.1);
+  border-color: #93c5fd;
+}
+.empty :deep(svg) {
+  transition: transform 0.3s var(--ease-out);
+}
+.empty:hover :deep(svg) {
+  transform: scale(1.1) rotate(4deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .empty {
+    transition: none !important;
+  }
 }
 </style>

@@ -106,6 +106,27 @@ export default defineComponent({
   height: 3px;
   width: 100%;
   background: linear-gradient(90deg, #f7d117 0%, #f7d117 33.3%, #0057a3 33.3%, #0057a3 66.6%, #cf142b 66.6%, #cf142b 100%);
+  position: relative;
+  overflow: hidden;
+}
+.nav__tricolor::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.85), transparent);
+  animation: tricolorSweep 4.5s ease-in-out infinite;
+}
+@keyframes tricolorSweep {
+  0% { left: -50%; }
+  35%, 100% { left: 150%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav__tricolor::after {
+    animation: none;
+  }
 }
 .nav__links a.nav__link {
   position: relative;
