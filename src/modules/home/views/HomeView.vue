@@ -157,7 +157,7 @@ export default defineComponent({
   overflow: hidden;
   background: #071329;
   color: #ffffff;
-  padding-bottom: clamp(80px, 11vw, 160px);
+  padding-bottom: clamp(40px, 5vw, 76px);
 }
 
 .hero__bg {
@@ -209,7 +209,7 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding-top: clamp(28px, 4vw, 56px);
+  padding-top: clamp(14px, 2vh, 28px);
 }
 
 .hero__badge {
@@ -220,14 +220,14 @@ export default defineComponent({
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   color: #e2e8f0;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.02em;
-  padding: 6px 18px;
+  padding: 4px 14px;
   border-radius: var(--radius-pill);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.18);
-  margin-bottom: var(--space-4);
+  margin-bottom: clamp(8px, 1.4vh, 14px);
   transition: all 0.25s var(--ease-out);
 }
 .hero__badge:hover {
@@ -240,36 +240,31 @@ export default defineComponent({
 }
 
 .hero h1 {
-  font-size: clamp(34px, 2.8vw + 20px, 62px);
-  line-height: 1.12;
+  font-size: clamp(26px, 2.2vw + 12px, 46px);
+  line-height: 1.2;
   font-weight: 700;
-  max-width: 17ch;
+  max-width: 24ch;
   color: #ffffff;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
   letter-spacing: -0.01em;
+  margin: 0;
 }
 .hero h1 span.hero__title-accent {
   display: block;
-  background: linear-gradient(135deg, #ffffff 0%, #93c5fd 50%, #38bdf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 10px rgba(56, 189, 248, 0.3));
+  color: #38bdf8;
+  font-weight: 700;
+  line-height: 1.25;
+  padding-bottom: 2px;
+  text-shadow: 0 0 24px rgba(56, 189, 248, 0.45), 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .hero__sub {
-  margin: var(--space-3) 0 var(--space-6);
-  max-width: 48ch;
+  margin: 6px 0 clamp(10px, 1.8vh, 18px);
+  max-width: 46ch;
   color: #cbd5e1;
-  font-size: 17px;
-  line-height: 26px;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-}
-@media (min-width: 768px) {
-  .hero__sub {
-    margin: var(--space-3) 0 var(--space-8);
-    font-size: 19px;
-    line-height: 30px;
-  }
+  font-size: clamp(14px, 1vw + 7px, 16px);
+  line-height: 1.45;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hero__road {
@@ -277,19 +272,28 @@ export default defineComponent({
   left: 0;
   right: 0;
   bottom: 0;
-  height: clamp(60px, 9vw, 150px);
+  height: clamp(32px, 4.5vw, 64px);
   z-index: 1;
 }
 
-/* Estilos de alta gama para los controles del formulario dentro del Hero oscuro */
+/* Ajuste proporcional de formulario para visibilidad completa en primer pliegue */
+.hero :deep(.pf) {
+  width: min(100%, 410px);
+}
 .hero :deep(.pf__modo) {
-  background: rgba(15, 23, 42, 0.72);
+  width: min(100%, 330px);
+  min-height: 38px;
+  align-self: center;
+  margin-bottom: clamp(10px, 1.6vh, 16px);
+  background: rgba(15, 23, 42, 0.75);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 .hero :deep(.pf__modo label) {
+  min-height: 36px;
+  font-size: 14px;
   color: #94a3b8;
   font-weight: 500;
   transition: all 0.25s var(--ease-out);
@@ -306,6 +310,30 @@ export default defineComponent({
   box-shadow: 0 4px 14px rgba(0, 87, 163, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
+.hero :deep(.plate__foot) {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #e2e8f0;
+  font-weight: 500;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+.hero :deep(.pf__go) {
+  min-height: 48px;
+  margin-top: clamp(10px, 1.6vh, 16px);
+  font-size: 15px;
+  background: linear-gradient(135deg, #0057a3 0%, #0a6cc4 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 25px -4px rgba(0, 87, 163, 0.65), 0 0 24px rgba(10, 108, 196, 0.4);
+  font-weight: 600;
+  transition: all 0.25s var(--ease-out);
+}
+.hero :deep(.pf__nota) {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
 .hero :deep(.plate) {
   box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 102, 204, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.5);
   transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
@@ -318,11 +346,6 @@ export default defineComponent({
   box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.5), 0 32px 64px -10px rgba(0, 0, 0, 0.8);
 }
 
-.hero :deep(.plate__foot) {
-  color: #e2e8f0;
-  font-weight: 500;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-}
 .hero :deep(.plate__foot svg) {
   color: #38bdf8;
 }
@@ -363,23 +386,6 @@ export default defineComponent({
 }
 .hero :deep(.pf__chips label.on small) {
   color: #e0f2fe;
-}
-
-.hero :deep(.pf__go) {
-  background: linear-gradient(135deg, #0057a3 0%, #0a6cc4 100%);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 10px 25px -4px rgba(0, 87, 163, 0.65), 0 0 24px rgba(10, 108, 196, 0.4);
-  font-weight: 600;
-  transition: all 0.25s var(--ease-out);
-}
-.hero :deep(.pf__go:hover) {
-  background: linear-gradient(135deg, #004b8d 0%, #0057a3 100%);
-  box-shadow: 0 14px 32px -4px rgba(0, 87, 163, 0.8), 0 0 32px rgba(56, 189, 248, 0.5);
-  transform: translateY(-2px);
-}
-.hero :deep(.pf__nota) {
-  color: #94a3b8;
 }
 
 /* TAG y placa */
