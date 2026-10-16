@@ -1,7 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import AppIcon from '@/shared/icons/AppIcon.vue'
-import RoadRibbon from '@/shared/ui/RoadRibbon.vue'
 import PlateForm from '@/modules/plates/components/PlateForm.vue'
 import type { PlateSubmission } from '@/modules/plates/types/Plate'
 import { useRechargeAmounts } from '@/modules/recharge/composables/useRechargeAmounts'
@@ -16,7 +15,7 @@ import plateImg from '@/assets/plate-venezuela.svg'
 
 export default defineComponent({
   name: 'HomeView',
-  components: { AppIcon, RoadRibbon, PlateForm, TollsSummaryCard, HowItWorks },
+  components: { AppIcon, PlateForm, TollsSummaryCard, HowItWorks },
   setup() {
     return { ...useRechargeAmounts() }
   },
@@ -115,11 +114,9 @@ export default defineComponent({
         </div>
       </div>
     </div>
-
-    <div class="hero__road"><RoadRibbon /></div>
   </section>
 
-  <HowItWorks plain class="pt-8 md:pt-12" />
+  <HowItWorks plain />
 
   <!-- Sección TAG vs Placa: Formato Bento Comparativo de Alta Gama -->
   <section class="section wrap" aria-labelledby="tag-title">
@@ -264,7 +261,7 @@ export default defineComponent({
               radial-gradient(at 100% 0%, rgba(224, 242, 254, 0.45) 0px, transparent 55%),
               #f8fafc;
   color: #122142;
-  padding-bottom: clamp(64px, 8vw, 130px);
+  padding-bottom: clamp(48px, 6vw, 84px);
 }
 
 .hero__grid {
@@ -559,15 +556,6 @@ export default defineComponent({
   font-size: 12px;
   color: #64748b;
   text-align: center;
-}
-
-.hero__road {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: clamp(48px, 7vw, 100px);
-  z-index: 1;
 }
 
 /* Peajes habilitados */

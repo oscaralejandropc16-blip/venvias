@@ -224,7 +224,7 @@ export default defineComponent({
 
 <style scoped>
 .how { padding-block: 0 var(--space-14); }
-.how--plain { overflow-x: clip; }
+.how--plain { padding-block: clamp(32px, 5vw, 64px) clamp(48px, 6vw, 80px); overflow-x: clip; }
 .how__panel {
   background: var(--marino-900); color: #fff; border-radius: var(--radius-xl);
   padding: clamp(28px, 5vw, 64px) clamp(16px, 5vw, 64px) clamp(20px, 3vw, 40px); overflow: hidden;
@@ -351,7 +351,15 @@ export default defineComponent({
 .how__pin:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
 
 /* Variante plain: sin panel, a todo el ancho; colores de texto sobre fondo claro */
-.how--plain .how__panel { background: none; color: var(--texto); border-radius: 0; padding-inline: 0; overflow: visible; }
+.how--plain .how__panel {
+  background: none;
+  color: var(--texto);
+  border-radius: 0;
+  padding: 0;
+  overflow: visible;
+  box-shadow: none;
+  border: none;
+}
 .how--plain .how__panel :focus-visible { outline-color: var(--azul-700); }
 .how--plain .how__head h2, .how--plain .how__text h3 { color: var(--marino-900); }
 .how--plain .how__head p, .how--plain .how__text p { color: var(--texto-suave); }
