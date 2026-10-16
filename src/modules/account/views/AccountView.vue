@@ -317,35 +317,41 @@ export default defineComponent({
 }
 
 .account-tabs {
-  display: flex;
-  gap: var(--space-2);
-  border-bottom: 2px solid var(--borde);
+  display: inline-flex;
+  background: #ffffff;
+  padding: 6px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 14px rgba(18, 33, 66, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  gap: 4px;
   overflow-x: auto;
+  max-width: 100%;
 }
 
 .tab-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 12px 18px;
+  gap: 8px;
+  padding: 10px 20px;
   background: transparent;
   border: none;
-  border-bottom: 3px solid transparent;
+  border-radius: var(--radius-pill);
   font: 500 14px var(--font-body);
   color: var(--texto-suave);
   cursor: pointer;
   white-space: nowrap;
-  margin-bottom: -2px;
-  transition: all 0.15s;
+  transition: all 0.2s var(--ease-out);
 }
 
 .tab-btn:hover {
   color: var(--azul-700);
+  background: rgba(0, 87, 163, 0.05);
 }
 
 .tab-btn.is-active {
-  color: var(--azul-700);
-  border-bottom-color: var(--azul-700);
+  background: linear-gradient(135deg, #0057a3 0%, #0a6cc4 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 87, 163, 0.3);
   font-weight: 600;
 }
 
@@ -356,13 +362,13 @@ export default defineComponent({
 
 .statements-box,
 .alerts-box {
-  background: var(--superficie);
-  border: 1px solid var(--borde);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
   border-radius: var(--radius-md);
-  padding: var(--space-6);
+  padding: var(--space-8);
   box-shadow: var(--elev-1);
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-6);
 }
 
 .statements-title,

@@ -104,18 +104,18 @@ export default defineComponent({
 }
 
 .v-card {
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  border-radius: var(--radius-sm);
-  padding: var(--space-5);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
   box-shadow: var(--elev-1);
   display: grid;
-  gap: var(--space-3);
-  transition: transform 0.15s, box-shadow 0.15s;
+  gap: var(--space-4);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
 }
 
 .v-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: var(--elev-2);
 }
 

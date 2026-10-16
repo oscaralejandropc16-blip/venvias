@@ -228,10 +228,10 @@ export default defineComponent({
 }
 
 .debt-search {
-  background: var(--superficie);
-  border: 1px solid var(--borde);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
   border-radius: var(--radius-md);
-  padding: var(--space-6);
+  padding: var(--space-8);
   box-shadow: var(--elev-1);
 }
 
@@ -265,6 +265,7 @@ export default defineComponent({
   padding: var(--space-4) var(--space-5);
   border-radius: var(--radius-sm);
   font-size: 14px;
+  box-shadow: 0 4px 12px rgba(18, 33, 66, 0.04);
 }
 
 .debt-alert--error {
@@ -292,9 +293,9 @@ export default defineComponent({
   gap: var(--space-4);
   justify-items: center;
   text-align: center;
-  padding: var(--space-14) var(--space-6);
-  background: var(--superficie);
-  border: 1px solid rgba(0, 177, 64, 0.25);
+  padding: var(--space-14) var(--space-8);
+  background: #ffffff;
+  border: 1px solid rgba(0, 177, 64, 0.3);
   border-radius: var(--radius-md);
   box-shadow: var(--elev-1);
 }

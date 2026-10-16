@@ -76,13 +76,13 @@ export default defineComponent({
 
 <style scoped>
 .transits-box {
-  background: var(--superficie);
-  border: 1px solid var(--borde);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
   border-radius: var(--radius-md);
-  padding: var(--space-6);
+  padding: var(--space-8);
   box-shadow: var(--elev-1);
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-6);
 }
 
 .transits-box__header {

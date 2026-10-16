@@ -61,13 +61,18 @@ export default defineComponent({
 
 <style scoped>
 .acc-header {
-  background: var(--superficie);
-  border: 1px solid var(--borde);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
   border-radius: var(--radius-md);
-  padding: var(--space-6);
+  padding: var(--space-8);
   box-shadow: var(--elev-1);
   display: grid;
   gap: var(--space-6);
+  transition: box-shadow 0.2s var(--ease-out);
+}
+
+.acc-header:hover {
+  box-shadow: var(--elev-2);
 }
 
 .acc-header__top {
@@ -81,68 +86,78 @@ export default defineComponent({
 .acc-header__identity {
   display: flex;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-5);
 }
 
 .acc-header__avatar {
-  width: 52px;
-  height: 52px;
-  border-radius: var(--radius-sm);
-  background: var(--fondo-frio);
-  color: var(--azul-700);
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #0057a3 0%, #0a6cc4 100%);
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 87, 163, 0.25);
 }
 
 .acc-header__badge {
   display: inline-block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   color: var(--azul-700);
-  letter-spacing: 0.05em;
-  margin-bottom: 2px;
+  background: var(--azul-100);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
 }
 
 .acc-header__name {
-  font: 600 20px/26px var(--font-display);
+  font: 600 22px/28px var(--font-display);
   color: var(--marino-900);
   margin: 0;
 }
 
 .acc-header__doc {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--texto-suave);
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .acc-header__metrics {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--space-4);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--borde);
+  padding-top: var(--space-6);
+  border-top: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 .metric-card {
   display: grid;
   gap: 4px;
+  background: var(--fondo);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(226, 232, 240, 0.6);
 }
 
 .metric-card__label {
   font-size: 13px;
+  font-weight: 500;
   color: var(--texto-suave);
 }
 
 .metric-card__val {
-  font: 600 24px/28px var(--font-display);
+  font: 600 26px/30px var(--font-display);
   color: var(--marino-900);
 }
 
 .text-mono {
   font-family: var(--font-mono);
+  color: var(--marino-900);
 }
 
 .text-exito {

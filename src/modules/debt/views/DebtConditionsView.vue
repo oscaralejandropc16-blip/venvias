@@ -116,22 +116,28 @@ export default defineComponent({
 }
 
 .condition-card {
-  padding: var(--space-6);
-  background: var(--superficie);
-  border: 1px solid var(--borde);
+  padding: var(--space-8);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
   border-radius: var(--radius-md);
   box-shadow: var(--elev-1);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+
+.condition-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--elev-2);
 }
 
 .condition-card__title {
-  font: 600 18px/24px var(--font-display);
+  font: 600 20px/26px var(--font-display);
   color: var(--marino-900);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-3);
 }
 
 .condition-card__text {
   font-size: 15px;
-  line-height: 1.6;
+  line-height: 1.7;
   color: var(--texto);
 }
 

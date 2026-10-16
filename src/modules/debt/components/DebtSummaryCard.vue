@@ -61,29 +61,33 @@ export default defineComponent({
 .debt-card {
   display: grid;
   gap: var(--space-6);
-  padding: var(--space-8) var(--space-6);
-  background: var(--superficie);
-  border: 1px solid var(--borde);
+  padding: var(--space-8);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
   border-radius: var(--radius-md);
   box-shadow: var(--elev-1);
   text-align: center;
-  transition: border-color 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
 }
 
 .debt-card:hover {
+  transform: translateY(-2px);
   box-shadow: var(--elev-2);
 }
 
 .debt-card.is-alert {
-  border-color: rgba(207, 20, 43, 0.3);
+  border-color: rgba(207, 20, 43, 0.35);
+  box-shadow: 0 10px 25px -5px rgba(207, 20, 43, 0.08), 0 8px 10px -6px rgba(207, 20, 43, 0.04);
 }
 
 .debt-card.is-warning {
-  border-color: rgba(247, 209, 23, 0.4);
+  border-color: rgba(247, 209, 23, 0.5);
+  box-shadow: 0 10px 25px -5px rgba(234, 179, 8, 0.08), 0 8px 10px -6px rgba(234, 179, 8, 0.04);
 }
 
 .debt-card.is-success {
-  border-color: rgba(0, 177, 64, 0.3);
+  border-color: rgba(0, 177, 64, 0.35);
+  box-shadow: 0 10px 25px -5px rgba(0, 177, 64, 0.08), 0 8px 10px -6px rgba(0, 177, 64, 0.04);
 }
 
 .debt-card__header {

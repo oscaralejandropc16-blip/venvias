@@ -104,17 +104,17 @@ export default defineComponent({
   grid-template-columns: auto 1fr auto;
   gap: var(--space-4);
   align-items: center;
-  padding: var(--space-4) var(--space-5);
-  background: var(--superficie);
-  border: 1px solid var(--borde);
+  padding: var(--space-5) var(--space-6);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
   border-radius: var(--radius-sm);
   box-shadow: var(--elev-1);
-  transition: transform 0.15s var(--ease-out), box-shadow 0.15s var(--ease-out);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
 }
 
 .transit-item:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(18, 33, 66, 0.08);
+  transform: translateY(-2px);
+  box-shadow: var(--elev-2);
 }
 
 .transit-item__icon {

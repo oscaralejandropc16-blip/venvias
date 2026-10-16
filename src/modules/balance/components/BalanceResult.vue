@@ -45,9 +45,14 @@ export default defineComponent({
 <style scoped>
 .br {
   display: grid; justify-items: center; gap: var(--space-6);
-  padding: var(--space-8) var(--space-6);
-  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radius-md);
+  padding: var(--space-8);
+  background: #ffffff; border: 1px solid rgba(226, 232, 240, 0.8); border-radius: var(--radius-md);
   box-shadow: var(--elev-1); text-align: center;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+.br:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--elev-2);
 }
 .br__data { display: grid; gap: var(--space-3); justify-items: center; margin: 0; }
 .br__data dd { margin: 0; }

@@ -48,6 +48,10 @@ export default defineComponent({
 <template>
   <section class="hero" aria-labelledby="hero-title">
     <div class="wrap hero__inner">
+      <span class="hero__badge">
+        <AppIcon name="info" :size="14" />
+        República Bolivariana de Venezuela · MPPT
+      </span>
       <h1 id="hero-title">Paga tus peajes con tu placa. <span>Sin registrarte.</span></h1>
       <p class="hero__sub">Recarga saldo y se descuenta solo al pasar por los peajes habilitados.</p>
       <PlateForm :amount-options="amountOptions" @submit="onPlateSubmit" />
@@ -123,6 +127,20 @@ export default defineComponent({
 /* Hero: la placa es el formulario */
 .hero { position: relative; overflow: hidden; padding-bottom: clamp(72px, 9vw, 150px); }
 .hero__inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: clamp(16px, 3vw, 44px); }
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  color: var(--azul-700);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 14px rgba(18, 33, 66, 0.06);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  margin-bottom: var(--space-4);
+}
 .hero h1 {
   font-size: clamp(32px, 2.6vw + 20px, 60px); line-height: 1.1; font-weight: 600;
   max-width: 17ch;
@@ -147,8 +165,11 @@ export default defineComponent({
 
 /* Cuenta opcional */
 .account {
-  background: var(--fondo-frio); border: 1px solid var(--borde);
-  border-radius: var(--radius-xl); padding: clamp(32px, 5vw, 64px) clamp(20px, 5vw, 64px);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: var(--radius-xl);
+  padding: clamp(32px, 5vw, 64px) clamp(20px, 5vw, 64px);
+  box-shadow: var(--elev-1);
 }
 
 /* Preguntas frecuentes */

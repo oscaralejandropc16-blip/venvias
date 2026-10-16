@@ -52,8 +52,8 @@ export default defineComponent({
 
 <style scoped>
 .rc {
-  padding: var(--space-4) var(--space-6) var(--space-6);
-  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radius-md);
+  padding: var(--space-6) var(--space-8) var(--space-8);
+  background: #ffffff; border: 1px solid rgba(226, 232, 240, 0.8); border-radius: var(--radius-md);
   box-shadow: var(--elev-1); text-align: left;
 }
 .rc__head {

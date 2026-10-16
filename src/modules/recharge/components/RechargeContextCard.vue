@@ -54,8 +54,8 @@ export default defineComponent({
 
 <style scoped>
 .rcc {
-  display: grid; gap: var(--space-2); padding: var(--space-4);
-  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radius-md);
+  display: grid; gap: var(--space-3); padding: var(--space-6);
+  background: #ffffff; border: 1px solid rgba(226, 232, 240, 0.8); border-radius: var(--radius-md);
   box-shadow: var(--elev-1); text-align: left;
 }
 .rcc__main { display: flex; align-items: center; gap: var(--space-4); }

@@ -8,12 +8,12 @@
   --rojo-sistema: #cf142b;
   --amarillo-carretera: #f7d117;
 
-  --fondo: #ffffff;
-  --fondo-frio: #f2f6fa;
+  --fondo: #f8fafc;
+  --fondo-frio: #f1f5f9;
   --superficie: #ffffff;
-  --texto: #2a3242;
-  --texto-suave: #5d6a80; /* texto-suave (#7a879b) oscurecido para AA sobre blanco y fondo-frio */
-  --borde: #e1e8f0;
+  --texto: #1e293b;
+  --texto-suave: #64748b;
+  --borde: #e2e8f0;
   --accion: #0057a3;
   --alerta: #cf142b;
   --exito: #00b140;
@@ -32,13 +32,13 @@
 
   --radius-pill: 500px;
   --radius-xl: 40px;
-  --radius-lg: 32px;
-  --radius-md: 24px;
-  --radius-sm: 12px;
+  --radius-lg: 28px;
+  --radius-md: 20px;
+  --radius-sm: 16px;
   --radius-placa: 8px;
 
-  --elev-1: 0 1px 2px rgba(18, 33, 66, 0.05);
-  --elev-2: 0 14px 34px -20px rgba(18, 33, 66, 0.3);
+  --elev-1: 0 10px 25px -5px rgba(18, 33, 66, 0.06), 0 8px 10px -6px rgba(18, 33, 66, 0.04);
+  --elev-2: 0 20px 35px -8px rgba(18, 33, 66, 0.12), 0 10px 15px -4px rgba(18, 33, 66, 0.06);
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --page-pad: clamp(16px, 4vw, 48px);

@@ -79,10 +79,20 @@ export default defineComponent({
 
 <style scoped>
 .state-card {
-  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radius-md);
-  transition: border-color 0.2s var(--ease-out);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elev-1);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
 }
-.state-card:hover, .state-card--open { border-color: var(--azul-100); }
+.state-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--elev-2);
+}
+.state-card--open {
+  border-color: rgba(0, 87, 163, 0.35);
+  box-shadow: var(--elev-2);
+}
 .state-card__heading { margin: 0; font: inherit; }
 .state-card__toggle {
   width: 100%; display: flex; align-items: center; gap: var(--space-3);
