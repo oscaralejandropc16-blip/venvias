@@ -13,7 +13,6 @@ import HowItWorks from '../components/HowItWorks.vue'
 import { FAQS, SAFETY_ITEMS } from '../constants/home.content'
 import tagImg from '@/assets/tag-venvias.webp'
 import plateImg from '@/assets/plate-venezuela.svg'
-import heroBgImg from '@/assets/hero-highway.jpg'
 
 export default defineComponent({
   name: 'HomeView',
@@ -23,7 +22,6 @@ export default defineComponent({
   },
   data() {
     return {
-      heroBgImg,
       tagImg,
       plateImg,
       safety: SAFETY_ITEMS,
@@ -48,14 +46,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <!-- Hero tecnológico de alto impacto: fondo oscuro azul marino con imagen sutil de autopista y peaje inteligente -->
+  <!-- Hero Light Mode: diseño 100% limpio, unificado y corporativo con degradado sutil pizarra a blanco -->
   <section class="hero" aria-labelledby="hero-title">
-    <div class="hero__bg" aria-hidden="true">
-      <img :src="heroBgImg" alt="" class="hero__bg-img" />
-      <div class="hero__bg-overlay"></div>
-      <div class="hero__bg-glow"></div>
-    </div>
-
     <div class="wrap hero__inner">
       <span class="hero__badge">
         <AppIcon name="info" :size="15" class="hero__badge-icon" />
@@ -71,7 +63,7 @@ export default defineComponent({
     <div class="hero__road"><RoadRibbon /></div>
   </section>
 
-  <HowItWorks plain class="pt-10 md:pt-16" />
+  <HowItWorks plain class="pt-6 md:pt-10" />
 
   <!-- Sección TAG y Placa: tarjeta blanca flotante con soft shadow -->
   <section class="section wrap" aria-labelledby="tag-title">
@@ -151,55 +143,13 @@ export default defineComponent({
 </template>
 
 <style scoped>
-/* Hero: fondo oscuro azul marino con imagen de autopista tecnológica y texto blanco */
+/* Hero: estilo claro (Light Mode) 100% limpio, unificado y corporativo */
 .hero {
   position: relative;
   overflow: hidden;
-  background: #071329;
-  color: #ffffff;
-  padding-bottom: clamp(40px, 5vw, 76px);
-}
-
-.hero__bg {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 0;
-}
-
-.hero__bg-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 36%;
-  opacity: 0.22;
-  filter: saturate(1.2) contrast(1.15);
-  transform: scale(1.03);
-}
-
-.hero__bg-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(7, 19, 41, 0.82) 0%,
-    rgba(6, 14, 30, 0.72) 40%,
-    rgba(5, 12, 26, 0.92) 85%,
-    #050c1b 100%
-  );
-}
-
-.hero__bg-glow {
-  position: absolute;
-  top: -20%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(100%, 900px);
-  height: 520px;
-  background: radial-gradient(circle, rgba(0, 102, 204, 0.25) 0%, rgba(10, 108, 196, 0.1) 45%, transparent 70%);
-  filter: blur(48px);
-  pointer-events: none;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 55%, #f8fafc 100%);
+  color: #122142;
+  padding-bottom: clamp(64px, 8vw, 130px);
 }
 
 .hero__inner {
@@ -209,62 +159,56 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding-top: clamp(14px, 2vh, 28px);
+  padding-top: clamp(24px, 3.5vw, 48px);
 }
 
 .hero__badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: #e2e8f0;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  padding: 4px 14px;
+  background: #ffffff;
+  color: #0057a3;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding: 6px 16px;
   border-radius: var(--radius-pill);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  margin-bottom: clamp(8px, 1.4vh, 14px);
+  box-shadow: 0 2px 10px rgba(18, 33, 66, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  margin-bottom: clamp(10px, 1.8vh, 18px);
   transition: all 0.25s var(--ease-out);
 }
 .hero__badge:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.28);
+  border-color: #0057a3;
+  box-shadow: 0 4px 14px rgba(0, 87, 163, 0.12);
 }
 .hero__badge-icon {
-  color: #38bdf8;
+  color: #0057a3;
   flex-shrink: 0;
 }
 
 .hero h1 {
-  font-size: clamp(26px, 2.2vw + 12px, 46px);
-  line-height: 1.2;
+  font-size: clamp(30px, 2.6vw + 14px, 52px);
+  line-height: 1.16;
   font-weight: 700;
-  max-width: 24ch;
-  color: #ffffff;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
-  letter-spacing: -0.01em;
+  max-width: 22ch;
+  color: #122142;
+  letter-spacing: -0.02em;
   margin: 0;
 }
 .hero h1 span.hero__title-accent {
   display: block;
-  color: #38bdf8;
+  color: #0057a3;
   font-weight: 700;
-  line-height: 1.25;
-  padding-bottom: 2px;
-  text-shadow: 0 0 24px rgba(56, 189, 248, 0.45), 0 2px 8px rgba(0, 0, 0, 0.6);
+  line-height: 1.2;
 }
 
 .hero__sub {
-  margin: 6px 0 clamp(10px, 1.8vh, 18px);
-  max-width: 46ch;
-  color: #cbd5e1;
-  font-size: clamp(14px, 1vw + 7px, 16px);
-  line-height: 1.45;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  margin: 10px 0 clamp(16px, 2.2vh, 26px);
+  max-width: 48ch;
+  color: #475569;
+  font-size: clamp(15px, 1.1vw + 8px, 18px);
+  line-height: 1.5;
 }
 
 .hero__road {
@@ -272,120 +216,122 @@ export default defineComponent({
   left: 0;
   right: 0;
   bottom: 0;
-  height: clamp(32px, 4.5vw, 64px);
+  height: clamp(56px, 8vw, 130px);
   z-index: 1;
 }
 
-/* Ajuste proporcional de formulario para visibilidad completa en primer pliegue */
+/* Tamaño de la placa compacto y estilizado para no ocupar toda la pantalla */
 .hero :deep(.pf) {
-  width: min(100%, 410px);
+  width: min(100%, 350px);
+  margin-inline: auto;
 }
+
 .hero :deep(.pf__modo) {
-  width: min(100%, 330px);
-  min-height: 38px;
+  width: min(100%, 300px);
+  min-height: 40px;
   align-self: center;
-  margin-bottom: clamp(10px, 1.6vh, 16px);
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  margin-bottom: clamp(12px, 2vh, 20px);
+  background: #e2e8f0;
+  border-radius: var(--radius-pill);
+  padding: 4px;
 }
 .hero :deep(.pf__modo label) {
-  min-height: 36px;
+  min-height: 34px;
   font-size: 14px;
-  color: #94a3b8;
+  color: #475569;
   font-weight: 500;
   transition: all 0.25s var(--ease-out);
 }
 .hero :deep(.pf__modo label:hover:not(.on)) {
-  color: #e2e8f0;
+  color: #122142;
 }
 .hero :deep(.pf__modo label.on) {
   color: #ffffff;
   font-weight: 600;
 }
 .hero :deep(.pf__modo-thumb) {
-  background: linear-gradient(135deg, #0057a3 0%, #0a6cc4 100%);
-  box-shadow: 0 4px 14px rgba(0, 87, 163, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-}
-
-.hero :deep(.plate__foot) {
-  margin-top: 6px;
-  font-size: 13px;
-  color: #e2e8f0;
-  font-weight: 500;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-}
-.hero :deep(.pf__go) {
-  min-height: 48px;
-  margin-top: clamp(10px, 1.6vh, 16px);
-  font-size: 15px;
-  background: linear-gradient(135deg, #0057a3 0%, #0a6cc4 100%);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 10px 25px -4px rgba(0, 87, 163, 0.65), 0 0 24px rgba(10, 108, 196, 0.4);
-  font-weight: 600;
-  transition: all 0.25s var(--ease-out);
-}
-.hero :deep(.pf__nota) {
-  margin-top: 6px;
-  font-size: 12px;
-  color: #94a3b8;
+  background: #0057a3;
+  box-shadow: 0 2px 8px rgba(0, 87, 163, 0.35);
 }
 
 .hero :deep(.plate) {
-  box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 102, 204, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  box-shadow: 0 14px 30px -6px rgba(18, 33, 66, 0.14), 0 4px 10px -2px rgba(18, 33, 66, 0.06);
+  border-radius: 4% / 7.8%;
   transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
 }
 .hero :deep(.plate:hover) {
   transform: translateY(-2px);
-  box-shadow: 0 32px 64px -10px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 102, 204, 0.4);
+  box-shadow: 0 20px 38px -6px rgba(18, 33, 66, 0.18), 0 6px 14px -2px rgba(18, 33, 66, 0.08);
 }
 .hero :deep(.plate.is-focused) {
-  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.5), 0 32px 64px -10px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 0 4px #dce6fb, 0 16px 32px -6px rgba(18, 33, 66, 0.16);
 }
 
+.hero :deep(.plate__foot) {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #475569;
+  font-weight: 500;
+}
 .hero :deep(.plate__foot svg) {
-  color: #38bdf8;
+  color: #0057a3;
 }
 .hero :deep(.plate__hint) {
-  color: #94a3b8;
+  color: #64748b;
+  font-size: 13px;
 }
 .hero :deep(.plate__error) {
-  color: #f87171;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  color: #cf142b;
 }
 
 .hero :deep(.pf__montos legend) {
-  color: #ffffff;
+  color: #122142;
   font-weight: 600;
   font-size: 15px;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 .hero :deep(.pf__chips label) {
   background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.9);
+  border: 1px solid #cbd5e1;
   border-radius: var(--radius-pill);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 6px rgba(18, 33, 66, 0.04);
   transition: all 0.2s var(--ease-out);
 }
 .hero :deep(.pf__chips label:hover) {
-  border-color: #38bdf8;
+  border-color: #0057a3;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 .hero :deep(.pf__chips label.on) {
-  background: linear-gradient(135deg, #0057a3 0%, #0a6cc4 100%);
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 2px #38bdf8, 0 8px 24px rgba(0, 87, 163, 0.55);
-  transform: translateY(-1px);
+  background: #dce6fb;
+  border-color: #0057a3;
+  box-shadow: 0 0 0 2px #0057a3;
 }
 .hero :deep(.pf__chips label.on span) {
-  color: #ffffff;
+  color: #122142;
+  font-weight: 600;
 }
 .hero :deep(.pf__chips label.on small) {
-  color: #e0f2fe;
+  color: #0057a3;
+}
+
+.hero :deep(.pf__go) {
+  min-height: 48px;
+  margin-top: clamp(12px, 2vh, 20px);
+  font-size: 15px;
+  background: linear-gradient(135deg, #0057a3 0%, #0a6cc4 100%);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(0, 87, 163, 0.3);
+  transition: all 0.25s var(--ease-out);
+}
+.hero :deep(.pf__go:hover) {
+  background: linear-gradient(135deg, #004b8d 0%, #0057a3 100%);
+  box-shadow: 0 6px 20px rgba(0, 87, 163, 0.45);
+  transform: translateY(-1px);
+}
+.hero :deep(.pf__nota) {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #64748b;
 }
 
 /* TAG y placa */
