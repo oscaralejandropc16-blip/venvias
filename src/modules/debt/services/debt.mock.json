@@ -1,0 +1,57 @@
+{
+  "currency": "Bs.",
+  "debts": [
+    {
+      "plate": "AB123CD",
+      "total_debt": 100,
+      "transits_count": 2,
+      "status": "DEBT_PENDING",
+      "transits": [
+        {
+          "id": "tr-001",
+          "toll_name": "Peaje La Cabrera",
+          "highway": "Autopista Regional del Centro (ARC)",
+          "state": "Carabobo",
+          "passed_at": "2026-10-14T09:32:00Z",
+          "amount": 50,
+          "currency": "Bs.",
+          "category": "Vehículo Liviano / Particular",
+          "status": "PENDING",
+          "citation_number": "ARC-2026-08941"
+        },
+        {
+          "id": "tr-002",
+          "toll_name": "Peaje Caseteja",
+          "highway": "Autopista Cimarrón Andresote",
+          "state": "Yaracuy",
+          "passed_at": "2026-10-14T14:15:00Z",
+          "amount": 50,
+          "currency": "Bs.",
+          "category": "Vehículo Liviano / Particular",
+          "status": "PENDING",
+          "citation_number": "YAR-2026-04219"
+        }
+      ]
+    },
+    {
+      "plate": "AA000AA",
+      "total_debt": 75,
+      "transits_count": 1,
+      "status": "DEBT_OVERDUE",
+      "transits": [
+        {
+          "id": "tr-003",
+          "toll_name": "Peaje Guacara",
+          "highway": "Autopista Regional del Centro (ARC)",
+          "state": "Carabobo",
+          "passed_at": "2026-10-10T11:05:00Z",
+          "amount": 75,
+          "currency": "Bs.",
+          "category": "Vehículo de Carga Liviana",
+          "status": "OVERDUE",
+          "citation_number": "ARC-2026-03120"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "currency": "Bs.",
+  "profile": {
+    "id": "acc-ven-001",
+    "name": "Transportes & Logística Los Llanos C.A.",
+    "document_id": "J-40192841-2",
+    "email": "operaciones@transporteslosllanos.com.ve",
+    "phone": "+58 (414) 345-6789",
+    "total_balance": 470,
+    "vehicles": [
+      {
+        "plate": "AB123CD",
+        "alias": "Toyota Hilux · Supervisión Centro",
+        "tag_id": "TAG-VEN-849102",
+        "tag_status": "ACTIVE",
+        "balance": 350,
+        "auto_recharge": true
+      },
+      {
+        "plate": "AC456EF",
+        "alias": "Camión Mack Granito 01",
+        "tag_id": "TAG-VEN-512093",
+        "tag_status": "ACTIVE",
+        "balance": 120,
+        "auto_recharge": false
+      },
+      {
+        "plate": "AD789GH",
+        "alias": "Chevrolet NPR · Carga Urbana",
+        "tag_status": "INACTIVE",
+        "balance": 0,
+        "auto_recharge": false
+      }
+    ],
+    "recent_transits": [
+      {
+        "id": "tr-acc-01",
+        "plate": "AB123CD",
+        "toll_name": "Peaje La Cabrera",
+        "highway": "Autopista Regional del Centro",
+        "state": "Carabobo",
+        "passed_at": "2026-10-15T15:20:00Z",
+        "amount": 50,
+        "status": "PAID",
+        "method": "TAG",
+        "receipt_number": "REC-2026-90412"
+      },
+      {
+        "id": "tr-acc-02",
+        "plate": "AC456EF",
+        "toll_name": "Peaje Guacara",
+        "highway": "Autopista Regional del Centro",
+        "state": "Carabobo",
+        "passed_at": "2026-10-15T11:45:00Z",
+        "amount": 75,
+        "status": "PAID",
+        "method": "TAG",
+        "receipt_number": "REC-2026-90184"
+      },
+      {
+        "id": "tr-acc-03",
+        "plate": "AB123CD",
+        "toll_name": "Peaje Caseteja",
+        "highway": "Autopista Cimarrón Andresote",
+        "state": "Yaracuy",
+        "passed_at": "2026-10-14T08:30:00Z",
+        "amount": 50,
+        "status": "PAID",
+        "method": "PLATE",
+        "receipt_number": "REC-2026-89102"
+      }
+    ]
+  }
+}
