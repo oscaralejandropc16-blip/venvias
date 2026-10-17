@@ -230,10 +230,13 @@ export default defineComponent({
 }
 
 .debt-search {
+  max-width: 520px;
+  margin-inline: auto;
+  width: 100%;
   background: #ffffff;
   border: 1px solid rgba(226, 232, 240, 0.9);
   border-radius: 1.5rem;
-  padding: var(--space-8);
+  padding: clamp(24px, 4vw, 36px);
   box-shadow: 0 25px 50px -12px rgba(18, 33, 66, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.6);
   position: relative;
   overflow: hidden;
@@ -250,6 +253,12 @@ export default defineComponent({
   background: linear-gradient(90deg, #f7d117 0% 33.3%, #0057a3 33.3% 66.6%, #cf142b 66.6% 100%);
 }
 
+.debt-search :deep(.plate) {
+  width: 100%;
+  max-width: 320px;
+  margin-inline: auto;
+}
+
 @keyframes debtFadeIn {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
@@ -257,25 +266,27 @@ export default defineComponent({
 
 .debt-search__form {
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-4);
+  text-align: center;
 }
 
 .debt-search__label {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: #122142;
 }
 
 .debt-search__row {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: var(--space-4);
-  align-items: flex-start;
-  flex-wrap: wrap;
 }
 
 .debt-search__submit {
-  align-self: flex-start;
-  min-height: 48px;
+  width: 100%;
+  max-width: 320px;
+  min-height: 50px;
   border-radius: var(--radius-pill);
   box-shadow: 0 4px 14px rgba(0, 87, 163, 0.3);
   transition: all 0.25s var(--ease-out);
