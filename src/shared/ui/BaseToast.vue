@@ -58,15 +58,15 @@ export default defineComponent({
   <div
     :role="role"
     :class="[
-      'pointer-events-auto flex w-full items-start gap-3 rounded-sm border border-solid border-l-4 bg-superficie px-4 py-3 shadow-elev-2',
+      'pointer-events-auto flex w-full items-start gap-3 rounded-xl border border-solid border-l-4 bg-white/95 backdrop-blur-md px-4 py-3.5 shadow-2xl transition-all duration-200',
       containerClass,
     ]"
   >
     <AppIcon :name="icon" :size="20" :class="['mt-0.5 flex-none', iconClass]" />
-    <p class="flex-1 text-[15px] leading-[22px]">{{ message }}</p>
+    <p class="flex-1 text-[15px] font-medium leading-[22px] text-[#122142]">{{ message }}</p>
     <button
       type="button"
-      class="-mr-1 flex-none cursor-pointer rounded-pill border-0 bg-transparent p-1 text-texto-suave hover:text-marino-900"
+      class="-mr-1 flex-none cursor-pointer rounded-full border-0 bg-transparent p-1.5 text-texto-suave hover:bg-slate-100 hover:text-[#122142] transition-colors"
       aria-label="Cerrar"
       @click="$emit('close')"
     >
