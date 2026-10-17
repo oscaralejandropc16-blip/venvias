@@ -77,41 +77,70 @@ export default defineComponent({
 
 <style scoped>
 .ap { border: 0; margin: 0; padding: 0; min-width: 0; }
-.ap__legend { padding: 0; margin-bottom: var(--space-3); font: 500 18px/26px var(--font-display); color: var(--marino-900); }
+.ap__legend { padding: 0; margin-bottom: var(--space-3); font: 600 17px/24px var(--font-display); color: #122142; letter-spacing: -0.01em; }
 .ap__chips { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-2); }
-@media (min-width: 520px) { .ap__chips { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 520px) { .ap__chips { grid-template-columns: repeat(3, 1fr); gap: var(--space-3); } }
 .ap__chips label {
-  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  min-height: 56px; padding: 4px 12px; border: 1px solid var(--borde); border-radius: var(--radius-pill);
-  background: var(--superficie); cursor: pointer; transition: border-color .2s, background-color .2s;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  padding: 6px 14px;
+  border: 1.5px solid rgba(226, 232, 240, 0.95);
+  border-radius: var(--radius-md, 12px);
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-out);
 }
-.ap__chips label:hover { border-color: var(--azul-700); }
-.ap__chips label.on { background: var(--azul-100); border-color: var(--azul-700); }
+.ap__chips label:hover {
+  border-color: #0038A8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -2px rgba(0, 56, 168, 0.12);
+}
+.ap__chips label.on {
+  background: #EFF6FF;
+  border-color: #0038A8;
+  box-shadow: 0 0 0 1px #0038A8, 0 4px 14px -2px rgba(0, 56, 168, 0.15);
+}
 .ap__chips label:has(input:focus-visible) { outline: 3px solid var(--accion); outline-offset: 3px; }
 .ap__chips input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-.ap__chips span { font: 500 15px/1.2 var(--font-body); color: var(--marino-900); }
-.ap__chips .ap__amount { font: 500 16px/1.2 var(--font-mono); }
-.ap__chips small { font: 500 11px/1.4 var(--font-mono); color: var(--texto-suave); }
-.ap__chips label.on small { color: var(--marino-900); }
+.ap__chips span { font: 600 15px/1.2 var(--font-body); color: #122142; }
+.ap__chips .ap__amount { font: 700 16px/1.2 var(--font-mono); }
+.ap__chips small { font: 600 11px/1.4 var(--font-mono); color: var(--texto-suave); }
+.ap__chips label.on small { color: #0038A8; }
 
 .ap__custom { margin-top: var(--space-4); display: grid; gap: var(--space-2); }
-.ap__custom-label { font-size: 15px; font-weight: 500; color: var(--marino-900); }
+.ap__custom-label { font-size: 14px; font-weight: 600; color: #122142; }
 .ap__field {
-  display: flex; align-items: center; gap: var(--space-2); min-height: 56px; padding: 0 var(--space-4);
-  border: 1px solid var(--borde); border-radius: var(--radius-sm); background: var(--superficie);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 56px;
+  padding: 0 var(--space-4);
+  border: 1.5px solid rgba(226, 232, 240, 0.95);
+  border-radius: var(--radius-md, 12px);
+  background: #ffffff;
   transition: border-color .2s var(--ease-out), box-shadow .2s var(--ease-out);
 }
-.ap__field:focus-within { border-color: var(--accion); box-shadow: 0 0 0 4px var(--azul-100); }
+.ap__field:focus-within { border-color: #0038A8; box-shadow: 0 0 0 4px rgba(0, 56, 168, 0.12); }
 .ap__field.is-error { border-color: var(--alerta); }
-.ap__currency { font: 500 18px/1 var(--font-mono); color: var(--texto-suave); }
+.ap__currency { font: 600 17px/1 var(--font-mono); color: var(--texto-suave); }
 .ap__field input {
   flex: 1; min-width: 0; border: 0; padding: 0; background: transparent; outline: none;
-  font: 500 20px/1 var(--font-mono); color: var(--marino-900);
+  font: 700 20px/1 var(--font-mono); color: #122142;
 }
-.ap__hint { font-size: 14px; line-height: 20px; color: var(--texto-suave); }
+.ap__hint { font-size: 13px; line-height: 18px; color: var(--texto-suave); }
 .ap__error {
   display: flex; align-items: center; gap: var(--space-2);
-  margin-top: var(--space-3); color: var(--alerta); font-size: 15px; font-weight: 500;
+  margin-top: var(--space-3); color: var(--alerta); font-size: 14px; font-weight: 500;
 }
 .ap__error svg { flex: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ap__chips label:hover {
+    transform: none;
+  }
+}
 </style>

@@ -83,20 +83,41 @@ export default defineComponent({
   .cc--cols .cc__text { grid-column: 1 / -1; grid-row: 2; }
 }
 .cc__opt {
-  display: flex; align-items: center; gap: var(--space-3); min-height: 56px; padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--borde); border-radius: var(--radius-sm); background: var(--superficie);
-  cursor: pointer; transition: border-color .2s, background-color .2s;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 58px;
+  padding: var(--space-3) var(--space-4);
+  border: 1.5px solid rgba(226, 232, 240, 0.95);
+  border-radius: var(--radius-md, 12px);
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-out);
 }
-.cc__opt:hover { border-color: var(--azul-700); }
-.cc__opt.on { border-color: var(--azul-700); background: var(--azul-100); }
+.cc__opt:hover {
+  border-color: #0038A8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -2px rgba(0, 56, 168, 0.1);
+}
+.cc__opt.on {
+  border-color: #0038A8;
+  background: #EFF6FF;
+  box-shadow: 0 0 0 1px #0038A8, 0 4px 14px -2px rgba(0, 56, 168, 0.12);
+}
 .cc__opt:has(input:focus-visible) { outline: 3px solid var(--accion); outline-offset: 3px; }
-.cc__icon { flex: none; color: var(--azul-700); }
+.cc__icon { flex: none; color: #0038A8; }
 /* Logos de marca: caja fija; el archivo no se recorta ni se recolorea (lo piden las guías de cada marca) */
 .cc__media { flex: none; display: grid; place-items: center; width: 48px; height: 32px; }
 .cc__logo { display: block; width: 48px; height: 32px; object-fit: contain; }
 .cc__text { flex: 1; min-width: 0; display: grid; gap: 2px; text-align: left; }
-.cc__text strong { font-weight: 500; color: var(--marino-900); overflow-wrap: break-word; }
-.cc__text small { font-size: 14px; line-height: 20px; color: var(--texto-suave); }
-.cc__opt input { flex: none; width: 20px; height: 20px; margin: 0; accent-color: var(--azul-700); cursor: pointer; }
+.cc__text strong { font-weight: 600; color: #122142; overflow-wrap: break-word; }
+.cc__text small { font-size: 13px; line-height: 18px; color: var(--texto-suave); }
+.cc__opt input { flex: none; width: 20px; height: 20px; margin: 0; accent-color: #0038A8; cursor: pointer; }
 .cc__opt input:focus-visible { outline: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cc__opt:hover {
+    transform: none;
+  }
+}
 </style>

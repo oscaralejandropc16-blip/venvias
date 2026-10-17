@@ -54,24 +54,33 @@ export default defineComponent({
 
 <style scoped>
 .rcc {
-  display: grid; gap: var(--space-3); padding: var(--space-6);
-  background: #ffffff; border: 1px solid rgba(226, 232, 240, 0.8); border-radius: var(--radius-md);
-  box-shadow: var(--elev-1); text-align: left;
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-xl, 20px);
+  box-shadow: 0 10px 30px -10px rgba(18, 33, 66, 0.06), 0 1px 3px rgba(18, 33, 66, 0.04);
+  text-align: left;
 }
 .rcc__main { display: flex; align-items: center; gap: var(--space-4); }
 .rcc__main > :first-child { flex: none; }
 .rcc__total { display: grid; gap: 2px; min-width: 0; }
-.rcc__total span { font-size: 14px; color: var(--texto-suave); }
-.rcc__total strong { font: 500 22px/1.15 var(--font-mono); color: var(--marino-900); white-space: nowrap; }
+.rcc__total span { font-size: 13px; font-weight: 500; color: var(--texto-suave); }
+.rcc__total strong { font: 700 24px/1.15 var(--font-mono); color: #122142; white-space: nowrap; }
 .rcc__links { display: flex; flex-wrap: wrap; column-gap: var(--space-4); }
 .rcc__link {
   min-height: 44px; padding: 0; border: 0; background: none; cursor: pointer;
-  font-size: 15px; font-weight: 500; color: var(--azul-700); text-decoration: underline;
+  font-size: 14px; font-weight: 500; color: #0038A8; text-decoration: underline;
+  transition: color 0.2s ease;
+}
+.rcc__link:hover {
+  color: #122142;
 }
 .rcc__detail { box-shadow: none; }
 .rcc__note {
-  display: flex; align-items: flex-start; gap: 6px; padding-top: var(--space-2); border-top: 1px dashed var(--borde);
-  font-size: 14px; line-height: 20px; color: var(--texto-suave);
+  display: flex; align-items: flex-start; gap: 6px; padding-top: var(--space-3); border-top: 1px dashed var(--borde);
+  font-size: 13px; line-height: 18px; color: var(--texto-suave);
 }
-.rcc__note svg { flex: none; margin-top: 2px; color: var(--azul-700); }
+.rcc__note svg { flex: none; margin-top: 1px; color: #0038A8; }
 </style>

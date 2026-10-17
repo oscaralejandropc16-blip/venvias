@@ -106,30 +106,33 @@ export default defineComponent({
 
 <style scoped>
 .doc { border: 0; margin: 0; padding: 0; min-width: 0; }
-.doc__legend { padding: 0; margin-bottom: var(--space-2); font-size: 15px; font-weight: 500; color: var(--marino-900); }
+.doc__legend { padding: 0; margin-bottom: var(--space-2); font-size: 15px; font-weight: 600; color: #122142; }
 .doc__row { display: grid; gap: var(--space-3); }
 @media (min-width: 440px) { .doc__row { grid-template-columns: 11rem minmax(0, 1fr); } }
 .doc__col { display: grid; gap: var(--space-1); min-width: 0; }
-.doc__label { font-size: 14px; line-height: 20px; color: var(--texto-suave); }
+.doc__label { font-size: 13px; line-height: 20px; font-weight: 500; color: var(--texto-suave); }
 
 .doc__select { position: relative; }
 .doc__select select, .doc__input {
   width: 100%; min-height: 56px; padding: 0 var(--space-4);
-  border: 1px solid var(--borde); border-radius: var(--radius-sm); background: var(--superficie);
-  font: 500 16px/1 var(--font-body); color: var(--marino-900);
+  border: 1.5px solid rgba(226, 232, 240, 0.95);
+  border-radius: var(--radius-md, 12px);
+  background: #ffffff;
+  font: 600 16px/1 var(--font-body);
+  color: #122142;
   transition: border-color .2s var(--ease-out), box-shadow .2s var(--ease-out);
 }
 .doc__select select { appearance: none; padding-right: 40px; cursor: pointer; }
-.doc__chevron { position: absolute; right: var(--space-3); top: 50%; translate: 0 -50%; color: var(--azul-700); pointer-events: none; }
-.doc__input { font-family: var(--font-mono); letter-spacing: .04em; text-align: center; }
-.doc__select select:hover, .doc__input:hover { border-color: var(--azul-300); }
-.doc__select select:focus, .doc__input:focus { outline: none; border-color: var(--accion); box-shadow: 0 0 0 4px var(--azul-100); }
+.doc__chevron { position: absolute; right: var(--space-3); top: 50%; translate: 0 -50%; color: #0038A8; pointer-events: none; }
+.doc__input { font-family: var(--font-mono); font-weight: 700; letter-spacing: .04em; text-align: center; }
+.doc__select select:hover, .doc__input:hover { border-color: #0038A8; }
+.doc__select select:focus, .doc__input:focus { outline: none; border-color: #0038A8; box-shadow: 0 0 0 4px rgba(0, 56, 168, 0.12); }
 .doc__input.is-error { border-color: var(--alerta); }
 
-.doc__help { margin-top: var(--space-2); font-size: 14px; line-height: 20px; color: var(--texto-suave); }
+.doc__help { margin-top: var(--space-2); font-size: 13px; line-height: 18px; color: var(--texto-suave); }
 .doc__error {
   display: flex; align-items: center; gap: var(--space-2);
-  margin-top: var(--space-2); color: var(--alerta); font-size: 15px; font-weight: 500;
+  margin-top: var(--space-2); color: var(--alerta); font-size: 14px; font-weight: 500;
 }
 .doc__error svg { flex: none; }
 </style>

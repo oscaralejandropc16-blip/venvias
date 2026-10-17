@@ -70,24 +70,74 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.otp { display: flex; flex-direction: column; align-items: stretch; }
-.otp__summary {
-  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px;
-  padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm); background: var(--azul-100);
-  font-size: 15px; line-height: 22px; color: var(--marino-900);
+.otp {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-xl, 20px);
+  box-shadow: 0 12px 32px -8px rgba(18, 33, 66, 0.06), 0 1px 3px rgba(18, 33, 66, 0.04);
+  padding: var(--space-6) var(--space-5);
+  text-align: center;
 }
-.otp__summary svg { flex: none; color: var(--azul-700); }
+@media (min-width: 440px) {
+  .otp {
+    padding: var(--space-8) var(--space-7);
+  }
+}
+.otp__summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md, 12px);
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  color: #122142;
+}
+.otp__summary svg { flex: none; color: #0038A8; }
 .otp__code { margin: var(--space-6) 0 0; padding: 0; border: 0; min-width: 0; }
-.otp__code legend { padding: 0; margin: 0 auto; font: 500 18px/26px var(--font-display); color: var(--marino-900); }
+.otp__code legend { padding: 0; margin: 0 auto; font: 600 19px/26px var(--font-display); color: #122142; letter-spacing: -0.01em; }
 .otp__help { margin: var(--space-1) auto var(--space-4); max-width: 40ch; font-size: 14px; line-height: 20px; color: var(--texto-suave); }
 .otp__error {
   display: flex; align-items: center; justify-content: center; gap: var(--space-2);
-  margin-top: var(--space-3); color: var(--alerta); font-size: 15px; font-weight: 500;
+  margin-top: var(--space-3); color: var(--alerta); font-size: 14px; font-weight: 500;
 }
 .otp__error svg { flex: none; }
-.otp__go { width: 100%; min-height: 56px; margin-top: var(--space-6); font-size: 16px; }
+.otp__go {
+  width: 100%;
+  min-height: 54px;
+  margin-top: var(--space-6);
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 14px rgba(0, 56, 168, 0.22);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+.otp__go:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 56, 168, 0.32);
+}
 .otp__edit {
-  align-self: center; min-height: 44px; margin-top: var(--space-2); padding: 0 var(--space-2);
+  align-self: center; min-height: 44px; margin-top: var(--space-3); padding: 0 var(--space-2);
   border: 0; background: none; cursor: pointer; text-decoration: underline;
+  font-size: 14px; font-weight: 500; color: #0038A8;
+  transition: color 0.2s ease;
+}
+.otp__edit:hover {
+  color: #122142;
+}
+@media (prefers-reduced-motion: reduce) {
+  .otp__go:not(:disabled):hover {
+    transform: none;
+  }
 }
 </style>

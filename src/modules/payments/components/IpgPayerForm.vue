@@ -121,11 +121,17 @@ export default defineComponent({
 
 <style scoped>
 .cpf {
-  display: grid; gap: var(--space-6); padding: var(--space-6) var(--space-4) var(--space-4);
-  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-5) var(--space-6);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-xl, 20px);
+  box-shadow: 0 12px 32px -8px rgba(18, 33, 66, 0.06), 0 1px 3px rgba(18, 33, 66, 0.04);
   text-align: left;
+  transition: box-shadow 0.25s var(--ease-out), border-color 0.25s var(--ease-out);
 }
-@media (min-width: 440px) { .cpf { padding-inline: var(--space-6); } }
+@media (min-width: 440px) { .cpf { padding: var(--space-7) var(--space-7) var(--space-7); } }
 .cpf__methods :deep(.cc__legend) { margin-bottom: var(--space-2); font: 500 15px/22px var(--font-body); }
 .cpf__state { display: grid; justify-items: start; gap: var(--space-3); font-size: 15px; color: var(--texto-suave); }
 .cpf__error {
@@ -134,12 +140,21 @@ export default defineComponent({
 }
 .cpf__error svg { flex: none; }
 .cpf__alert {
-  display: flex; align-items: flex-start; gap: var(--space-2); padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--alerta); border-radius: var(--radius-sm); background: var(--superficie);
-  color: var(--alerta); font-size: 15px; line-height: 22px; font-weight: 500; outline: none;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid #FCA5A5;
+  border-radius: var(--radius-md, 12px);
+  background: #FEF2F2;
+  color: #B91C1C;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 500;
+  outline: none;
   scroll-margin: 132px 0 160px;
 }
-.cpf__alert svg { flex: none; margin-top: 1px; }
+.cpf__alert svg { flex: none; margin-top: 1px; color: #DC2626; }
 
 /* Al enfocar un campo, que no quede tapado por las barras fijas de arriba y de abajo */
 .cpf :deep(input), .cpf :deep(select) { scroll-margin: 132px 0 160px; }

@@ -622,7 +622,8 @@ export default defineComponent({
 .rv__intro { margin-top: var(--space-2); max-width: 44ch; color: var(--texto-suave); }
 
 .rv__body { width: min(100%, 520px); display: flex; flex-direction: column; margin-top: var(--space-8); }
-.rv__plate { display: grid; justify-items: center; gap: var(--space-2); }
+.rv__plate { display: grid; justify-items: center; gap: var(--space-2); width: 100%; }
+.rv__plate :deep(.plate) { max-width: 300px; width: 100%; margin-inline: auto; }
 .rv__link { min-height: 44px; padding: 0 var(--space-2); border: 0; background: none; cursor: pointer; text-decoration: underline; color: var(--azul-700); }
 .rv__picker { margin-top: var(--space-6); text-align: left; }
 

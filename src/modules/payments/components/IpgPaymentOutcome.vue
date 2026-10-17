@@ -64,31 +64,116 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.out { text-align: left; }
+.out {
+  text-align: left;
+  animation: outFadeIn 0.35s var(--ease-out);
+}
 .out__head { display: grid; justify-items: center; gap: var(--space-2); margin-bottom: var(--space-6); text-align: center; }
-.out__icon { display: grid; place-items: center; width: 56px; height: 56px; margin-bottom: var(--space-2); border-radius: 50%; color: #fff; }
-.out--ok .out__icon { background: var(--exito); }
-.out--denied .out__icon { background: var(--alerta); }
-.out--unknown .out__icon { background: var(--azul-700); }
-.out__title { font: 600 22px/1.25 var(--font-display); color: var(--marino-900); }
-.out__message { max-width: 44ch; color: var(--texto-suave); }
+.out__icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: var(--space-2);
+  border-radius: 50%;
+  color: #fff;
+  transition: transform 0.3s var(--ease-out);
+}
+.out--ok .out__icon {
+  background: var(--exito);
+  box-shadow: 0 0 0 8px rgba(16, 185, 129, 0.15);
+  animation: outPulseOk 2s infinite ease-in-out;
+}
+.out--denied .out__icon {
+  background: var(--alerta);
+  box-shadow: 0 0 0 8px rgba(239, 68, 68, 0.15);
+  animation: outPulseDenied 2s infinite ease-in-out;
+}
+.out--unknown .out__icon {
+  background: #0038A8;
+  box-shadow: 0 0 0 8px rgba(0, 56, 168, 0.15);
+  animation: outPulseUnknown 2s infinite ease-in-out;
+}
+.out__title { font: 700 24px/1.25 var(--font-display); color: #122142; letter-spacing: -0.01em; }
+.out__message { max-width: 44ch; font-size: 15px; line-height: 22px; color: var(--texto-suave); }
 
 .out__data {
-  margin: 0; display: grid; gap: var(--space-2); padding: var(--space-4) var(--space-6);
-  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radius-md);
+  margin: 0;
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-6);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-xl, 20px);
+  box-shadow: 0 10px 30px -10px rgba(18, 33, 66, 0.06);
 }
-.out__data > div { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); min-height: 32px; }
-.out__data dt { color: var(--texto-suave); }
-.out__data dd { margin: 0; font: 500 15px/1.3 var(--font-mono); color: var(--marino-900); text-align: right; overflow-wrap: anywhere; }
-.out__data .out__date { font-family: var(--font-body); }
+.out__data > div { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); min-height: 34px; }
+.out__data dt { font-size: 14px; color: var(--texto-suave); }
+.out__data dd { margin: 0; font: 600 15px/1.3 var(--font-mono); color: #122142; text-align: right; overflow-wrap: anywhere; }
+.out__data .out__date { font-family: var(--font-body); font-weight: 500; font-size: 14px; }
 .out__badge {
-  display: inline-flex; align-items: center; min-height: 28px; padding: 2px 12px;
-  border: 1px solid; border-radius: var(--radius-pill); font: 500 13px/1 var(--font-body);
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 3px 14px;
+  border: 1px solid;
+  border-radius: var(--radius-pill);
+  font: 600 13px/1 var(--font-body);
+  letter-spacing: 0.02em;
 }
-.out--ok .out__badge { background: var(--exito); border-color: var(--exito); color: var(--marino-900); }
-.out--denied .out__badge { background: var(--superficie); border-color: var(--alerta); color: var(--alerta); }
-.out--unknown .out__badge { background: var(--azul-100); border-color: var(--azul-100); color: var(--marino-900); }
+.out--ok .out__badge { background: #ECFDF5; border-color: #6EE7B7; color: #065F46; }
+.out--denied .out__badge { background: #FEF2F2; border-color: #FCA5A5; color: #991B1B; }
+.out--unknown .out__badge { background: #EFF6FF; border-color: #BFDBFE; color: #1E40AF; }
 
 .out__actions { display: grid; gap: var(--space-3); margin-top: var(--space-6); }
 @media (min-width: 560px) { .out__actions { grid-template-columns: 1fr 1fr; } }
+
+@keyframes outFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes outPulseOk {
+  0%, 100% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(16, 185, 129, 0.05);
+  }
+}
+
+@keyframes outPulseDenied {
+  0%, 100% {
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(239, 68, 68, 0.05);
+  }
+}
+
+@keyframes outPulseUnknown {
+  0%, 100% {
+    box-shadow: 0 0 0 6px rgba(0, 56, 168, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(0, 56, 168, 0.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .out {
+    animation: none;
+  }
+  .out--ok .out__icon,
+  .out--denied .out__icon,
+  .out--unknown .out__icon {
+    animation: none;
+  }
+}
 </style>

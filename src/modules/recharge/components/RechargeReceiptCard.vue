@@ -52,33 +52,50 @@ export default defineComponent({
 
 <style scoped>
 .rc {
-  padding: var(--space-6) var(--space-8) var(--space-8);
-  background: #ffffff; border: 1px solid rgba(226, 232, 240, 0.8); border-radius: var(--radius-md);
-  box-shadow: var(--elev-1); text-align: left;
+  position: relative;
+  padding: var(--space-6) var(--space-6) var(--space-8);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-2xl, 24px);
+  box-shadow: 0 16px 40px -10px rgba(18, 33, 66, 0.08), 0 1px 3px rgba(18, 33, 66, 0.04);
+  text-align: left;
+  overflow: hidden;
+}
+@media (min-width: 500px) {
+  .rc {
+    padding: var(--space-8) var(--space-8) var(--space-10);
+  }
 }
 .rc__head {
-  display: flex; align-items: center; gap: 6px; padding-bottom: var(--space-3);
-  border-bottom: 1px dashed var(--borde); font: 500 15px/20px var(--font-display); color: var(--marino-900);
+  display: flex; align-items: center; gap: 8px; padding-bottom: var(--space-3);
+  border-bottom: 1px dashed var(--borde); font: 600 15px/20px var(--font-display); color: #122142;
 }
-.rc__head svg { flex: none; color: var(--azul-700); }
+.rc__head svg { flex: none; color: #0038A8; }
 
 .rc__main { display: grid; justify-items: center; gap: var(--space-3); padding-block: var(--space-6) var(--space-4); text-align: center; }
-.rc__credited { display: grid; gap: var(--space-1); color: var(--texto-suave); }
-.rc__credited strong { font: 500 clamp(30px, 3vw + 18px, 40px)/1.1 var(--font-mono); color: var(--marino-900); }
+.rc__credited { display: grid; gap: var(--space-1); color: var(--texto-suave); font-size: 14px; }
+.rc__credited strong { font: 800 clamp(32px, 3.5vw + 16px, 42px)/1.1 var(--font-mono); color: #122142; }
 
-.rc__data { margin: 0; display: grid; gap: var(--space-2); padding-top: var(--space-3); border-top: 1px solid var(--borde); }
+.rc__data { margin: 0; display: grid; gap: var(--space-3); padding-top: var(--space-4); border-top: 1px solid var(--borde); }
 .rc__data > div { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-4); }
-.rc__data dt { color: var(--texto-suave); }
-.rc__data dd { margin: 0; font: 500 15px/1.3 var(--font-mono); color: var(--marino-900); text-align: right; overflow-wrap: anywhere; }
-.rc__data .rc__balance { color: var(--azul-700); }
-.rc__data .rc__date { font-family: var(--font-body); }
+.rc__data dt { font-size: 14px; color: var(--texto-suave); }
+.rc__data dd { margin: 0; font: 600 15px/1.3 var(--font-mono); color: #122142; text-align: right; overflow-wrap: anywhere; }
+.rc__data .rc__balance { color: #0038A8; font-weight: 700; }
+.rc__data .rc__date { font-family: var(--font-body); font-weight: 500; font-size: 14px; }
 
 .rc__code {
-  display: grid; justify-items: center; gap: var(--space-1); margin-top: var(--space-4);
-  padding: var(--space-4); border-radius: var(--radius-sm); background: var(--azul-100); text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg, 16px);
+  background: #EFF6FF;
+  border: 1.5px dashed #93C5FD;
+  text-align: center;
 }
-.rc__code-label { font-size: 14px; font-weight: 500; color: var(--marino-900); }
-.rc__code-value { font: 500 30px/1.2 var(--font-mono); letter-spacing: .24em; margin-right: -.24em; color: var(--marino-900); }
-.rc__code-note { display: flex; align-items: center; gap: 6px; font-size: 14px; line-height: 20px; color: var(--marino-900); }
-.rc__code-note svg { flex: none; }
+.rc__code-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #1E40AF; }
+.rc__code-value { font: 700 32px/1.2 var(--font-mono); letter-spacing: .24em; margin-right: -.24em; color: #122142; }
+.rc__code-note { display: flex; align-items: center; gap: 6px; font-size: 13px; line-height: 18px; color: #1E40AF; }
+.rc__code-note svg { flex: none; color: #0038A8; }
 </style>

@@ -47,18 +47,40 @@ export default defineComponent({
 .rp__step { position: relative; display: flex; flex-direction: column; align-items: center; gap: var(--space-2); text-align: center; }
 /* Tramo que llega a cada paso: azul si ese paso ya está en curso o hecho */
 .rp__step + .rp__step::before {
-  content: ''; position: absolute; top: 15px; right: 50%; left: -50%; height: 2px;
+  content: ''; position: absolute; top: 16px; right: 50%; left: -50%; height: 2px;
   background: var(--borde); transition: background-color .3s var(--ease-out);
 }
-.rp__step.is-current::before, .rp__step.is-done::before { background: var(--azul-700); }
+.rp__step.is-current::before, .rp__step.is-done::before { background: #0038A8; }
 .rp__dot {
-  position: relative; z-index: 1; display: grid; place-items: center; width: 32px; height: 32px;
-  border: 2px solid var(--borde); border-radius: 50%; background: var(--superficie);
-  font: 500 14px/1 var(--font-mono); color: var(--texto-suave);
-  transition: background-color .3s var(--ease-out), border-color .3s var(--ease-out), color .3s var(--ease-out);
+  position: relative; z-index: 1; display: grid; place-items: center; width: 34px; height: 34px;
+  border: 2px solid var(--borde); border-radius: 50%; background: #ffffff;
+  font: 600 14px/1 var(--font-mono); color: var(--texto-suave);
+  transition: all .3s var(--ease-out);
 }
-.is-current .rp__dot, .is-done .rp__dot { background: var(--azul-700); border-color: var(--azul-700); color: #fff; }
+.is-done .rp__dot { background: #0038A8; border-color: #0038A8; color: #fff; }
+.is-current .rp__dot {
+  background: #0038A8;
+  border-color: #0038A8;
+  color: #fff;
+  box-shadow: 0 0 0 4px rgba(0, 56, 168, 0.2);
+  animation: rpPulse 2s infinite ease-in-out;
+}
 .rp__label { font-size: 13px; line-height: 18px; font-weight: 500; color: var(--texto-suave); }
-.is-current .rp__label { color: var(--marino-900); }
+.is-current .rp__label { color: #122142; font-weight: 600; }
 @media (min-width: 768px) { .rp__label { font-size: 14px; } }
+
+@keyframes rpPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 3px rgba(0, 56, 168, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(0, 56, 168, 0.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-current .rp__dot {
+    animation: none;
+  }
+}
 </style>
