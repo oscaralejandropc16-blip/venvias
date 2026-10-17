@@ -80,27 +80,28 @@ export default defineComponent({
 <style scoped>
 .state-card {
   background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: var(--radius-md);
-  box-shadow: var(--elev-1);
-  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 16px -2px rgba(18, 33, 66, 0.04);
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), border-color 0.25s var(--ease-out);
 }
 .state-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--elev-2);
+  box-shadow: 0 12px 28px -4px rgba(18, 33, 66, 0.08);
+  border-color: #93c5fd;
 }
 .state-card--open {
-  border-color: rgba(0, 87, 163, 0.35);
-  box-shadow: var(--elev-2);
+  border-color: rgba(0, 87, 163, 0.4);
+  box-shadow: 0 16px 32px -4px rgba(0, 87, 163, 0.1);
 }
 .state-card__heading { margin: 0; font: inherit; }
 .state-card__toggle {
   width: 100%; display: flex; align-items: center; gap: var(--space-3);
   padding: var(--space-4) var(--space-6); min-height: 72px;
-  background: none; border: 0; border-radius: var(--radius-md); cursor: pointer; text-align: left;
+  background: none; border: 0; border-radius: 1.25rem; cursor: pointer; text-align: left;
 }
 .state-card__toggle:focus-visible { outline-offset: -3px; }
-.state-card__name { font: 500 20px/28px var(--font-display); color: var(--marino-900); }
+.state-card__name { font: 600 20px/28px var(--font-display); color: #122142; }
 .state-card__count { font: 400 14px/20px var(--font-body); color: var(--texto-suave); }
 .state-card__chevron {
   margin-left: auto; flex: none; color: var(--azul-700);

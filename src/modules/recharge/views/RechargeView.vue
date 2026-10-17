@@ -574,37 +574,65 @@ export default defineComponent({
 .rv__panel {
   display: flex; flex-direction: column; align-items: center; min-width: 0;
   padding: clamp(24px, 4vw, 48px) clamp(16px, 4vw, 48px) clamp(28px, 4vw, 48px);
-  background: var(--fondo-frio); border: 1px solid var(--borde); border-radius: var(--radius-xl);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 1.5rem;
+  box-shadow: 0 25px 50px -12px rgba(18, 33, 66, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.6);
   text-align: center;
+  position: relative;
+  overflow: hidden;
+  animation: rvFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+.rv__panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 32px;
+  right: 32px;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(90deg, #f7d117 0% 33.3%, #0057a3 33.3% 66.6%, #cf142b 66.6% 100%);
+}
+@keyframes rvFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .rv__progress { width: min(100%, 440px); margin-bottom: var(--space-8); }
 .rv__state { display: grid; justify-items: center; gap: var(--space-4); padding-block: var(--space-8); color: var(--texto-suave); }
 
 .rv__back {
   align-self: flex-start; display: inline-flex; align-items: center; gap: 2px; min-height: 44px;
   margin: calc(-1 * var(--space-4)) 0 var(--space-2); padding: 0 8px 0 0; border: 0; background: none; cursor: pointer;
+  transition: transform 0.2s var(--ease-out), color 0.2s;
 }
+.rv__back:hover { transform: translateX(-3px); color: var(--azul-700); }
 .rv__back-icon { transform: rotate(90deg); }
 .rv__done {
   display: grid; place-items: center; width: 56px; height: 56px; margin-bottom: var(--space-4);
   border-radius: 50%; background: var(--exito); color: #fff;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.25);
+  animation: donePulse 2.5s infinite;
 }
-.rv__panel h1 { font-size: clamp(28px, 2vw + 18px, 40px); line-height: 1.15; font-weight: 600; outline: none; }
-.rv__intro { margin-top: var(--space-2); max-width: 44ch; }
+@keyframes donePulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.25); }
+  50% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0.05); }
+}
+.rv__panel h1 { font-size: clamp(28px, 2vw + 18px, 40px); line-height: 1.15; font-weight: 700; color: #122142; outline: none; }
+.rv__intro { margin-top: var(--space-2); max-width: 44ch; color: var(--texto-suave); }
 
 .rv__body { width: min(100%, 520px); display: flex; flex-direction: column; margin-top: var(--space-8); }
 .rv__plate { display: grid; justify-items: center; gap: var(--space-2); }
-.rv__link { min-height: 44px; padding: 0 var(--space-2); border: 0; background: none; cursor: pointer; text-decoration: underline; }
+.rv__link { min-height: 44px; padding: 0 var(--space-2); border: 0; background: none; cursor: pointer; text-decoration: underline; color: var(--azul-700); }
 .rv__picker { margin-top: var(--space-6); text-align: left; }
 
-/* Barra de contexto: se pega bajo el encabezado y flota sobre el panel (no ocupa sitio) */
+/* Barra de contexto: se pega bajo el encabezado y flota sobre el panel */
 .rv__ctx {
   position: sticky; top: 64px; z-index: 6; align-self: stretch;
   margin: calc(-1 * clamp(24px, 4vw, 48px)) calc(-1 * clamp(16px, 4vw, 48px)) calc(clamp(24px, 4vw, 48px) - 52px);
   border-radius: var(--radius-sm);
 }
 @media (min-width: 1080px) { .rv__ctx { top: 76px; } }
-/* En teléfono angosto, la barra de contexto deja solo placa y total */
 @media (max-width: 399px) { .rv__ctx :deep(.rcb__step) { display: none; } }
 .rv__paybar { margin-top: var(--space-6); }
 .rv__notice {
@@ -618,14 +646,39 @@ export default defineComponent({
   margin-top: var(--space-4); color: var(--alerta); font-size: 15px; font-weight: 500;
 }
 .rv__error svg { flex: none; }
-.rv__go { width: 100%; min-height: 56px; margin-top: var(--space-6); font-size: 16px; }
+.rv__go {
+  width: 100%; min-height: 56px; margin-top: var(--space-6); font-size: 16px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 14px rgba(0, 87, 163, 0.3);
+  transition: all 0.25s var(--ease-out);
+}
+.rv__go::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  animation: rvBtnShimmer 4s ease-in-out infinite 1.5s;
+}
+@keyframes rvBtnShimmer {
+  0% { left: -100%; }
+  30%, 100% { left: 200%; }
+}
+.rv__go:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 87, 163, 0.45);
+}
 .rv__note { margin-top: var(--space-3); font-size: 14px; line-height: 20px; color: var(--texto-suave); }
 .rv__actions { display: grid; gap: var(--space-3); margin-top: var(--space-6); }
 @media (min-width: 560px) { .rv__actions { grid-template-columns: 1fr 1fr; } }
 .rv__done--alert { background: var(--alerta); }
 .rv__done--pending { background: var(--azul-700); }
 
-/* Botón de Pago IPG: el formulario baja bajo los métodos; código y resultado ocupan el paso */
+/* Botón de Pago IPG */
 .rv__card { margin-top: var(--space-4); }
 .rv__card-step { margin-top: var(--space-6); }
 .rv__wide, .rv__error--wide { grid-column: 1 / -1; }
@@ -633,23 +686,46 @@ export default defineComponent({
 .card-enter-active { transition: opacity .35s var(--ease-out), transform .35s var(--ease-out); }
 .card-enter-from { opacity: 0; transform: translateY(-8px); }
 
-/* Guía lateral: solo cuando hay sitio para dos columnas */
+/* Guía lateral con tarjeta suave */
 .rv__guide { display: none; }
 @media (min-width: 900px) {
-  .rv__guide { display: block; position: sticky; top: calc(76px + var(--space-6)); padding-top: var(--space-6); }
+  .rv__guide {
+    display: block; position: sticky; top: calc(76px + var(--space-6));
+    padding: var(--space-6) var(--space-8);
+    background: #ffffff;
+    border: 1px solid rgba(226, 232, 240, 0.85);
+    border-radius: 1.25rem;
+    box-shadow: 0 10px 25px -5px rgba(18, 33, 66, 0.05);
+    animation: rvFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+  }
 }
-.rv__eyebrow { font-size: 14px; font-weight: 500; color: var(--azul-700); }
-.rv__guide h2 { margin-top: var(--space-1); }
+.rv__eyebrow { font-size: 13px; font-weight: 700; color: var(--azul-700); text-transform: uppercase; letter-spacing: 0.04em; }
+.rv__guide h2 { margin-top: var(--space-1); font-size: 22px; font-weight: 700; color: #122142; }
 .rv__guide-list { list-style: none; margin: var(--space-6) 0 0; padding: 0; display: grid; gap: var(--space-4); }
-.rv__guide-list li { display: flex; gap: var(--space-3); align-items: flex-start; }
+.rv__guide-list li { display: flex; gap: var(--space-3); align-items: flex-start; transition: transform 0.2s var(--ease-out); }
+.rv__guide-list li.is-current { transform: translateX(4px); }
 .rv__guide-dot {
   flex: none; display: grid; place-items: center; width: 28px; height: 28px; margin-top: 1px;
   border: 2px solid var(--borde); border-radius: 50%; background: var(--superficie);
   font: 500 13px/1 var(--font-mono); color: var(--texto-suave);
+  transition: all 0.25s var(--ease-out);
 }
-.is-current .rv__guide-dot, .is-done .rv__guide-dot { background: var(--azul-700); border-color: var(--azul-700); color: #fff; }
-.rv__guide-title { font: 500 17px/24px var(--font-display); color: var(--marino-900); }
+.is-current .rv__guide-dot, .is-done .rv__guide-dot {
+  background: var(--azul-700); border-color: var(--azul-700); color: #fff;
+  box-shadow: 0 0 0 3px rgba(0, 87, 163, 0.2);
+}
+.rv__guide-title { font: 600 17px/24px var(--font-display); color: var(--marino-900); }
 .rv__guide-list li:not(.is-current) .rv__guide-title { color: var(--texto); }
-.rv__guide-text { margin-top: 2px; font-size: 15px; line-height: 22px; color: var(--texto-suave); }
-.rv__guide-note { margin-top: var(--space-6); padding-top: var(--space-4); border-top: 1px solid var(--borde); font-size: 15px; color: var(--texto-suave); }
+.rv__guide-text { margin-top: 2px; font-size: 14px; line-height: 20px; color: var(--texto-suave); }
+.rv__guide-note { margin-top: var(--space-6); padding-top: var(--space-4); border-top: 1px solid var(--borde); font-size: 13px; color: var(--texto-suave); }
+
+@media (prefers-reduced-motion: reduce) {
+  .rv__panel,
+  .rv__guide,
+  .rv__go::after,
+  .rv__done {
+    animation: none !important;
+    transition: none !important;
+  }
+}
 </style>

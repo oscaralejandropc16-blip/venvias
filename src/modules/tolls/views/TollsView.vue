@@ -135,33 +135,51 @@ export default defineComponent({
 
 <style scoped>
 .tolls { display: grid; gap: var(--space-8); }
-.tolls__head { display: grid; gap: var(--space-3); }
-.tolls__head h1 { font-size: clamp(30px, 2vw + 20px, 44px); line-height: 1.15; font-weight: 600; }
+.tolls__head { display: grid; gap: var(--space-3); animation: tollsFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.tolls__head h1 { font-size: clamp(30px, 2vw + 20px, 44px); line-height: 1.15; font-weight: 700; color: #122142; }
 .tolls__intro { max-width: 56ch; color: var(--texto-suave); }
 .tolls__count {
   display: flex; align-items: center; gap: var(--space-2);
-  margin-top: var(--space-1); font: 500 15px/20px var(--font-body); color: var(--marino-900);
+  margin-top: var(--space-1); font: 600 15px/20px var(--font-body); color: var(--azul-700);
 }
 .tolls__note { margin-top: calc(-1 * var(--space-2)); font-size: 14px; line-height: 20px; color: var(--texto-suave); }
 
 /* El mapa ocupa todo el ancho de la página */
-.tolls__map { height: max(320px, 55svh); scroll-margin-top: 80px; }
-.tolls__map--placeholder { border-radius: var(--radius-md); background: var(--fondo-frio); border: 1px solid var(--borde); }
+.tolls__map {
+  height: max(320px, 55svh); scroll-margin-top: 80px;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 20px 45px -10px rgba(18, 33, 66, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.8);
+  animation: tollsFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+.tolls__map--placeholder { border-radius: 1.5rem; background: var(--fondo-frio); border: 1px solid var(--borde); }
 
-.tolls__states { display: grid; gap: var(--space-4); }
-.tolls__states-title { font-size: clamp(22px, 1vw + 16px, 26px); line-height: 1.25; }
+.tolls__states { display: grid; gap: var(--space-4); animation: tollsFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both; }
+.tolls__states-title { font-size: clamp(22px, 1vw + 16px, 26px); line-height: 1.25; font-weight: 700; color: #122142; }
 /* Una tarjeta por fila, a todo el ancho */
 .tolls__cards { display: grid; gap: var(--space-4); }
 
 .tolls__skeleton {
-  height: 72px; border-radius: var(--radius-md); background: var(--fondo-frio);
+  height: 72px; border-radius: 1rem; background: var(--fondo-frio);
   animation: tolls-pulse 1.4s var(--ease-out) infinite alternate;
 }
 @keyframes tolls-pulse { from { opacity: 1; } to { opacity: 0.5; } }
+@keyframes tollsFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 .tolls__status { max-width: 560px; }
 
 @media (min-width: 900px) {
   .tolls__map { height: clamp(440px, calc(100svh - 360px), 680px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tolls__head,
+  .tolls__map,
+  .tolls__states {
+    animation: none !important;
+  }
 }
 </style>

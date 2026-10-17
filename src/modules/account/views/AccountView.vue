@@ -265,11 +265,18 @@ export default defineComponent({
   font-weight: 600;
   padding: 4px 14px;
   border-radius: var(--radius-pill);
+  border: 1px solid rgba(191, 219, 254, 0.8);
+}
+
+.account-view__hero {
+  display: grid;
+  gap: var(--space-2);
+  animation: acctFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .account-view__title {
-  font: 600 clamp(28px, 2.5vw + 18px, 38px)/1.15 var(--font-display);
-  color: var(--marino-900);
+  font: 700 clamp(28px, 2.5vw + 18px, 38px)/1.15 var(--font-display);
+  color: #122142;
 }
 
 .account-view__subtitle {
@@ -286,16 +293,28 @@ export default defineComponent({
   background: #f0fdf4;
   color: #14532d;
   border: 1px solid rgba(0, 177, 64, 0.3);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   font-size: 14px;
   font-weight: 500;
-  animation: toast-fade 0.2s ease-out;
+  box-shadow: 0 4px 12px rgba(18, 33, 66, 0.04);
+  animation: toast-fade 0.25s ease-out;
 }
 
 @keyframes toast-fade {
   from {
     opacity: 0;
     transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes acctFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -314,6 +333,7 @@ export default defineComponent({
 .account-content {
   display: grid;
   gap: var(--space-6);
+  animation: acctFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
 }
 
 .account-tabs {
@@ -322,7 +342,7 @@ export default defineComponent({
   padding: 6px;
   border-radius: var(--radius-pill);
   box-shadow: 0 4px 14px rgba(18, 33, 66, 0.05);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  border: 1px solid rgba(226, 232, 240, 0.85);
   gap: 4px;
   overflow-x: auto;
   max-width: 100%;
@@ -340,12 +360,13 @@ export default defineComponent({
   color: var(--texto-suave);
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s var(--ease-out);
+  transition: all 0.25s var(--ease-out);
 }
 
-.tab-btn:hover {
+.tab-btn:hover:not(.is-active) {
   color: var(--azul-700);
-  background: rgba(0, 87, 163, 0.05);
+  background: rgba(0, 87, 163, 0.06);
+  transform: translateY(-1px);
 }
 
 .tab-btn.is-active {
@@ -353,28 +374,30 @@ export default defineComponent({
   color: #ffffff;
   box-shadow: 0 4px 14px rgba(0, 87, 163, 0.3);
   font-weight: 600;
+  transform: translateY(-1px);
 }
 
 .tab-panel {
   display: grid;
   gap: var(--space-4);
+  animation: acctFadeIn 0.4s ease-out;
 }
 
 .statements-box,
 .alerts-box {
   background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: var(--radius-md);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 1.5rem;
   padding: var(--space-8);
-  box-shadow: var(--elev-1);
+  box-shadow: 0 20px 45px -10px rgba(18, 33, 66, 0.08);
   display: grid;
   gap: var(--space-6);
 }
 
 .statements-title,
 .alerts-title {
-  font: 600 18px/24px var(--font-display);
-  color: var(--marino-900);
+  font: 700 18px/24px var(--font-display);
+  color: #122142;
   margin: 0;
 }
 
@@ -395,10 +418,16 @@ export default defineComponent({
   align-items: center;
   justify-content: space-between;
   padding: var(--space-4);
-  border: 1px solid var(--borde);
-  border-radius: var(--radius-sm);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-md);
   gap: var(--space-3);
   flex-wrap: wrap;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s, border-color 0.2s;
+}
+.statement-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -4px rgba(18, 33, 66, 0.08);
+  border-color: #93c5fd;
 }
 
 .statement-item__left {
@@ -422,7 +451,7 @@ export default defineComponent({
 .statement-title {
   margin: 0;
   font: 600 15px var(--font-display);
-  color: var(--marino-900);
+  color: #122142;
 }
 
 .statement-meta {
@@ -440,7 +469,7 @@ export default defineComponent({
 .statement-amount {
   font-family: var(--font-mono);
   font-weight: 600;
-  color: var(--marino-900);
+  color: #122142;
 }
 
 .alerts-grid {
@@ -549,5 +578,16 @@ input:checked + .toggle-slider:before {
   color: var(--azul-700);
   font-weight: 500;
   text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .account-view__hero,
+  .account-content,
+  .tab-panel,
+  .statement-item,
+  .tab-btn {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 </style>

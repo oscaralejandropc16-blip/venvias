@@ -201,6 +201,7 @@ export default defineComponent({
   gap: var(--space-2);
   text-align: center;
   justify-items: center;
+  animation: debtFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .debt-view__badge {
@@ -213,11 +214,12 @@ export default defineComponent({
   font-weight: 600;
   padding: 4px 14px;
   border-radius: var(--radius-pill);
+  border: 1px solid rgba(191, 219, 254, 0.8);
 }
 
 .debt-view__title {
-  font: 600 clamp(28px, 2.5vw + 18px, 40px)/1.15 var(--font-display);
-  color: var(--marino-900);
+  font: 700 clamp(28px, 2.5vw + 18px, 40px)/1.15 var(--font-display);
+  color: #122142;
 }
 
 .debt-view__lead {
@@ -229,10 +231,28 @@ export default defineComponent({
 
 .debt-search {
   background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: var(--radius-md);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 1.5rem;
   padding: var(--space-8);
-  box-shadow: var(--elev-1);
+  box-shadow: 0 25px 50px -12px rgba(18, 33, 66, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.6);
+  position: relative;
+  overflow: hidden;
+  animation: debtFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+.debt-search::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 28px;
+  right: 28px;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(90deg, #f7d117 0% 33.3%, #0057a3 33.3% 66.6%, #cf142b 66.6% 100%);
+}
+
+@keyframes debtFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .debt-search__form {
@@ -242,13 +262,13 @@ export default defineComponent({
 
 .debt-search__label {
   font-size: 14px;
-  font-weight: 500;
-  color: var(--texto);
+  font-weight: 600;
+  color: #122142;
 }
 
 .debt-search__row {
   display: flex;
-  gap: var(--space-3);
+  gap: var(--space-4);
   align-items: flex-start;
   flex-wrap: wrap;
 }
@@ -256,6 +276,13 @@ export default defineComponent({
 .debt-search__submit {
   align-self: flex-start;
   min-height: 48px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 14px rgba(0, 87, 163, 0.3);
+  transition: all 0.25s var(--ease-out);
+}
+.debt-search__submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 87, 163, 0.45);
 }
 
 .debt-alert {
@@ -263,7 +290,7 @@ export default defineComponent({
   align-items: flex-start;
   gap: var(--space-3);
   padding: var(--space-4) var(--space-5);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   font-size: 14px;
   box-shadow: 0 4px 12px rgba(18, 33, 66, 0.04);
 }
@@ -295,9 +322,10 @@ export default defineComponent({
   text-align: center;
   padding: var(--space-14) var(--space-8);
   background: #ffffff;
-  border: 1px solid rgba(0, 177, 64, 0.3);
-  border-radius: var(--radius-md);
-  box-shadow: var(--elev-1);
+  border: 1px solid rgba(0, 177, 64, 0.25);
+  border-radius: 1.5rem;
+  box-shadow: 0 25px 50px -12px rgba(18, 33, 66, 0.08);
+  animation: debtFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .debt-clear__icon {
@@ -309,11 +337,17 @@ export default defineComponent({
   border-radius: var(--radius-pill);
   background: #f0fdf4;
   color: var(--exito);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+  animation: clearPulse 2.5s infinite;
+}
+@keyframes clearPulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2); }
+  50% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0.05); }
 }
 
 .debt-clear__title {
-  font: 600 24px/30px var(--font-display);
-  color: var(--marino-900);
+  font: 700 24px/30px var(--font-display);
+  color: #122142;
 }
 
 .debt-clear__plate {
@@ -345,6 +379,7 @@ export default defineComponent({
   grid-template-columns: 1fr;
   gap: var(--space-6);
   align-items: flex-start;
+  animation: debtFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @media (min-width: 840px) {
@@ -371,5 +406,16 @@ export default defineComponent({
 
 .debt-view__conditions-link:hover {
   color: var(--azul-700);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .debt-view__hero,
+  .debt-search,
+  .debt-clear,
+  .debt-clear__icon,
+  .debt-split {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 </style>
