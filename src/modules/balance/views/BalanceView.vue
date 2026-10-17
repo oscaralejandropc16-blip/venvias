@@ -131,24 +131,86 @@ export default defineComponent({
 .bal {
   width: min(100%, 640px); margin-inline: auto; display: flex; flex-direction: column; align-items: center;
   padding: clamp(28px, 5vw, 56px) clamp(16px, 5vw, 56px);
-  background: var(--fondo-frio); border: 1px solid var(--borde); border-radius: var(--radius-xl);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 1.5rem;
+  box-shadow: 0 25px 50px -12px rgba(18, 33, 66, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.6);
   text-align: center;
+  position: relative;
+  overflow: hidden;
+  animation: balFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
-.bal h1 { font-size: clamp(30px, 2vw + 20px, 44px); line-height: 1.15; font-weight: 600; outline: none; }
-.bal__intro { margin-top: var(--space-3); max-width: 44ch; }
+.bal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 32px;
+  right: 32px;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(90deg, #f7d117 0% 33.3%, #0057a3 33.3% 66.6%, #cf142b 66.6% 100%);
+}
+
+.bal :deep(.plate) {
+  width: 100%;
+  max-width: 320px;
+  margin-inline: auto;
+}
+
+@keyframes balFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bal h1 { font-size: clamp(28px, 2vw + 20px, 40px); line-height: 1.15; font-weight: 700; color: #122142; outline: none; }
+.bal__intro { margin-top: var(--space-3); max-width: 44ch; color: var(--texto-suave); font-size: 16px; }
 
 .bal__form { width: min(100%, 520px); display: flex; flex-direction: column; margin-top: var(--space-8); }
 .bal__code { margin: var(--space-8) 0 0; padding: 0; border: 0; min-width: 0; }
-.bal__code legend { padding: 0; margin: 0 auto; font: 500 18px/26px var(--font-display); color: var(--marino-900); }
+.bal__code legend { padding: 0; margin: 0 auto; font: 600 18px/26px var(--font-display); color: #122142; }
 .bal__help { margin: var(--space-1) auto var(--space-4); max-width: 40ch; font-size: 14px; line-height: 20px; color: var(--texto-suave); }
 .bal__error {
   display: flex; align-items: center; justify-content: center; gap: var(--space-2);
   margin-top: var(--space-3); color: var(--alerta); font-size: 15px; font-weight: 500;
 }
 .bal__error svg { flex: none; }
-.bal__go { width: 100%; min-height: 56px; margin-top: var(--space-8); font-size: 16px; }
+
+.bal__go {
+  width: 100%; min-height: 54px; margin-top: var(--space-8); font-size: 16px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 14px rgba(0, 87, 163, 0.3);
+  transition: all 0.25s var(--ease-out);
+}
+.bal__go::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  animation: balBtnShimmer 4s ease-in-out infinite 1.5s;
+}
+@keyframes balBtnShimmer {
+  0% { left: -100%; }
+  30%, 100% { left: 200%; }
+}
+.bal__go:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 87, 163, 0.45);
+}
 
 .bal__result { width: 100%; margin-top: var(--space-6); }
 .bal__actions { width: 100%; display: grid; gap: var(--space-3); margin-top: var(--space-6); }
 @media (min-width: 560px) { .bal__actions { grid-template-columns: 1fr 1fr; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .bal,
+  .bal__go::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
 </style>

@@ -85,6 +85,7 @@ export default defineComponent({
   gap: var(--space-3);
   text-align: center;
   justify-items: center;
+  animation: condFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .conditions-badge {
@@ -97,11 +98,12 @@ export default defineComponent({
   color: var(--azul-700);
   padding: 4px 14px;
   border-radius: var(--radius-pill);
+  border: 1px solid rgba(191, 219, 254, 0.8);
 }
 
 .conditions-title {
-  font: 600 clamp(26px, 2.2vw + 16px, 36px)/1.2 var(--font-display);
-  color: var(--marino-900);
+  font: 700 clamp(26px, 2.2vw + 16px, 36px)/1.2 var(--font-display);
+  color: #122142;
 }
 
 .conditions-subtitle {
@@ -113,25 +115,32 @@ export default defineComponent({
 .conditions-content {
   display: grid;
   gap: var(--space-4);
+  animation: condFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+@keyframes condFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .condition-card {
   padding: var(--space-8);
   background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: var(--radius-md);
-  box-shadow: var(--elev-1);
-  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 25px -5px rgba(18, 33, 66, 0.05);
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), border-color 0.2s;
 }
 
 .condition-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--elev-2);
+  box-shadow: 0 16px 32px -4px rgba(18, 33, 66, 0.09);
+  border-color: #93c5fd;
 }
 
 .condition-card__title {
-  font: 600 20px/26px var(--font-display);
-  color: var(--marino-900);
+  font: 700 20px/26px var(--font-display);
+  color: #122142;
   margin-bottom: var(--space-3);
 }
 
@@ -146,5 +155,14 @@ export default defineComponent({
   justify-content: center;
   padding-top: var(--space-4);
   border-top: 1px solid var(--borde);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .conditions-hero,
+  .conditions-content,
+  .condition-card {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 </style>
