@@ -63,31 +63,31 @@ export default defineComponent({
   gap: var(--space-6);
   padding: var(--space-8);
   background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: var(--radius-md);
-  box-shadow: var(--elev-1);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-2xl, 24px);
+  box-shadow: 0 16px 40px -10px rgba(18, 33, 66, 0.08), 0 1px 3px rgba(18, 33, 66, 0.04);
   text-align: center;
   transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
 }
 
 .debt-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--elev-2);
+  box-shadow: 0 20px 48px -10px rgba(18, 33, 66, 0.12);
 }
 
 .debt-card.is-alert {
   border-color: rgba(207, 20, 43, 0.35);
-  box-shadow: 0 10px 25px -5px rgba(207, 20, 43, 0.08), 0 8px 10px -6px rgba(207, 20, 43, 0.04);
+  box-shadow: 0 16px 40px -10px rgba(207, 20, 43, 0.12);
 }
 
 .debt-card.is-warning {
   border-color: rgba(247, 209, 23, 0.5);
-  box-shadow: 0 10px 25px -5px rgba(234, 179, 8, 0.08), 0 8px 10px -6px rgba(234, 179, 8, 0.04);
+  box-shadow: 0 16px 40px -10px rgba(234, 179, 8, 0.12);
 }
 
 .debt-card.is-success {
   border-color: rgba(0, 177, 64, 0.35);
-  box-shadow: 0 10px 25px -5px rgba(0, 177, 64, 0.08), 0 8px 10px -6px rgba(0, 177, 64, 0.04);
+  box-shadow: 0 16px 40px -10px rgba(0, 177, 64, 0.12);
 }
 
 .debt-card__header {
@@ -131,16 +131,16 @@ export default defineComponent({
 }
 
 .debt-card__label {
-  font-size: 14px;
+  font-size: 13px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   color: var(--texto-suave);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .debt-card__amount {
-  font: 600 clamp(38px, 4vw + 20px, 52px)/1.1 var(--font-mono);
-  color: var(--marino-900);
+  font: 800 clamp(38px, 4vw + 20px, 52px)/1.1 var(--font-mono);
+  color: #122142;
 }
 
 .debt-card__count {
@@ -151,5 +151,24 @@ export default defineComponent({
 .debt-card__actions {
   display: grid;
   gap: var(--space-3);
+}
+
+.debt-card__actions .btn--primario {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 56, 168, 0.25);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+
+.debt-card__actions .btn--primario:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 56, 168, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .debt-card,
+  .debt-card__actions .btn--primario {
+    transform: none !important;
+  }
 }
 </style>

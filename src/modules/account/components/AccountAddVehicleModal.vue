@@ -42,6 +42,7 @@ export default defineComponent({
 <template>
   <div class="modal-backdrop" @click.self="$emit('close')">
     <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-tricolor" aria-hidden="true"></div>
       <header class="modal-header">
         <h3 id="modal-title" class="modal-title">Asociar nuevo vehículo</h3>
         <button type="button" class="btn-close" aria-label="Cerrar" @click="$emit('close')">
@@ -104,14 +105,25 @@ export default defineComponent({
 }
 
 .modal-dialog {
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  border-radius: var(--radius-md);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  position: relative;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-2xl, 24px);
+  box-shadow: 0 25px 60px -12px rgba(18, 33, 66, 0.25);
   width: min(100%, 480px);
   overflow: hidden;
   display: grid;
-  animation: modal-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: modal-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-tricolor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #F9D616 0%, #0038A8 50%, #CE1126 100%);
+  z-index: 2;
 }
 
 @keyframes modal-in {
@@ -129,7 +141,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-4) var(--space-6);
+  padding: var(--space-5) var(--space-6);
   border-bottom: 1px solid var(--borde);
   background: var(--fondo-frio);
 }
@@ -137,7 +149,7 @@ export default defineComponent({
 .modal-title {
   margin: 0;
   font: 600 18px/24px var(--font-display);
-  color: var(--marino-900);
+  color: #122142;
 }
 
 .btn-close {
@@ -145,19 +157,21 @@ export default defineComponent({
   border: none;
   cursor: pointer;
   color: var(--texto-suave);
-  padding: 4px;
-  border-radius: 4px;
+  padding: 6px;
+  border-radius: 8px;
   display: flex;
+  transition: all 0.2s ease;
 }
 
 .btn-close:hover {
+  background: #FEE2E2;
   color: var(--rojo-sistema);
 }
 
 .modal-body {
   padding: var(--space-6);
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-5);
 }
 
 .form-group {
@@ -165,27 +179,33 @@ export default defineComponent({
   gap: 6px;
 }
 
+.form-group :deep(.plate) {
+  max-width: 280px;
+  width: 100%;
+  margin-inline: auto;
+}
+
 .form-label {
   font-size: 13px;
-  font-weight: 500;
-  color: var(--texto);
+  font-weight: 600;
+  color: #122142;
 }
 
 .input-alias {
   width: 100%;
-  padding: 10px 14px;
-  border: 1px solid var(--borde);
-  border-radius: var(--radius-sm);
-  font: 400 15px var(--font-body);
-  color: var(--texto);
+  padding: 12px 14px;
+  border: 1.5px solid rgba(226, 232, 240, 0.95);
+  border-radius: var(--radius-md, 12px);
+  font: 500 15px var(--font-body);
+  color: #122142;
   background: #fff;
-  transition: border-color 0.15s;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .input-alias:focus {
   outline: none;
-  border-color: var(--azul-700);
-  box-shadow: 0 0 0 3px var(--azul-100);
+  border-color: #0038A8;
+  box-shadow: 0 0 0 3px rgba(0, 56, 168, 0.12);
 }
 
 .input-hint {

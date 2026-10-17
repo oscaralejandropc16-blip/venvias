@@ -105,18 +105,19 @@ export default defineComponent({
 
 .v-card {
   background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: var(--radius-md);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-xl, 20px);
   padding: var(--space-6);
-  box-shadow: var(--elev-1);
+  box-shadow: 0 10px 28px -6px rgba(18, 33, 66, 0.06), 0 1px 3px rgba(18, 33, 66, 0.04);
   display: grid;
   gap: var(--space-4);
-  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
 }
 
 .v-card:hover {
   transform: translateY(-3px);
-  box-shadow: var(--elev-2);
+  border-color: #0038A8;
+  box-shadow: 0 16px 36px -8px rgba(0, 56, 168, 0.12);
 }
 
 .v-card__top {

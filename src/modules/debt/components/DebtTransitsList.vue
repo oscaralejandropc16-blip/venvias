@@ -106,15 +106,16 @@ export default defineComponent({
   align-items: center;
   padding: var(--space-5) var(--space-6);
   background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--elev-1);
-  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+  border: 1.5px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-md, 16px);
+  box-shadow: 0 6px 18px -4px rgba(18, 33, 66, 0.05);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
 }
 
 .transit-item:hover {
   transform: translateY(-2px);
-  box-shadow: var(--elev-2);
+  border-color: #0038A8;
+  box-shadow: 0 10px 25px -4px rgba(0, 56, 168, 0.12);
 }
 
 .transit-item__icon {
@@ -211,8 +212,8 @@ export default defineComponent({
 }
 
 .amount-value {
-  font: 600 18px/22px var(--font-mono);
-  color: var(--marino-900);
+  font: 700 18px/22px var(--font-mono);
+  color: #122142;
 }
 
 @media (max-width: 640px) {

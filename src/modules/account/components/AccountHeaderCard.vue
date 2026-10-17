@@ -22,6 +22,7 @@ export default defineComponent({
 
 <template>
   <div class="acc-header">
+    <div class="acc-header__tricolor" aria-hidden="true"></div>
     <div class="acc-header__top">
       <div class="acc-header__identity">
         <div class="acc-header__avatar">
@@ -61,18 +62,29 @@ export default defineComponent({
 
 <style scoped>
 .acc-header {
+  position: relative;
   background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: var(--radius-md);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-2xl, 24px);
   padding: var(--space-8);
-  box-shadow: var(--elev-1);
+  box-shadow: 0 16px 40px -10px rgba(18, 33, 66, 0.08), 0 1px 3px rgba(18, 33, 66, 0.04);
   display: grid;
   gap: var(--space-6);
-  transition: box-shadow 0.2s var(--ease-out);
+  overflow: hidden;
+  transition: box-shadow 0.25s var(--ease-out), transform 0.25s var(--ease-out);
 }
 
 .acc-header:hover {
-  box-shadow: var(--elev-2);
+  box-shadow: 0 20px 48px -10px rgba(18, 33, 66, 0.12);
+}
+
+.acc-header__tricolor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #F9D616 0%, #0038A8 50%, #CE1126 100%);
 }
 
 .acc-header__top {
