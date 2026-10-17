@@ -59,23 +59,74 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.seg { border: 0; margin: 0; padding: 0; min-width: 0; }
-.seg__legend { padding: 0; margin-bottom: var(--space-2); font-size: 15px; font-weight: 500; color: var(--marino-900); }
+.seg {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.seg__legend {
+  padding: 0;
+  margin-bottom: var(--space-2);
+  font-size: 15px;
+  font-weight: 600;
+  color: #122142;
+}
 .seg__track {
-  position: relative; display: grid; padding: 4px;
-  background: var(--azul-100); border-radius: var(--radius-pill);
+  position: relative;
+  display: grid;
+  padding: 5px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-pill);
+  box-shadow: inset 0 2px 4px rgba(18, 33, 66, 0.04);
 }
 .seg__track label {
-  position: relative; z-index: 1; display: grid; place-items: center; min-height: 44px;
-  border-radius: var(--radius-pill); font-weight: 500; font-size: 15px; color: var(--marino-900);
-  cursor: pointer; transition: color .3s var(--ease-out);
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  min-height: 44px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 15px;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.25s var(--ease-out);
+  user-select: none;
 }
-.seg__track label.on { color: #fff; }
-.seg__track input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
-.seg__track label:has(input:focus-visible) { outline: 3px solid var(--accion); outline-offset: 3px; }
+.seg__track label:hover:not(.on) {
+  color: #122142;
+}
+.seg__track label.on {
+  color: #ffffff;
+}
+.seg__track input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.seg__track label:has(input:focus-visible) {
+  outline: 3px solid #0038A8;
+  outline-offset: 2px;
+}
 .seg__thumb {
-  position: absolute; top: 4px; bottom: 4px; left: 4px;
-  background: var(--azul-700); border-radius: var(--radius-pill);
-  transition: transform .45s var(--ease-out);
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+  background: linear-gradient(135deg, #0038A8 0%, #002b80 100%);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 12px rgba(0, 56, 168, 0.3), 0 1px 3px rgba(0, 56, 168, 0.2);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seg__track label,
+  .seg__thumb {
+    transition: none !important;
+  }
 }
 </style>

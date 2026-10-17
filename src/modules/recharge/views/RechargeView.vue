@@ -591,7 +591,7 @@ export default defineComponent({
   right: 32px;
   height: 3px;
   border-radius: 0 0 4px 4px;
-  background: linear-gradient(90deg, #f7d117 0% 33.3%, #0057a3 33.3% 66.6%, #cf142b 66.6% 100%);
+  background: var(--tricolor-vzla, linear-gradient(90deg, #F9D616 0%, #0038A8 50%, #CE1126 100%));
 }
 @keyframes rvFadeIn {
   from { opacity: 0; transform: translateY(16px); }

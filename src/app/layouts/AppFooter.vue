@@ -18,7 +18,7 @@ export default defineComponent({
 
 <template>
   <footer class="bg-white border-t border-slate-200/80 relative">
-    <div class="h-[2px] w-full bg-gradient-to-r from-[#f7d117] via-[#0057a3] to-[#cf142b]" aria-hidden="true"></div>
+    <div class="h-[2px] w-full bg-gradient-to-r from-[#F9D616] via-[#0038A8] to-[#CE1126]" aria-hidden="true"></div>
     <div class="wrap pt-10 pb-8">
       <div class="split gap-8 min-[900px]:grid-cols-[auto_1fr_auto] items-center">
         <div>

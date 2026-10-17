@@ -481,40 +481,59 @@ export default defineComponent({
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding: var(--space-4);
-  background: var(--fondo-frio);
-  border-radius: var(--radius-sm);
+  padding: var(--space-5);
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 16px -2px rgba(18, 33, 66, 0.04);
   gap: var(--space-4);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s, border-color 0.2s;
+}
+.alert-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(18, 33, 66, 0.08);
+  border-color: #93c5fd;
 }
 
 .alert-option__body h4 {
   margin: 0;
-  font: 600 15px var(--font-display);
-  color: var(--marino-900);
+  font: 600 16px/24px var(--font-display);
+  color: #122142;
 }
 
 .alert-option__body p {
   margin: 4px 0 0;
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 20px;
   color: var(--texto-suave);
 }
 
 .threshold-input-wrap {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 8px;
+  gap: 8px;
+  margin-top: 10px;
   font-family: var(--font-mono);
   font-weight: 600;
+  color: #122142;
 }
 
 .threshold-input {
-  width: 90px;
-  padding: 4px 8px;
-  border: 1px solid var(--borde);
-  border-radius: 4px;
+  width: 100px;
+  padding: 6px 12px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #122142;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.threshold-input:focus {
+  outline: none;
+  border-color: #0038A8;
+  box-shadow: 0 0 0 3px rgba(0, 56, 168, 0.12);
 }
 
 .toggle-switch {

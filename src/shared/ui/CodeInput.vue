@@ -109,17 +109,59 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.code { display: flex; justify-content: center; gap: var(--space-2); }
-/* Siete casillas o más: el hueco se encoge para caber en 320px. */
-.code--long { gap: var(--space-1); }
-.code__digit {
-  width: 48px; height: 56px; padding: 0; flex: 0 1 48px; min-width: 0;
-  border: 1px solid var(--borde); border-radius: var(--radius-sm); background: var(--superficie);
-  font: 500 22px/1 var(--font-mono); color: var(--marino-900); text-align: center;
-  transition: border-color .2s var(--ease-out), box-shadow .2s var(--ease-out);
+.code {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
 }
-.code__digit:hover { border-color: var(--azul-300); }
-.code__digit:focus { outline: none; border-color: var(--accion); box-shadow: 0 0 0 4px var(--azul-100); }
-.code.is-error .code__digit { border-color: var(--alerta); }
-.code__digit:disabled { opacity: .5; cursor: not-allowed; }
+/* Siete casillas o más: el hueco se encoge para caber en 320px. */
+.code--long {
+  gap: var(--space-1);
+}
+.code__digit {
+  width: 50px;
+  height: 58px;
+  padding: 0;
+  flex: 0 1 50px;
+  min-width: 0;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 0.75rem;
+  background: #ffffff;
+  font: 600 24px/1 var(--font-mono);
+  color: #122142;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(18, 33, 66, 0.04);
+  transition: border-color 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), transform 0.2s var(--ease-out), background-color 0.2s;
+}
+.code__digit:hover:not(:disabled) {
+  border-color: #93c5fd;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 56, 168, 0.06);
+}
+.code__digit:focus {
+  outline: none;
+  border-color: #0038A8;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(0, 56, 168, 0.12), 0 4px 10px rgba(0, 56, 168, 0.08);
+  transform: translateY(-2px);
+}
+.code.is-error .code__digit {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+.code.is-error .code__digit:focus {
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+}
+.code__digit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f8fafc;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .code__digit {
+    transition: none !important;
+    transform: none !important;
+  }
+}
 </style>

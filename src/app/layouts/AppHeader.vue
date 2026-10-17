@@ -105,7 +105,7 @@ export default defineComponent({
 .nav__tricolor {
   height: 3px;
   width: 100%;
-  background: linear-gradient(90deg, #f7d117 0%, #f7d117 33.3%, #0057a3 33.3%, #0057a3 66.6%, #cf142b 66.6%, #cf142b 100%);
+  background: var(--tricolor-vzla, linear-gradient(90deg, #F9D616 0%, #0038A8 50%, #CE1126 100%));
   position: relative;
   overflow: hidden;
 }
