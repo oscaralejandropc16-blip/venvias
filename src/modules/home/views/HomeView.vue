@@ -121,39 +121,6 @@ export default defineComponent({
     <div class="wrap hero__grid">
       <!-- Columna Izquierda: Mensaje Institucional, Métricas y Pilares Oficiales -->
       <div class="hero__intro">
-        <div class="hero__header-row">
-          <div class="hero__badge">
-            <span class="hero__badge-pulse" aria-hidden="true"></span>
-            <AppIcon name="info" :size="14" class="hero__badge-icon" />
-            <span>SISTEMA NACIONAL DE TELEPEAJE · MPPT</span>
-          </div>
-
-          <!-- Selector interactivo de ambiente de autopista (Día / Tarde / Noche) -->
-          <div class="hero__time-pill" role="group" aria-label="Ambiente de autopista según horario">
-            <button
-              v-for="opt in options"
-              :key="opt.id"
-              type="button"
-              class="hero__time-btn"
-              :class="{ 'is-active': currentTime === opt.id }"
-              :title="`${opt.label} (${opt.timeRange})`"
-              @click="setTimeOfDay(opt.id)"
-            >
-              <span class="hero__time-emoji">{{ opt.emoji }}</span>
-              <span class="hero__time-text">{{ opt.label }}</span>
-            </button>
-            <button
-              v-if="timeMode === 'manual'"
-              type="button"
-              class="hero__time-btn hero__time-btn--auto"
-              title="Volver a detección automática por hora local"
-              @click="setAuto()"
-            >
-              Auto
-            </button>
-          </div>
-        </div>
-
         <h1 id="hero-title" class="hero__title">
           Paga tus peajes <br class="hidden sm:inline" />con tu placa.
           <span class="hero__title-accent">Rápido. Seguro. Sin registrarte.</span>
@@ -393,13 +360,179 @@ export default defineComponent({
 </template>
 
 <style scoped>
-/* Hero Split: 2 columnas en escritorio, balanceado y corporativo con ambient lighting */
+/* ==========================================================================
+   TEMA AMBIENTAL DINÁMICO DE AUTOPISTA (DÍA / ATARDECER / NOCHE)
+   ========================================================================== */
+
 .hero {
   position: relative;
   overflow: hidden;
-  background-color: #fcfdfe;
-  color: #122142;
-  padding-bottom: clamp(48px, 6vw, 84px);
+  padding-bottom: clamp(56px, 7vw, 96px);
+  transition: background-color 1.2s cubic-bezier(0.16, 1, 0.3, 1), color 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --- TEMA DÍA (06:00 - 17:59): Luminoso, Ávila nítido, azul institucional --- */
+.hero--day {
+  background-color: #f0f7ff;
+  color: #0f172a;
+}
+.hero--day .hero__photo-layer.is-active {
+  opacity: 0.52;
+  filter: contrast(1.08) saturate(1.15);
+}
+.hero--day .hero__scrim {
+  background: linear-gradient(
+    90deg,
+    rgba(240, 247, 255, 0.94) 0%,
+    rgba(240, 247, 255, 0.82) 36%,
+    rgba(240, 247, 255, 0.42) 66%,
+    rgba(240, 247, 255, 0.10) 100%
+  );
+}
+.hero--day .hero__title {
+  color: #0f172a;
+}
+.hero--day .hero__title-accent {
+  background: linear-gradient(135deg, #0057a3 0%, #0284c7 60%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero--day .hero__sub {
+  color: #334155;
+}
+.hero--day .hero__stat-card,
+.hero--day .hero__feature-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  box-shadow: 0 4px 16px rgba(18, 33, 66, 0.05);
+}
+.hero--day .hero__stat-val {
+  color: #0057a3;
+}
+.hero--day .hero__stat-lbl {
+  color: #64748b;
+}
+.hero--day .hero__feature-title {
+  color: #0f172a;
+}
+.hero--day .hero__feature-desc {
+  color: #475569;
+}
+
+/* --- TEMA ATARDECER (18:00 - 19:59): Crepúsculo dorado, reflejos ámbar y violeta --- */
+.hero--sunset {
+  background-color: #1a1026;
+  color: #f8fafc;
+}
+.hero--sunset .hero__photo-layer.is-active {
+  opacity: 0.72;
+  filter: contrast(1.15) saturate(1.3);
+}
+.hero--sunset .hero__scrim {
+  background: linear-gradient(
+    90deg,
+    rgba(26, 16, 38, 0.95) 0%,
+    rgba(26, 16, 38, 0.82) 38%,
+    rgba(26, 16, 38, 0.42) 68%,
+    rgba(26, 16, 38, 0.10) 100%
+  );
+}
+.hero--sunset .hero__title {
+  color: #ffffff;
+}
+.hero--sunset .hero__title-accent {
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 55%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 14px rgba(249, 115, 22, 0.45));
+}
+.hero--sunset .hero__sub {
+  color: #fde68a;
+  opacity: 0.95;
+}
+.hero--sunset .hero__stat-card,
+.hero--sunset .hero__feature-card {
+  background: rgba(36, 21, 52, 0.85);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(251, 191, 36, 0.28);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.4);
+}
+.hero--sunset .hero__stat-val {
+  color: #fbbf24;
+}
+.hero--sunset .hero__stat-lbl {
+  color: #e2e8f0;
+}
+.hero--sunset .hero__feature-title {
+  color: #ffffff;
+}
+.hero--sunset .hero__feature-desc {
+  color: #cbd5e1;
+}
+.hero--sunset .hero__bg-bottom-fade {
+  background: linear-gradient(to bottom, transparent, rgba(26, 16, 38, 0.88) 60%, #ffffff 100%);
+}
+
+/* --- TEMA NOCHE (20:00 - 05:59): Expreso nocturno cinematográfico, estelas de luz y neón --- */
+.hero--night {
+  background-color: #060a14;
+  color: #f8fafc;
+}
+.hero--night .hero__photo-layer.is-active {
+  opacity: 0.74;
+  filter: contrast(1.18) saturate(1.35);
+}
+.hero--night .hero__scrim {
+  background: linear-gradient(
+    90deg,
+    rgba(6, 10, 20, 0.95) 0%,
+    rgba(6, 10, 20, 0.82) 38%,
+    rgba(6, 10, 20, 0.38) 68%,
+    rgba(6, 10, 20, 0.08) 100%
+  );
+}
+.hero--night .hero__title {
+  color: #ffffff;
+}
+.hero--night .hero__title-accent {
+  background: linear-gradient(135deg, #38bdf8 0%, #60a5fa 50%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 14px rgba(56, 189, 248, 0.45));
+}
+.hero--night .hero__sub {
+  color: #cbd5e1;
+}
+.hero--night .hero__stat-card,
+.hero--night .hero__feature-card {
+  background: rgba(15, 23, 42, 0.84);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55);
+}
+.hero--night .hero__stat-card:hover,
+.hero--night .hero__feature-card:hover {
+  border-color: #38bdf8;
+  box-shadow: 0 12px 36px rgba(56, 189, 248, 0.25);
+}
+.hero--night .hero__stat-val {
+  color: #38bdf8;
+}
+.hero--night .hero__stat-lbl {
+  color: #94a3b8;
+}
+.hero--night .hero__feature-title {
+  color: #ffffff;
+}
+.hero--night .hero__feature-desc {
+  color: #94a3b8;
+}
+.hero--night .hero__aurora-orb--card-glow {
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.28) 0%, rgba(0, 87, 163, 0.20) 45%, transparent 75%);
+}
+.hero--night .hero__bg-bottom-fade {
+  background: linear-gradient(to bottom, transparent, rgba(6, 10, 20, 0.92) 60%, #ffffff 100%);
 }
 
 /* Contenedor maestro de fondo multicapa */
@@ -435,53 +568,13 @@ export default defineComponent({
   will-change: opacity, transform;
 }
 
-.hero__photo-layer.is-active {
-  opacity: 0.28;
-  transform: scale(1);
-}
-
-/* En atardecer y noche, realce de brillo de luces y neones */
-.hero__bg--sunset .hero__photo-layer.is-active {
-  opacity: 0.32;
-}
-
-.hero__bg--night .hero__photo-layer.is-active {
-  opacity: 0.36;
-}
-
-/* Velo atmosférico para garantizar 100% legibilidad ejecutiva */
+/* Velo atmosférico para garantizar legibilidad */
 .hero__scrim {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(
-    90deg,
-    rgba(252, 253, 254, 0.96) 0%,
-    rgba(252, 253, 254, 0.90) 40%,
-    rgba(252, 253, 254, 0.62) 70%,
-    rgba(252, 253, 254, 0.35) 100%
-  );
   pointer-events: none;
-}
-
-.hero__bg--night .hero__scrim {
-  background: linear-gradient(
-    90deg,
-    rgba(252, 253, 254, 0.96) 0%,
-    rgba(252, 253, 254, 0.88) 40%,
-    rgba(240, 246, 255, 0.58) 70%,
-    rgba(224, 237, 255, 0.30) 100%
-  );
-}
-
-.hero__bg--sunset .hero__scrim {
-  background: linear-gradient(
-    90deg,
-    rgba(252, 253, 254, 0.96) 0%,
-    rgba(252, 253, 254, 0.89) 40%,
-    rgba(255, 248, 241, 0.60) 70%,
-    rgba(255, 243, 230, 0.32) 100%
-  );
+  transition: background 1.2s ease;
 }
 
 /* Malla ambiental viva estilo Aurora UI / Gov-Tech de última generación */
@@ -643,99 +736,6 @@ export default defineComponent({
   }
 }
 
-.hero__header-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: clamp(14px, 2vh, 22px);
-  animation: heroFadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-@media (max-width: 959px) {
-  .hero__header-row {
-    justify-content: center;
-  }
-}
-
-.hero__badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
-  color: #0057a3;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  padding: 6px 14px;
-  border-radius: var(--radius-pill);
-  box-shadow: 0 2px 10px rgba(18, 33, 66, 0.05);
-  border: 1px solid rgba(191, 219, 254, 0.9);
-  margin-bottom: 0;
-  transition: all 0.25s var(--ease-out);
-}
-
-/* Selector dinámico de ambiente de autopista */
-.hero__time-pill {
-  display: inline-flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(10px);
-  padding: 3px 4px;
-  border-radius: var(--radius-pill);
-  border: 1px solid rgba(226, 232, 240, 0.95);
-  box-shadow: 0 2px 8px rgba(18, 33, 66, 0.04);
-}
-
-.hero__time-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 10px;
-  border-radius: var(--radius-pill);
-  font-size: 11.5px;
-  font-weight: 600;
-  color: #475569;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s var(--ease-out);
-}
-
-.hero__time-btn:hover {
-  color: #0057a3;
-  background: rgba(0, 87, 163, 0.06);
-}
-
-.hero__time-btn.is-active {
-  background: #0057a3;
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 87, 163, 0.25);
-}
-
-.hero__time-emoji {
-  font-size: 12px;
-  line-height: 1;
-}
-
-.hero__time-btn--auto {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 3px 7px;
-  border: 1px dashed #cbd5e1;
-  color: #64748b;
-  margin-left: 2px;
-}
-.hero__time-btn--auto:hover {
-  border-color: #0057a3;
-  color: #0057a3;
-}
-.hero__badge:hover {
-  transform: translateY(-1px);
-  border-color: #0057a3;
-  box-shadow: 0 4px 16px rgba(0, 87, 163, 0.12);
-}
 .hero__badge-pulse {
   width: 8px;
   height: 8px;
@@ -1264,7 +1264,6 @@ details[open] p {
   .hero__photo-layer,
   .hero__aurora-orb,
   .hero__flow-path,
-  .hero__badge,
   .hero__title,
   .hero__sub,
   .hero__stats,

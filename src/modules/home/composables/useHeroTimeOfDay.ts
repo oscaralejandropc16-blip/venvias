@@ -6,10 +6,36 @@ import nightImg from '@/assets/hero/highway-night.jpg'
 export type HeroTimeOfDay = 'day' | 'sunset' | 'night'
 export type HeroTimeMode = 'auto' | 'manual'
 
-export const TIME_OF_DAY_OPTIONS = [
-  { id: 'day' as HeroTimeOfDay, label: 'Día', emoji: '☀️', timeRange: '06:00 - 17:59' },
-  { id: 'sunset' as HeroTimeOfDay, label: 'Tarde', emoji: '🌅', timeRange: '18:00 - 19:59' },
-  { id: 'night' as HeroTimeOfDay, label: 'Noche', emoji: '🌙', timeRange: '20:00 - 05:59' },
+export interface TimeSceneOption {
+  id: HeroTimeOfDay
+  label: string
+  emoji: string
+  location: string
+  timeRange: string
+}
+
+export const TIME_OF_DAY_OPTIONS: readonly TimeSceneOption[] = [
+  {
+    id: 'day',
+    label: 'Día',
+    emoji: '☀️',
+    location: 'Autopista GMA · El Ávila',
+    timeRange: '06:00 - 17:59',
+  },
+  {
+    id: 'sunset',
+    label: 'Tarde',
+    emoji: '🌅',
+    location: 'Peaje La Guaira · Corredor Central',
+    timeRange: '18:00 - 19:59',
+  },
+  {
+    id: 'night',
+    label: 'Noche',
+    emoji: '🌙',
+    location: 'Autopista GMA · Telepeaje Caracas',
+    timeRange: '20:00 - 05:59',
+  },
 ] as const
 
 function detectLocalTimeOfDay(): HeroTimeOfDay {
@@ -28,6 +54,10 @@ export function useHeroTimeOfDay() {
     return timeMode.value === 'auto' ? detectLocalTimeOfDay() : selectedTime.value
   })
 
+  const currentScene = computed<TimeSceneOption>(() => {
+    return TIME_OF_DAY_OPTIONS.find((opt) => opt.id === currentTime.value) ?? TIME_OF_DAY_OPTIONS[0]
+  })
+
   function setTimeOfDay(time: HeroTimeOfDay): void {
     timeMode.value = 'manual'
     selectedTime.value = time
@@ -40,6 +70,7 @@ export function useHeroTimeOfDay() {
 
   return {
     currentTime,
+    currentScene,
     timeMode,
     setTimeOfDay,
     setAuto,
