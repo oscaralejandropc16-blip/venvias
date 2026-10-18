@@ -95,12 +95,12 @@ export default defineComponent({
 
 <style scoped>
 .nav {
-  position: sticky; top: 0; z-index: 50;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-  box-shadow: 0 4px 20px -2px rgba(18, 33, 66, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: #ffffff !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 4px 20px -2px rgba(18, 33, 66, 0.08);
 }
 .nav__tricolor {
   height: 3px;

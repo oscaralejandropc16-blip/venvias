@@ -224,7 +224,7 @@ export default defineComponent({
 
 <style scoped>
 .how { padding-block: 0 var(--space-14); }
-.how--plain { padding-block: clamp(32px, 5vw, 64px) clamp(48px, 6vw, 80px); overflow-x: clip; }
+.how--plain { padding-block: clamp(48px, 6vw, 84px) clamp(64px, 7.5vw, 100px); overflow-x: clip; }
 .how__panel {
   background: var(--marino-900); color: #fff; border-radius: var(--radius-xl);
   padding: clamp(28px, 5vw, 64px) clamp(16px, 5vw, 64px) clamp(20px, 3vw, 40px); overflow: hidden;
@@ -323,7 +323,13 @@ export default defineComponent({
 .how__more { color: #fff; font-weight: 500; text-underline-offset: 4px; }
 
 /* La carretera como barra de avance */
-.how__route { position: relative; margin: var(--space-8) calc(-1 * clamp(16px, 5vw, 64px)) 0; height: 104px; }
+.how__route {
+  position: relative;
+  margin-top: clamp(40px, 5vw, 64px);
+  margin-bottom: clamp(48px, 6vw, 76px);
+  margin-inline: calc(-1 * clamp(16px, 5vw, 64px));
+  height: 104px;
+}
 .how__road { position: absolute; inset: 0 0 32px; }
 .how__pins li { position: relative; display: grid; justify-items: center; }
 /* Nombre de cada parada bajo la carretera: los cuatro pasos se leen de un vistazo */
@@ -372,7 +378,11 @@ export default defineComponent({
 .how--plain .how__text .how__stat { border-top-color: var(--borde); }
 .how--plain .how__text .how__note { border-left-color: var(--borde); }
 .how--plain .how__note svg { color: var(--azul-700); }
-.how--plain .how__route { margin-inline: calc(50% - 50vw); }
+.how--plain .how__route {
+  margin-inline: calc(50% - 50vw);
+  margin-top: clamp(48px, 6vw, 76px);
+  margin-bottom: clamp(56px, 7vw, 92px);
+}
 .how--plain .how__pins { width: min(100% - 2 * var(--page-pad), var(--page-max)); margin-inline: auto; padding-inline: 0; }
 .how--plain .how__stop { color: var(--texto-suave); }
 .how--plain .how__stop.is-active { color: var(--marino-900); }
