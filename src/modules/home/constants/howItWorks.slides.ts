@@ -54,7 +54,7 @@ export const HOW_IT_WORKS_SLIDES: HowItWorksSlide[] = [
         'Si pasas por un carril Expreso sin un método de pago válido (TAG o Placa con saldo), el tránsito queda como deuda. ',
     points: [
       'La deuda es la tarifa del peaje más cargos administrativos.',
-      'Queda asociada a la placa hasta que sea cancela.',
+      'Queda asociada a la placa hasta que sea cancelada.',
     ],
     note: {
       strong: 'La obligación de pago del peaje nace con la utilización efectiva de la infraestructura vial ' +
