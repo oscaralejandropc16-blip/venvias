@@ -40,7 +40,17 @@ function queryText(query: LocationQuery, key: string): string {
 }
 
 function parseStep(raw: string): RechargeStep | null {
-  return STEP_ORDER.includes(raw as RechargeStep) ? (raw as RechargeStep) : null
+  const map: Record<string, RechargeStep> = {
+    placa: 'plate',
+    plate: 'plate',
+    monto: 'amount',
+    amount: 'amount',
+    pago: 'payment',
+    payment: 'payment',
+    listo: 'ready',
+    ready: 'ready',
+  }
+  return map[raw] ?? (STEP_ORDER.includes(raw as RechargeStep) ? (raw as RechargeStep) : null)
 }
 
 type Focusable = { focus: () => void } | undefined
@@ -219,8 +229,8 @@ export default defineComponent({
       if (!this.optionsError) this.syncFromRoute()
     },
     prefill(query: LocationQuery): void {
-      const plate = queryText(query, 'plate')
-      const amountId = queryText(query, 'amount')
+      const plate = queryText(query, 'placa') || queryText(query, 'plate')
+      const amountId = queryText(query, 'monto') || queryText(query, 'amount')
       if (plate) this.setPlate(plate)
       if (amountId) this.selectAmount(amountId)
     },
@@ -242,7 +252,7 @@ export default defineComponent({
 
     syncFromRoute(): void {
       const query = this.$route.query
-      const requested = parseStep(queryText(query, 'step'))
+      const requested = parseStep(queryText(query, 'step') || queryText(query, 'paso'))
 
       if (!requested) {
         this.restart()
