@@ -47,9 +47,43 @@ export default defineComponent({
 <template>
   <!-- Hero Split 2 Columnas: Máximo impacto ejecutivo, balance visual y flujo natural -->
   <section class="hero" aria-labelledby="hero-title">
-    <!-- Orbes de iluminación ambiental tecnológica -->
-    <div class="hero__glow-orb hero__glow-orb--1" aria-hidden="true"></div>
-    <div class="hero__glow-orb hero__glow-orb--2" aria-hidden="true"></div>
+    <!-- Fondo Moderno de Alta Gama: Aurora Mesh, Grid Arquitectónico y Flujo Vial Digital -->
+    <div class="hero__bg" aria-hidden="true">
+      <!-- Malla degradada viva / Aurora Mesh -->
+      <div class="hero__aurora">
+        <div class="hero__aurora-orb hero__aurora-orb--primary"></div>
+        <div class="hero__aurora-orb hero__aurora-orb--cyan"></div>
+        <div class="hero__aurora-orb hero__aurora-orb--amber"></div>
+        <div class="hero__aurora-orb hero__aurora-orb--card-glow"></div>
+      </div>
+
+      <!-- Cuadrícula arquitectónica de precisión (Linear/Vercel style con fade radial suave) -->
+      <div class="hero__grid-pattern"></div>
+
+      <!-- Ondas lumínicas de autopista y telepeaje digital (Flow lines vectoriales) -->
+      <svg class="hero__highway-waves" viewBox="0 0 1440 720" fill="none" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="hw-gradient-1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#0057a3" stop-opacity="0" />
+            <stop offset="25%" stop-color="#0057a3" stop-opacity="0.12" />
+            <stop offset="60%" stop-color="#0284c7" stop-opacity="0.18" />
+            <stop offset="100%" stop-color="#38bdf8" stop-opacity="0" />
+          </linearGradient>
+          <linearGradient id="hw-gradient-2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0" />
+            <stop offset="40%" stop-color="#0284c7" stop-opacity="0.14" />
+            <stop offset="80%" stop-color="#f59e0b" stop-opacity="0.10" />
+            <stop offset="100%" stop-color="#f59e0b" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <path d="M-80 620 C 320 540, 720 660, 1520 440" stroke="url(#hw-gradient-1)" stroke-width="2" stroke-dasharray="8 14" class="hero__flow-path hero__flow-path--1" />
+        <path d="M-80 650 C 360 570, 760 690, 1520 480" stroke="url(#hw-gradient-1)" stroke-width="1.2" stroke-opacity="0.6" />
+        <path d="M-80 580 C 420 490, 820 620, 1520 390" stroke="url(#hw-gradient-2)" stroke-width="1.8" stroke-dasharray="10 16" class="hero__flow-path hero__flow-path--2" />
+      </svg>
+
+      <!-- Transición sutil al pie del Hero -->
+      <div class="hero__bg-bottom-fade"></div>
+    </div>
 
     <div class="wrap hero__grid">
       <!-- Columna Izquierda: Mensaje Institucional, Métricas y Pilares Oficiales -->
@@ -303,45 +337,151 @@ export default defineComponent({
 .hero {
   position: relative;
   overflow: hidden;
-  background-color: #f8fafc;
-  background-image: 
-    radial-gradient(rgba(0, 87, 163, 0.07) 1.5px, transparent 1.5px),
-    radial-gradient(at 0% 0%, rgba(219, 234, 254, 0.55) 0px, transparent 55%),
-    radial-gradient(at 100% 100%, rgba(224, 242, 254, 0.5) 0px, transparent 55%);
-  background-size: 24px 24px, 100% 100%, 100% 100%;
+  background-color: #fcfdfe;
   color: #122142;
   padding-bottom: clamp(48px, 6vw, 84px);
 }
 
-/* Orbes flotantes de iluminación ambiental */
-.hero__glow-orb {
+/* Contenedor maestro de fondo multicapa */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* Malla ambiental viva estilo Aurora UI / Gov-Tech de última generación */
+.hero__aurora {
+  position: absolute;
+  inset: 0;
+  opacity: 0.9;
+  will-change: transform;
+}
+
+.hero__aurora-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(60px);
   pointer-events: none;
-  opacity: 0.75;
-  animation: floatOrb 10s ease-in-out infinite alternate;
 }
-.hero__glow-orb--1 {
-  top: -80px;
-  left: -80px;
+
+/* Orbe azul imperial VenVías superior izquierdo */
+.hero__aurora-orb--primary {
+  top: -140px;
+  left: -100px;
+  width: 680px;
+  height: 680px;
+  background: radial-gradient(circle, rgba(0, 87, 163, 0.14) 0%, rgba(2, 132, 199, 0.08) 35%, transparent 68%);
+  filter: blur(40px);
+  animation: auroraFloatPrimary 18s ease-in-out infinite alternate;
+}
+
+/* Orbe celeste y cian dinámico */
+.hero__aurora-orb--cyan {
+  top: -40px;
+  right: 20%;
+  width: 580px;
+  height: 580px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.16) 0%, rgba(14, 165, 233, 0.08) 35%, transparent 68%);
+  filter: blur(45px);
+  animation: auroraFloatCyan 22s ease-in-out infinite alternate-reverse;
+}
+
+/* Orbe cálido ámbar/dorado nacional */
+.hero__aurora-orb--amber {
+  top: 140px;
+  left: 22%;
   width: 480px;
   height: 480px;
-  background: radial-gradient(circle, rgba(0, 87, 163, 0.15) 0%, rgba(56, 189, 248, 0.08) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.07) 0%, rgba(251, 191, 36, 0.03) 35%, transparent 68%);
+  filter: blur(40px);
+  animation: auroraFloatAmber 20s ease-in-out infinite alternate;
 }
-.hero__glow-orb--2 {
-  bottom: -60px;
-  right: -60px;
-  width: 520px;
-  height: 520px;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.18) 0%, rgba(0, 87, 163, 0.08) 50%, transparent 70%);
-  animation-duration: 14s;
-  animation-direction: alternate-reverse;
+
+/* Halo lumínico centrado detrás del Kiosco Digital */
+.hero__aurora-orb--card-glow {
+  top: 30px;
+  right: -80px;
+  width: 640px;
+  height: 640px;
+  background: radial-gradient(circle, rgba(0, 87, 163, 0.12) 0%, rgba(56, 189, 248, 0.09) 35%, rgba(245, 158, 11, 0.03) 50%, transparent 68%);
+  filter: blur(45px);
+  animation: auroraFloatCard 16s ease-in-out infinite alternate;
 }
-@keyframes floatOrb {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(24px, 18px) scale(1.08); }
-  100% { transform: translate(-18px, 26px) scale(0.95); }
+
+@keyframes auroraFloatPrimary {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(40px, 30px, 0) scale(1.08); }
+  100% { transform: translate3d(-25px, 45px, 0) scale(0.96); }
+}
+
+@keyframes auroraFloatCyan {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-35px, -25px, 0) scale(1.1); }
+  100% { transform: translate3d(30px, 20px, 0) scale(0.94); }
+}
+
+@keyframes auroraFloatAmber {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-30px, 35px, 0) scale(1.12); }
+  100% { transform: translate3d(25px, -20px, 0) scale(0.92); }
+}
+
+@keyframes auroraFloatCard {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(20px, -25px, 0) scale(1.06); }
+  100% { transform: translate3d(-20px, 20px, 0) scale(0.98); }
+}
+
+/* Cuadrícula arquitectónica de precisión (Linear/Vercel design system) */
+.hero__grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(0, 87, 163, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 87, 163, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 35%, #000 25%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 35%, #000 25%, transparent 85%);
+  opacity: 0.85;
+}
+
+/* Ondas vectoriales de flujo de autopista y telepeaje */
+.hero__highway-waves {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.55;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 75%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 75%, transparent 100%);
+}
+
+.hero__flow-path {
+  animation: flowPulse 20s linear infinite;
+}
+.hero__flow-path--1 {
+  animation-duration: 24s;
+}
+.hero__flow-path--2 {
+  animation-duration: 18s;
+  animation-direction: reverse;
+}
+@keyframes flowPulse {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -200; }
+}
+
+/* Desvanecimiento inferior ultra-suave */
+.hero__bg-bottom-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9) 65%, #ffffff 100%);
+  pointer-events: none;
 }
 
 .hero__grid {
@@ -918,7 +1058,8 @@ details[open] p {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero__glow-orb,
+  .hero__aurora-orb,
+  .hero__flow-path,
   .hero__badge,
   .hero__title,
   .hero__sub,
