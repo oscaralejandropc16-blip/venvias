@@ -28,7 +28,7 @@ export default defineComponent({
         </div>
         <h3 class="infographic-card__title">Diagrama Oficial del Cobro por Placa</h3>
         <p class="infographic-card__sub">
-          Arquitectura del cobro Free Flow sin barreras: detección óptica, validación bancaria y liquidación de paso.
+          Arquitectura del cobro automatizado por placa: detección óptica, validación bancaria y paso continuo sin detención.
         </p>
       </div>
 

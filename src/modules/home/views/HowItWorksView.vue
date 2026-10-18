@@ -48,11 +48,11 @@ export default defineComponent({
     <header class="how-hero">
       <div class="how-hero__kicker">
         <span class="how-hero__kicker-line" aria-hidden="true"></span>
-        <span>Tecnología Free Flow · Guía Oficial</span>
+        <span>Telepeaje por Placa · Guía Oficial</span>
       </div>
       <h1 class="how-hero__title">Tu placa es tu pase libre</h1>
       <p class="how-hero__sub">
-        Conoce la tecnología de cobro dinámico Free Flow que moderniza las autopistas de Venezuela, eliminando colas y barreras físicas.
+        Conoce el sistema de paso continuo por lectura de placa que moderniza los peajes de Venezuela, sin colas ni demoras en cabina.
       </p>
     </header>
 
