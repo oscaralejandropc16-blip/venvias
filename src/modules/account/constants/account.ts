@@ -27,7 +27,7 @@ export const ACCOUNT_TRANSIT_STATUS_TONES: Record<string, 'success' | 'warning' 
 export const ACCOUNT_TEXT = {
   title: 'Portal de Gestión de Cuenta',
   subtitle: 'Administra tus vehículos, TAGs asociados, historial de pasos y comprobantes de pago.',
-  badge: 'VenVías · Gran Misión Transporte Venezuela',
+  badge: 'Gestión Vehicular y Flotas',
   tabs: {
     vehicles: 'Mis Vehículos y TAGs',
     transits: 'Historial de Tránsitos',

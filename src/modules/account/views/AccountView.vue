@@ -66,10 +66,10 @@ export default defineComponent({
 <template>
   <main class="account-view section wrap" aria-labelledby="account-title">
     <header class="account-view__hero">
-      <span class="account-view__badge">
-        <AppIcon name="info" :size="14" />
-        {{ text.badge }}
-      </span>
+      <div class="account-view__kicker">
+        <span class="account-view__kicker-line" aria-hidden="true"></span>
+        <span>{{ text.badge }}</span>
+      </div>
       <h1 id="account-title" class="account-view__title">{{ text.title }}</h1>
       <p class="account-view__subtitle">{{ text.subtitle }}</p>
     </header>
@@ -255,17 +255,22 @@ export default defineComponent({
   justify-items: center;
 }
 
-.account-view__badge {
+.account-view__kicker {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: var(--azul-100);
-  color: var(--azul-700);
-  font-size: 13px;
-  font-weight: 600;
-  padding: 4px 14px;
-  border-radius: var(--radius-pill);
-  border: 1px solid rgba(191, 219, 254, 0.8);
+  gap: 10px;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #0284c7;
+  margin-bottom: 8px;
+}
+.account-view__kicker-line {
+  width: 20px;
+  height: 2px;
+  background: linear-gradient(90deg, #0057a3, #38bdf8);
+  border-radius: 2px;
 }
 
 .account-view__hero {

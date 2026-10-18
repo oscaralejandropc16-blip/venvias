@@ -26,10 +26,10 @@ export default defineComponent({
     </div>
 
     <header class="conditions-hero">
-      <span class="conditions-badge">
-        <AppIcon name="recibo" :size="14" />
-        {{ conditions.updatedAt }}
-      </span>
+      <div class="conditions-kicker">
+        <span class="conditions-kicker-line" aria-hidden="true"></span>
+        <span>{{ conditions.updatedAt }}</span>
+      </div>
       <h1 id="conditions-title" class="conditions-title">{{ conditions.title }}</h1>
       <p class="conditions-subtitle">{{ conditions.subtitle }}</p>
     </header>
@@ -88,17 +88,21 @@ export default defineComponent({
   animation: condFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.conditions-badge {
+.conditions-kicker {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  background: var(--azul-100);
-  color: var(--azul-700);
-  padding: 4px 14px;
-  border-radius: var(--radius-pill);
-  border: 1px solid rgba(191, 219, 254, 0.8);
+  gap: 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #0284c7;
+  text-transform: uppercase;
+}
+.conditions-kicker-line {
+  width: 18px;
+  height: 2px;
+  background: linear-gradient(90deg, #0057a3, #38bdf8);
+  border-radius: 2px;
 }
 
 .conditions-title {

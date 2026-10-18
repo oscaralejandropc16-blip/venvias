@@ -28,7 +28,7 @@ export const TRANSIT_STATUS_TONES: Record<DebtTransitStatus, 'warning' | 'alert'
 export const DEBT_TEXT = {
   title: 'Consulta y pago de tránsitos',
   subtitle: 'Revisa los tránsitos por peajes registrados con tu placa y salda tu cuenta sin demoras.',
-  badge: 'Sistema Nacional de Peajes · VenVías',
+  badge: 'Consulta y Regularización Oficial',
   searchPrompt: 'Ingresa una placa para verificar si registra tránsitos pendientes',
   searching: 'Consultando registro de peajes...',
   noDebtTitle: '¡Esta placa está al día!',

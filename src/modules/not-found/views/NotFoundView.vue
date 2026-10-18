@@ -162,15 +162,13 @@ export default defineComponent({
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 14px;
-  background: rgba(249, 115, 22, 0.08);
-  border: 1px solid rgba(249, 115, 22, 0.25);
-  border-radius: var(--radius-pill);
-  font: 600 12px/1 var(--font-mono);
-  letter-spacing: 0.08em;
-  color: #C2410C;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ea580c;
   margin-top: var(--space-1);
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-4);
 }
 
 .nf-badge__dot {

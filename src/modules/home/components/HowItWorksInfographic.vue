@@ -22,10 +22,10 @@ export default defineComponent({
 
     <div class="infographic-card__header">
       <div class="infographic-card__meta">
-        <span class="infographic-card__badge">
-          <AppIcon name="recibo" :size="14" />
-          RESOLUCIÓN MPPT · FLUJO VIAL
-        </span>
+        <div class="infographic-card__kicker">
+          <span class="infographic-card__kicker-line" aria-hidden="true"></span>
+          <span>Arquitectura y Flujo Operativo</span>
+        </div>
         <h3 class="infographic-card__title">Diagrama Oficial del Cobro por Placa</h3>
         <p class="infographic-card__sub">
           Arquitectura del cobro Free Flow sin barreras: detección óptica, validación bancaria y liquidación de paso.
@@ -112,18 +112,22 @@ export default defineComponent({
   max-width: 580px;
 }
 
-.infographic-card__badge {
+.infographic-card__kicker {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
-  background: var(--azul-100);
-  border: 1px solid rgba(0, 56, 168, 0.2);
-  border-radius: var(--radius-pill);
-  font: 600 11px/1 var(--font-mono);
-  letter-spacing: 0.06em;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
   color: #0038A8;
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+.infographic-card__kicker-line {
+  width: 18px;
+  height: 2px;
+  background: linear-gradient(90deg, #0038A8, #0284c7);
+  border-radius: 2px;
 }
 
 .infographic-card__title {

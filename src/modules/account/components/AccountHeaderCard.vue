@@ -115,16 +115,15 @@ export default defineComponent({
 }
 
 .acc-header__badge {
-  display: inline-block;
-  font-size: 12px;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
   text-transform: uppercase;
-  color: var(--azul-700);
-  background: var(--azul-100);
-  padding: 3px 10px;
-  border-radius: var(--radius-pill);
-  letter-spacing: 0.04em;
-  margin-bottom: 6px;
+  letter-spacing: 0.1em;
+  color: #0284c7;
+  margin-bottom: 4px;
 }
 
 .acc-header__name {

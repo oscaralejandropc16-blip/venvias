@@ -88,10 +88,10 @@ export default defineComponent({
 <template>
   <main class="debt-view section wrap" aria-labelledby="debt-heading">
     <header class="debt-view__hero">
-      <span class="debt-view__badge">
-        <AppIcon name="info" :size="14" />
-        {{ text.badge }}
-      </span>
+      <div class="debt-view__kicker">
+        <span class="debt-view__kicker-line" aria-hidden="true"></span>
+        <span>{{ text.badge }}</span>
+      </div>
       <h1 id="debt-heading" class="debt-view__title">{{ text.title }}</h1>
       <p class="debt-view__lead">{{ text.subtitle }}</p>
     </header>
@@ -204,17 +204,22 @@ export default defineComponent({
   animation: debtFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.debt-view__badge {
+.debt-view__kicker {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: var(--azul-100);
-  color: var(--azul-700);
-  font-size: 13px;
-  font-weight: 600;
-  padding: 4px 14px;
-  border-radius: var(--radius-pill);
-  border: 1px solid rgba(191, 219, 254, 0.8);
+  gap: 10px;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #0284c7;
+  margin-bottom: 12px;
+}
+.debt-view__kicker-line {
+  width: 20px;
+  height: 2px;
+  background: linear-gradient(90deg, #0057a3, #38bdf8);
+  border-radius: 2px;
 }
 
 .debt-view__title {

@@ -231,10 +231,10 @@ export default defineComponent({
       <!-- Tarjeta TAG -->
       <div class="tag-bento-card bg-white rounded-2xl p-8 md:p-10 shadow-lg shadow-slate-200/50 border border-slate-100 flex flex-col justify-between">
         <div>
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 mb-4 border border-emerald-200">
-            <AppIcon name="check" :size="14" />
+          <div class="flex items-center gap-2 mb-3 text-xs font-bold uppercase tracking-wider text-emerald-700">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-400"></span>
             Dispositivo Adherido
-          </span>
+          </div>
           <h2 id="tag-title" class="text-2xl font-bold text-slate-900 mb-3">¿Tienes TAG? Sigue con él.</h2>
           <p class="text-slate-600 leading-relaxed text-[15px]">
             El TAG es el método preferido para usuarios frecuentes y flotas comerciales. Adherido al parabrisas, el débito se procesa de inmediato en cada paso.
@@ -338,10 +338,10 @@ export default defineComponent({
   <section class="section wrap pt-0 gap-6" aria-labelledby="faq-title">
     <div class="split items-start min-[900px]:grid-cols-[1fr_2fr] bg-white rounded-2xl p-8 md:p-12 shadow-lg shadow-slate-200/50 border border-slate-100">
       <div>
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 mb-3">
-          <AppIcon name="info" :size="14" />
+        <div class="flex items-center gap-2 mb-3 text-xs font-bold uppercase tracking-wider text-blue-700">
+          <span class="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-sm shadow-blue-400"></span>
           Centro de Ayuda
-        </span>
+        </div>
         <h2 id="faq-title" class="text-slate-900 font-bold text-3xl">Preguntas frecuentes</h2>
         <p class="text-slate-600 mt-2 text-sm leading-relaxed">
           Respuestas a las dudas más comunes sobre el uso y pago de peajes en Venezuela.

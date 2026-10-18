@@ -46,9 +46,9 @@ export default defineComponent({
   <div class="how-view wrap">
     <!-- Hero Header -->
     <header class="how-hero">
-      <div class="how-hero__badge">
-        <span class="how-hero__dot" aria-hidden="true"></span>
-        <span>SISTEMA NACIONAL DE PEAJES · GUÍA OFICIAL</span>
+      <div class="how-hero__kicker">
+        <span class="how-hero__kicker-line" aria-hidden="true"></span>
+        <span>Tecnología Free Flow · Guía Oficial</span>
       </div>
       <h1 class="how-hero__title">Tu placa es tu pase libre</h1>
       <p class="how-hero__sub">
@@ -134,26 +134,23 @@ export default defineComponent({
   margin: 0 auto;
 }
 
-.how-hero__badge {
+.how-hero__kicker {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  background: var(--azul-100);
-  border: 1px solid rgba(0, 56, 168, 0.2);
-  border-radius: var(--radius-pill);
-  font: 600 12px/1 var(--font-mono);
-  letter-spacing: 0.06em;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
   color: #0038A8;
   margin-bottom: var(--space-4);
 }
 
-.how-hero__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #0038A8;
-  box-shadow: 0 0 0 3px rgba(0, 56, 168, 0.2);
+.how-hero__kicker-line {
+  width: 24px;
+  height: 2px;
+  background: linear-gradient(90deg, #0038A8, #0284c7);
+  border-radius: 2px;
 }
 
 .how-hero__title {
