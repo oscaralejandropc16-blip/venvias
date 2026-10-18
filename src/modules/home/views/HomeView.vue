@@ -13,11 +13,16 @@ import { FAQS, SAFETY_ITEMS } from '../constants/home.content'
 import tagImg from '@/assets/tag-venvias.webp'
 import plateImg from '@/assets/plate-venezuela.svg'
 
+import { useHeroTimeOfDay } from '../composables/useHeroTimeOfDay'
+
 export default defineComponent({
   name: 'HomeView',
   components: { AppIcon, PlateForm, TollsSummaryCard, HowItWorks },
   setup() {
-    return { ...useRechargeAmounts() }
+    return {
+      ...useRechargeAmounts(),
+      ...useHeroTimeOfDay(),
+    }
   },
   data() {
     return {
@@ -46,9 +51,37 @@ export default defineComponent({
 
 <template>
   <!-- Hero Split 2 Columnas: Máximo impacto ejecutivo, balance visual y flujo natural -->
-  <section class="hero" aria-labelledby="hero-title">
-    <!-- Fondo Moderno de Alta Gama: Aurora Mesh, Grid Arquitectónico y Flujo Vial Digital -->
-    <div class="hero__bg" aria-hidden="true">
+  <section class="hero" :class="`hero--${currentTime}`" aria-labelledby="hero-title">
+    <!-- Fondo Moderno de Alta Gama: Autopistas Reales Dinámicas (Día, Tarde, Noche) + Aurora Mesh -->
+    <div class="hero__bg" :class="`hero__bg--${currentTime}`" aria-hidden="true">
+      <!-- Capas de fotos de autopistas venezolanas con cross-fade cinematográfico -->
+      <div class="hero__photo-stage">
+        <img
+          :src="dayImg"
+          alt=""
+          class="hero__photo-layer"
+          :class="{ 'is-active': currentTime === 'day' }"
+          loading="eager"
+        />
+        <img
+          :src="sunsetImg"
+          alt=""
+          class="hero__photo-layer"
+          :class="{ 'is-active': currentTime === 'sunset' }"
+          loading="eager"
+        />
+        <img
+          :src="nightImg"
+          alt=""
+          class="hero__photo-layer"
+          :class="{ 'is-active': currentTime === 'night' }"
+          loading="eager"
+        />
+      </div>
+
+      <!-- Velo de legibilidad y contraste degradado (Atmospheric Scrim) -->
+      <div class="hero__scrim"></div>
+
       <!-- Malla degradada viva / Aurora Mesh -->
       <div class="hero__aurora">
         <div class="hero__aurora-orb hero__aurora-orb--primary"></div>
@@ -88,10 +121,37 @@ export default defineComponent({
     <div class="wrap hero__grid">
       <!-- Columna Izquierda: Mensaje Institucional, Métricas y Pilares Oficiales -->
       <div class="hero__intro">
-        <div class="hero__badge">
-          <span class="hero__badge-pulse" aria-hidden="true"></span>
-          <AppIcon name="info" :size="14" class="hero__badge-icon" />
-          <span>SISTEMA NACIONAL DE TELEPEAJE · MPPT</span>
+        <div class="hero__header-row">
+          <div class="hero__badge">
+            <span class="hero__badge-pulse" aria-hidden="true"></span>
+            <AppIcon name="info" :size="14" class="hero__badge-icon" />
+            <span>SISTEMA NACIONAL DE TELEPEAJE · MPPT</span>
+          </div>
+
+          <!-- Selector interactivo de ambiente de autopista (Día / Tarde / Noche) -->
+          <div class="hero__time-pill" role="group" aria-label="Ambiente de autopista según horario">
+            <button
+              v-for="opt in options"
+              :key="opt.id"
+              type="button"
+              class="hero__time-btn"
+              :class="{ 'is-active': currentTime === opt.id }"
+              :title="`${opt.label} (${opt.timeRange})`"
+              @click="setTimeOfDay(opt.id)"
+            >
+              <span class="hero__time-emoji">{{ opt.emoji }}</span>
+              <span class="hero__time-text">{{ opt.label }}</span>
+            </button>
+            <button
+              v-if="timeMode === 'manual'"
+              type="button"
+              class="hero__time-btn hero__time-btn--auto"
+              title="Volver a detección automática por hora local"
+              @click="setAuto()"
+            >
+              Auto
+            </button>
+          </div>
         </div>
 
         <h1 id="hero-title" class="hero__title">
@@ -351,6 +411,79 @@ export default defineComponent({
   z-index: 0;
 }
 
+/* Escenario de fondo fotográfico dinámico de autopistas */
+.hero__photo-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.hero__photo-layer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 36%;
+  opacity: 0;
+  transform: scale(1.03);
+  transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.hero__photo-layer.is-active {
+  opacity: 0.28;
+  transform: scale(1);
+}
+
+/* En atardecer y noche, realce de brillo de luces y neones */
+.hero__bg--sunset .hero__photo-layer.is-active {
+  opacity: 0.32;
+}
+
+.hero__bg--night .hero__photo-layer.is-active {
+  opacity: 0.36;
+}
+
+/* Velo atmosférico para garantizar 100% legibilidad ejecutiva */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    90deg,
+    rgba(252, 253, 254, 0.96) 0%,
+    rgba(252, 253, 254, 0.90) 40%,
+    rgba(252, 253, 254, 0.62) 70%,
+    rgba(252, 253, 254, 0.35) 100%
+  );
+  pointer-events: none;
+}
+
+.hero__bg--night .hero__scrim {
+  background: linear-gradient(
+    90deg,
+    rgba(252, 253, 254, 0.96) 0%,
+    rgba(252, 253, 254, 0.88) 40%,
+    rgba(240, 246, 255, 0.58) 70%,
+    rgba(224, 237, 255, 0.30) 100%
+  );
+}
+
+.hero__bg--sunset .hero__scrim {
+  background: linear-gradient(
+    90deg,
+    rgba(252, 253, 254, 0.96) 0%,
+    rgba(252, 253, 254, 0.89) 40%,
+    rgba(255, 248, 241, 0.60) 70%,
+    rgba(255, 243, 230, 0.32) 100%
+  );
+}
+
 /* Malla ambiental viva estilo Aurora UI / Gov-Tech de última generación */
 .hero__aurora {
   position: absolute;
@@ -510,6 +643,20 @@ export default defineComponent({
   }
 }
 
+.hero__header-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: clamp(14px, 2vh, 22px);
+  animation: heroFadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@media (max-width: 959px) {
+  .hero__header-row {
+    justify-content: center;
+  }
+}
+
 .hero__badge {
   display: inline-flex;
   align-items: center;
@@ -517,16 +664,72 @@ export default defineComponent({
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(8px);
   color: #0057a3;
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.04em;
-  padding: 6px 16px;
+  padding: 6px 14px;
   border-radius: var(--radius-pill);
-  box-shadow: 0 2px 12px rgba(18, 33, 66, 0.06);
+  box-shadow: 0 2px 10px rgba(18, 33, 66, 0.05);
   border: 1px solid rgba(191, 219, 254, 0.9);
-  margin-bottom: clamp(14px, 2vh, 22px);
+  margin-bottom: 0;
   transition: all 0.25s var(--ease-out);
-  animation: heroFadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Selector dinámico de ambiente de autopista */
+.hero__time-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  padding: 3px 4px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  box-shadow: 0 2px 8px rgba(18, 33, 66, 0.04);
+}
+
+.hero__time-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #475569;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-out);
+}
+
+.hero__time-btn:hover {
+  color: #0057a3;
+  background: rgba(0, 87, 163, 0.06);
+}
+
+.hero__time-btn.is-active {
+  background: #0057a3;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 87, 163, 0.25);
+}
+
+.hero__time-emoji {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.hero__time-btn--auto {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 7px;
+  border: 1px dashed #cbd5e1;
+  color: #64748b;
+  margin-left: 2px;
+}
+.hero__time-btn--auto:hover {
+  border-color: #0057a3;
+  color: #0057a3;
 }
 .hero__badge:hover {
   transform: translateY(-1px);
@@ -1058,6 +1261,7 @@ details[open] p {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero__photo-layer,
   .hero__aurora-orb,
   .hero__flow-path,
   .hero__badge,
