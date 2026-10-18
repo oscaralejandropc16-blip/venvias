@@ -55,10 +55,10 @@ export default defineComponent({
   watch: {
     async isValid(ok: boolean) {
       if (!ok) return
-      // Los montos empujan el botón: si queda fuera de pantalla, lo traemos de vuelta.
+      // En dispositivos móviles, si los montos empujan el botón fuera de pantalla, lo traemos suavemente.
       await this.$nextTick()
       const btn = this.$refs.goButton as HTMLButtonElement | undefined
-      if (btn && btn.getBoundingClientRect().bottom > window.innerHeight) {
+      if (btn && window.innerWidth < 768 && btn.getBoundingClientRect().bottom > window.innerHeight) {
         const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
         btn.scrollIntoView({ block: 'nearest', behavior: smooth ? 'smooth' : 'auto' })
       }

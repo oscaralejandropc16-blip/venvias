@@ -367,7 +367,7 @@ export default defineComponent({
 .hero {
   position: relative;
   overflow: hidden;
-  padding-bottom: clamp(56px, 7vw, 96px);
+  padding-bottom: clamp(36px, 4.5vw, 64px);
   transition: background-color 1.2s cubic-bezier(0.16, 1, 0.3, 1), color 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -406,6 +406,18 @@ export default defineComponent({
   backdrop-filter: blur(12px);
   border: 1px solid rgba(203, 213, 225, 0.9);
   box-shadow: 0 4px 16px rgba(18, 33, 66, 0.05);
+}
+.hero--day .hero__stat-card:hover,
+.hero--day .hero__stat-card:focus-within {
+  background: #ffffff;
+  border-color: #93c5fd;
+  box-shadow: 0 10px 24px -2px rgba(0, 87, 163, 0.14);
+}
+.hero--day .hero__feature-card:hover,
+.hero--day .hero__feature-card:focus-within {
+  background: #ffffff;
+  border-color: #0057a3;
+  box-shadow: 0 10px 24px rgba(0, 87, 163, 0.12);
 }
 .hero--day .hero__stat-val {
   color: #0057a3;
@@ -458,6 +470,18 @@ export default defineComponent({
   border: 1px solid rgba(251, 191, 36, 0.28);
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.4);
 }
+.hero--sunset .hero__stat-card:hover,
+.hero--sunset .hero__stat-card:focus-within {
+  background: rgba(55, 30, 80, 0.95);
+  border-color: #fbbf24;
+  box-shadow: 0 12px 36px rgba(251, 191, 36, 0.35);
+}
+.hero--sunset .hero__feature-card:hover,
+.hero--sunset .hero__feature-card:focus-within {
+  background: rgba(55, 30, 80, 0.95);
+  border-color: #fbbf24;
+  box-shadow: 0 12px 36px rgba(251, 191, 36, 0.35);
+}
 .hero--sunset .hero__stat-val {
   color: #fbbf24;
 }
@@ -469,6 +493,21 @@ export default defineComponent({
 }
 .hero--sunset .hero__feature-desc {
   color: #cbd5e1;
+}
+.hero--sunset .hero__feature-icon--cyan {
+  background: rgba(8, 145, 178, 0.28);
+  color: #38bdf8;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+}
+.hero--sunset .hero__feature-icon--emerald {
+  background: rgba(16, 185, 129, 0.28);
+  color: #34d399;
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.25);
+}
+.hero--sunset .hero__feature-icon--amber {
+  background: rgba(245, 158, 11, 0.28);
+  color: #fbbf24;
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.25);
 }
 .hero--sunset .hero__bg-bottom-fade {
   background: linear-gradient(to bottom, transparent, rgba(26, 16, 38, 0.88) 60%, #ffffff 100%);
@@ -487,9 +526,9 @@ export default defineComponent({
   background: linear-gradient(
     90deg,
     rgba(6, 10, 20, 0.95) 0%,
-    rgba(6, 10, 20, 0.82) 38%,
-    rgba(6, 10, 20, 0.38) 68%,
-    rgba(6, 10, 20, 0.08) 100%
+    rgba(6, 10, 20, 0.84) 40%,
+    rgba(6, 10, 20, 0.42) 70%,
+    rgba(6, 10, 20, 0.10) 100%
   );
 }
 .hero--night .hero__title {
@@ -512,9 +551,16 @@ export default defineComponent({
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55);
 }
 .hero--night .hero__stat-card:hover,
-.hero--night .hero__feature-card:hover {
+.hero--night .hero__stat-card:focus-within {
+  background: rgba(22, 34, 60, 0.96);
   border-color: #38bdf8;
-  box-shadow: 0 12px 36px rgba(56, 189, 248, 0.25);
+  box-shadow: 0 12px 36px rgba(56, 189, 248, 0.35);
+}
+.hero--night .hero__feature-card:hover,
+.hero--night .hero__feature-card:focus-within {
+  background: rgba(22, 34, 60, 0.96);
+  border-color: #38bdf8;
+  box-shadow: 0 12px 36px rgba(56, 189, 248, 0.35);
 }
 .hero--night .hero__stat-val {
   color: #38bdf8;
@@ -527,6 +573,21 @@ export default defineComponent({
 }
 .hero--night .hero__feature-desc {
   color: #94a3b8;
+}
+.hero--night .hero__feature-icon--cyan {
+  background: rgba(8, 145, 178, 0.28);
+  color: #38bdf8;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+}
+.hero--night .hero__feature-icon--emerald {
+  background: rgba(16, 185, 129, 0.28);
+  color: #34d399;
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.25);
+}
+.hero--night .hero__feature-icon--amber {
+  background: rgba(245, 158, 11, 0.28);
+  color: #fbbf24;
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.25);
 }
 .hero--night .hero__aurora-orb--card-glow {
   background: radial-gradient(circle, rgba(56, 189, 248, 0.28) 0%, rgba(0, 87, 163, 0.20) 45%, transparent 75%);
@@ -714,8 +775,8 @@ export default defineComponent({
   position: relative;
   z-index: 1;
   display: grid;
-  gap: clamp(32px, 4vw, 56px);
-  padding-top: clamp(28px, 4vw, 52px);
+  gap: clamp(24px, 3.5vw, 44px);
+  padding-top: clamp(16px, 2.5vw, 32px);
   align-items: center;
 }
 @media (min-width: 960px) {
@@ -753,7 +814,7 @@ export default defineComponent({
 }
 
 .hero__title {
-  font-size: clamp(32px, 3.2vw + 16px, 54px);
+  font-size: clamp(28px, 2.6vw + 10px, 46px);
   line-height: 1.15;
   font-weight: 700;
   color: #122142;
@@ -767,15 +828,15 @@ export default defineComponent({
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.18;
 }
 
 .hero__sub {
-  margin: 14px 0 clamp(16px, 2.5vh, 24px);
-  max-width: 52ch;
+  margin: 10px 0 16px;
+  max-width: 50ch;
   color: #475569;
-  font-size: clamp(15px, 1vw + 8px, 17px);
-  line-height: 1.55;
+  font-size: clamp(14px, 0.85vw + 7px, 16px);
+  line-height: 1.5;
   animation: heroFadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.16s both;
 }
 
@@ -783,8 +844,8 @@ export default defineComponent({
 .hero__stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-block: 8px 24px;
+  gap: 10px;
+  margin-block: 4px 16px;
   width: 100%;
   animation: heroFadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
 }
@@ -792,8 +853,8 @@ export default defineComponent({
   background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(226, 232, 240, 0.9);
-  border-radius: 14px;
-  padding: 10px 14px;
+  border-radius: 12px;
+  padding: 8px 12px;
   text-align: center;
   box-shadow: 0 2px 8px rgba(18, 33, 66, 0.04);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s var(--ease-out), border-color 0.25s;
@@ -804,17 +865,17 @@ export default defineComponent({
   border-color: #93c5fd;
 }
 .hero__stat-val {
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 700;
   color: #0057a3;
-  line-height: 1.2;
+  line-height: 1.15;
   transition: color 0.2s;
 }
 .hero__stat-card:hover .hero__stat-val {
   color: #0284c7;
 }
 .hero__stat-lbl {
-  font-size: 11px;
+  font-size: 10.5px;
   color: #64748b;
   font-weight: 600;
   margin-top: 2px;
@@ -825,7 +886,7 @@ export default defineComponent({
 /* 3 Pilares clave en el hero izquierdo con hover y acentos */
 .hero__features {
   display: grid;
-  gap: 12px;
+  gap: 8px;
   width: 100%;
   animation: heroFadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.32s both;
 }
@@ -837,49 +898,48 @@ export default defineComponent({
 .hero__feature-card {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(10px);
-  padding: 12px 16px;
-  border-radius: 16px;
+  padding: 8px 14px;
+  border-radius: 14px;
   border: 1px solid rgba(226, 232, 240, 0.85);
   box-shadow: 0 2px 10px rgba(18, 33, 66, 0.03);
   text-align: left;
   transition: all 0.25s var(--ease-out);
 }
-.hero__feature-card:hover {
-  background: #ffffff;
-  border-color: #93c5fd;
+.hero__feature-card:hover,
+.hero__feature-card:focus-within {
   transform: translateX(4px);
-  box-shadow: 0 8px 22px rgba(18, 33, 66, 0.08);
 }
 .hero__feature-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   transition: transform 0.25s var(--ease-out);
 }
-.hero__feature-card:hover .hero__feature-icon {
-  transform: scale(1.12) rotate(6deg);
+.hero__feature-card:hover .hero__feature-icon,
+.hero__feature-card:focus-within .hero__feature-icon {
+  transform: scale(1.1) rotate(5deg);
 }
 .hero__feature-icon--cyan { background: #ecfeff; color: #0891b2; box-shadow: 0 2px 8px rgba(8, 145, 178, 0.15); }
 .hero__feature-icon--emerald { background: #ecfdf5; color: #059669; box-shadow: 0 2px 8px rgba(5, 150, 105, 0.15); }
 .hero__feature-icon--amber { background: #fffbeb; color: #d97706; box-shadow: 0 2px 8px rgba(217, 119, 6, 0.15); }
 
 .hero__feature-title {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   color: #122142;
   margin: 0;
 }
 .hero__feature-desc {
-  font-size: 13px;
+  font-size: 12px;
   color: #64748b;
-  margin: 2px 0 0;
+  margin: 1px 0 0;
 }
 
 /* Columna Derecha: Tarjeta de Pago Kiosco Digital */
@@ -891,8 +951,8 @@ export default defineComponent({
 .hero__card {
   width: min(100%, 420px);
   background: #ffffff;
-  border-radius: 1.5rem;
-  padding: clamp(20px, 2.5vw, 28px);
+  border-radius: 1.25rem;
+  padding: clamp(16px, 2vw, 24px);
   box-shadow: 0 25px 50px -12px rgba(18, 33, 66, 0.12), 0 0 0 1px rgba(226, 232, 240, 0.9), 0 8px 24px -4px rgba(0, 87, 163, 0.06);
   position: relative;
   transition: box-shadow 0.3s var(--ease-out), transform 0.3s var(--ease-out);
