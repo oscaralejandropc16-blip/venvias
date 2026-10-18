@@ -134,38 +134,86 @@ export default defineComponent({
   font-size: 15px;
   font-weight: 500;
   color: var(--texto);
-  transition: color 0.15s;
+  transition: color 0.2s var(--ease-out);
 }
 .nav__links a.nav__link:hover {
-  color: var(--azul-700);
+  color: #0038A8;
 }
-.nav__links a.router-link-exact-active {
-  color: var(--azul-700);
-  font-weight: 600;
-}
-.nav__links a.router-link-exact-active::after {
+.nav__links a.nav__link::after {
   content: '';
   position: absolute;
   bottom: 0;
+  left: 50%;
+  right: 50%;
+  height: 2.5px;
+  background: #0038A8;
+  border-radius: 2px;
+  transition: left 0.25s var(--ease-out), right 0.25s var(--ease-out), opacity 0.2s;
+  opacity: 0;
+}
+.nav__links a.nav__link:hover::after {
+  left: 25%;
+  right: 25%;
+  opacity: 0.4;
+}
+.nav__links a.router-link-exact-active {
+  color: #0038A8;
+  font-weight: 600;
+}
+.nav__links a.router-link-exact-active::after {
   left: 0;
   right: 0;
-  height: 2px;
-  background: var(--azul-700);
-  border-radius: 2px;
+  opacity: 1;
 }
+
 .nav__menu {
   display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px 0 10px;
   border: 1px solid var(--borde); border-radius: var(--radius-pill); background: #fff;
   color: var(--marino-900); font-size: 14px; font-weight: 500; cursor: pointer;
   box-shadow: 0 2px 6px rgba(18, 33, 66, 0.05);
+  transition: all 0.2s var(--ease-out);
 }
+.nav__menu:hover {
+  border-color: #93c5fd;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(18, 33, 66, 0.08);
+}
+
+.nav__sheet {
+  animation: navSheetIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes navSheetIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .nav__sheet a:not(.btn) {
   display: flex; justify-content: space-between; align-items: center;
   padding: 14px 0; border-bottom: 1px solid var(--borde);
-  color: var(--marino-900); text-decoration: none; font: 500 18px/24px var(--font-display);
+  color: #122142; text-decoration: none; font: 500 18px/24px var(--font-display);
+  transition: color 0.2s, padding-left 0.2s;
+}
+.nav__sheet a:not(.btn):hover {
+  color: #0038A8;
+  padding-left: 6px;
 }
 
 @media (min-width: 1080px) {
   .nav__menu { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav__links a.nav__link::after,
+  .nav__sheet,
+  .nav__menu {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 </style>

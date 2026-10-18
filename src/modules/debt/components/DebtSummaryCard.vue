@@ -68,6 +68,11 @@ export default defineComponent({
   box-shadow: 0 16px 40px -10px rgba(18, 33, 66, 0.08), 0 1px 3px rgba(18, 33, 66, 0.04);
   text-align: center;
   transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+  animation: debtCardIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes debtCardIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .debt-card:hover {
@@ -160,6 +165,21 @@ export default defineComponent({
   transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
 }
 
+.debt-card__actions .btn--primario::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  animation: debtPayShimmer 4s ease-in-out infinite 1.5s;
+}
+@keyframes debtPayShimmer {
+  0% { left: -100%; }
+  30%, 100% { left: 200%; }
+}
+
 .debt-card__actions .btn--primario:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(0, 56, 168, 0.35);
@@ -167,8 +187,10 @@ export default defineComponent({
 
 @media (prefers-reduced-motion: reduce) {
   .debt-card,
-  .debt-card__actions .btn--primario {
+  .debt-card__actions .btn--primario,
+  .debt-card__actions .btn--primario::after {
     transform: none !important;
+    animation: none !important;
   }
 }
 </style>

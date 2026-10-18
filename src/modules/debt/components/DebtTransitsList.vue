@@ -110,6 +110,17 @@ export default defineComponent({
   border-radius: var(--radius-md, 16px);
   box-shadow: 0 6px 18px -4px rgba(18, 33, 66, 0.05);
   transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+  animation: transitEnter 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes transitEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .transit-item:hover {
@@ -128,6 +139,10 @@ export default defineComponent({
   background: var(--fondo-frio);
   color: var(--azul-700);
   flex-shrink: 0;
+  transition: transform 0.25s var(--ease-out);
+}
+.transit-item:hover .transit-item__icon {
+  transform: scale(1.1) rotate(4deg);
 }
 
 .transit-item.is-alert .transit-item__icon {
@@ -222,6 +237,14 @@ export default defineComponent({
   }
   .transit-item__icon {
     display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .transit-item,
+  .transit-item__icon {
+    animation: none !important;
+    transition: none !important;
   }
 }
 </style>

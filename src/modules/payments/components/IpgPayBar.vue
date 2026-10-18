@@ -89,6 +89,21 @@ export default defineComponent({
   overflow: hidden;
   transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
 }
+.cpb__go:not(:disabled)::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  animation: payBarShimmer 4s ease-in-out infinite 1.5s;
+}
+@keyframes payBarShimmer {
+  0% { left: -100%; }
+  30%, 100% { left: 200%; }
+}
+
 .cpb__go:not(:disabled):hover {
   transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(0, 56, 168, 0.32);
@@ -97,8 +112,10 @@ export default defineComponent({
 .cpb__hint.is-todo { color: #122142; font-weight: 600; }
 
 @media (prefers-reduced-motion: reduce) {
-  .cpb__go:not(:disabled):hover {
-    transform: none;
+  .cpb__go:not(:disabled):hover,
+  .cpb__go:not(:disabled)::after {
+    transform: none !important;
+    animation: none !important;
   }
 }
 </style>

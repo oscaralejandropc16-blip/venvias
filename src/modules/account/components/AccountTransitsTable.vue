@@ -84,6 +84,11 @@ export default defineComponent({
   display: grid;
   gap: var(--space-6);
   overflow: hidden;
+  animation: transitsBoxIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes transitsBoxIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .transits-box__header {
@@ -203,6 +208,13 @@ export default defineComponent({
   color: var(--rojo-sistema);
 }
 
+.transits-table tbody tr {
+  transition: background-color 0.2s var(--ease-out);
+}
+.transits-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
 .btn-receipt {
   display: inline-flex;
   align-items: center;
@@ -213,13 +225,24 @@ export default defineComponent({
   background: transparent;
   border: 1px dashed var(--azul-300);
   padding: 3px 8px;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s var(--ease-out);
 }
 
 .btn-receipt:hover {
   background: var(--azul-100);
   border-color: var(--azul-700);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 56, 168, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .transits-box,
+  .transits-table tbody tr,
+  .btn-receipt {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 </style>

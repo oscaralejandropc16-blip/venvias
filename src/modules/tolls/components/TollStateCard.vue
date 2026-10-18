@@ -124,12 +124,28 @@ export default defineComponent({
   width: 100%; display: grid; gap: 2px; text-align: left; cursor: pointer;
   padding: var(--space-3); border: 0; border-radius: var(--radius-sm);
   background: transparent;
-  transition: background-color 0.2s var(--ease-out);
+  transition: background-color 0.2s var(--ease-out), padding-left 0.2s var(--ease-out);
 }
-.toll-row:hover { background: var(--fondo-frio); }
-.toll-row[aria-pressed='true'] { background: var(--azul-100); }
+.toll-row:hover {
+  background: var(--fondo-frio);
+  padding-left: calc(var(--space-3) + 4px);
+}
+.toll-row[aria-pressed='true'] {
+  background: var(--azul-100);
+  border-left: 3px solid var(--azul-700);
+}
 .toll-row:focus-visible { outline-offset: 0; }
 .toll-row__name { font: 500 18px/26px var(--font-display); color: var(--marino-900); }
 .toll-row__road { font: 400 14px/20px var(--font-body); color: var(--texto-suave); }
 .toll-row[aria-pressed='true'] .toll-row__road { color: var(--texto); }
+
+@media (prefers-reduced-motion: reduce) {
+  .state-card,
+  .state-card__chevron,
+  .state-card__panel,
+  .toll-row {
+    animation: none !important;
+    transition: none !important;
+  }
+}
 </style>

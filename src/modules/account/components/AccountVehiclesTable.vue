@@ -112,12 +112,24 @@ export default defineComponent({
   display: grid;
   gap: var(--space-4);
   transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+  animation: vCardIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes vCardIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .v-card:hover {
   transform: translateY(-3px);
   border-color: #0038A8;
   box-shadow: 0 16px 36px -8px rgba(0, 56, 168, 0.12);
+}
+
+.v-card :deep(.plate) {
+  transition: transform 0.25s var(--ease-out);
+}
+.v-card:hover :deep(.plate) {
+  transform: scale(1.03);
 }
 
 .v-card__top {
@@ -207,5 +219,13 @@ export default defineComponent({
 
 .text-suave {
   color: var(--texto-suave);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v-card,
+  .v-card :deep(.plate) {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 </style>

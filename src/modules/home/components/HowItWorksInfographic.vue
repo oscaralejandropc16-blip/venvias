@@ -79,7 +79,22 @@ export default defineComponent({
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #F9D616 0%, #0038A8 50%, #CE1126 100%);
+  background: var(--tricolor-vzla, linear-gradient(90deg, #F9D616 0%, #0038A8 50%, #CE1126 100%));
+  overflow: hidden;
+}
+.infographic-tricolor::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.85), transparent);
+  animation: infoTricolorSweep 4.5s ease-in-out infinite;
+}
+@keyframes infoTricolorSweep {
+  0% { left: -50%; }
+  35%, 100% { left: 150%; }
 }
 
 .infographic-card__header {
@@ -140,6 +155,21 @@ export default defineComponent({
   transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
 }
 
+.infographic-dl-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  animation: infoBtnShimmer 4s ease-in-out infinite 2s;
+}
+@keyframes infoBtnShimmer {
+  0% { left: -100%; }
+  30%, 100% { left: 200%; }
+}
+
 .infographic-dl-btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(0, 56, 168, 0.32);
@@ -163,11 +193,20 @@ export default defineComponent({
   height: auto;
   display: block;
   object-fit: contain;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.infographic-frame:hover .infographic-img {
+  transform: scale(1.015);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .infographic-dl-btn:hover {
-    transform: none;
+  .infographic-tricolor::after,
+  .infographic-dl-btn::after,
+  .infographic-dl-btn:hover,
+  .infographic-frame:hover .infographic-img {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 </style>

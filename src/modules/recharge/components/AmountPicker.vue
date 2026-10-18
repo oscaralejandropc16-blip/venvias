@@ -111,7 +111,20 @@ export default defineComponent({
 .ap__chips small { font: 600 11px/1.4 var(--font-mono); color: var(--texto-suave); }
 .ap__chips label.on small { color: #0038A8; }
 
-.ap__custom { margin-top: var(--space-4); display: grid; gap: var(--space-2); }
+.ap__chips label:active {
+  transform: scale(0.97);
+}
+
+.ap__custom {
+  margin-top: var(--space-4);
+  display: grid;
+  gap: var(--space-2);
+  animation: apCustomIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes apCustomIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .ap__custom-label { font-size: 14px; font-weight: 600; color: #122142; }
 .ap__field {
   display: flex;
@@ -139,8 +152,11 @@ export default defineComponent({
 .ap__error svg { flex: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .ap__chips label:hover {
-    transform: none;
+  .ap__chips label:hover,
+  .ap__chips label:active,
+  .ap__custom {
+    transform: none !important;
+    animation: none !important;
   }
 }
 </style>

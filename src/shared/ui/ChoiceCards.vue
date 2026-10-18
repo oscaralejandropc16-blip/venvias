@@ -115,9 +115,24 @@ export default defineComponent({
 .cc__opt input { flex: none; width: 20px; height: 20px; margin: 0; accent-color: #0038A8; cursor: pointer; }
 .cc__opt input:focus-visible { outline: none; }
 
+.cc__opt:active {
+  transform: scale(0.98);
+}
+.cc__opt.on .cc__icon {
+  animation: ccIconPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes ccIconPop {
+  0% { transform: scale(0.85); }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .cc__opt:hover {
-    transform: none;
+  .cc__opt:hover,
+  .cc__opt:active,
+  .cc__opt.on .cc__icon {
+    transform: none !important;
+    animation: none !important;
   }
 }
 </style>

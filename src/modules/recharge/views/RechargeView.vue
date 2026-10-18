@@ -621,7 +621,23 @@ export default defineComponent({
 .rv__panel h1 { font-size: clamp(28px, 2vw + 18px, 40px); line-height: 1.15; font-weight: 700; color: #122142; outline: none; }
 .rv__intro { margin-top: var(--space-2); max-width: 44ch; color: var(--texto-suave); }
 
-.rv__body { width: min(100%, 520px); display: flex; flex-direction: column; margin-top: var(--space-8); }
+.rv__body {
+  width: min(100%, 520px);
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--space-8);
+  animation: rvStepEnter 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes rvStepEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
 .rv__plate { display: grid; justify-items: center; gap: var(--space-2); width: 100%; }
 .rv__plate :deep(.plate) { max-width: 300px; width: 100%; margin-inline: auto; }
 .rv__link { min-height: 44px; padding: 0 var(--space-2); border: 0; background: none; cursor: pointer; text-decoration: underline; color: var(--azul-700); }
@@ -724,7 +740,8 @@ export default defineComponent({
   .rv__panel,
   .rv__guide,
   .rv__go::after,
-  .rv__done {
+  .rv__done,
+  .rv__body {
     animation: none !important;
     transition: none !important;
   }

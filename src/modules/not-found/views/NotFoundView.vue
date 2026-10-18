@@ -179,6 +179,15 @@ export default defineComponent({
   border-radius: 50%;
   background: #F97316;
   box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+  animation: nfBadgePulse 2s infinite ease-in-out;
+}
+@keyframes nfBadgePulse {
+  0%, 100% {
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(249, 115, 22, 0.05);
+  }
 }
 
 .nf-visual {
@@ -195,6 +204,10 @@ export default defineComponent({
   max-width: 280px;
   height: auto;
   margin: 0 auto;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.nf-card:hover .nf-illustration {
+  transform: translateY(-4px) scale(1.02);
 }
 
 .nf-number {
@@ -400,15 +413,18 @@ export default defineComponent({
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .nf-card {
-    animation: none;
+  .nf-card,
+  .nf-badge__dot {
+    animation: none !important;
   }
   .nf-btn-home::after {
     display: none;
   }
   .nf-btn-home:hover,
-  .nf-link-card:hover {
-    transform: none;
+  .nf-link-card:hover,
+  .nf-card:hover .nf-illustration {
+    transform: none !important;
+    transition: none !important;
   }
 }
 </style>
