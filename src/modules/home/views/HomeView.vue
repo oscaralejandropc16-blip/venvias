@@ -231,8 +231,7 @@ export default defineComponent({
       <!-- Tarjeta TAG -->
       <div class="tag-bento-card bg-white rounded-2xl p-8 md:p-10 shadow-lg shadow-slate-200/50 border border-slate-100 flex flex-col justify-between">
         <div>
-          <div class="flex items-center gap-2 mb-3 text-xs font-bold uppercase tracking-wider text-emerald-700">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-400"></span>
+          <div class="mb-3 text-xs font-bold uppercase tracking-wider text-emerald-700">
             Dispositivo Adherido
           </div>
           <h2 id="tag-title" class="text-2xl font-bold text-slate-900 mb-3">¿Tienes TAG? Sigue con él.</h2>
@@ -338,8 +337,7 @@ export default defineComponent({
   <section class="section wrap pt-0 gap-6" aria-labelledby="faq-title">
     <div class="split items-start min-[900px]:grid-cols-[1fr_2fr] bg-white rounded-2xl p-8 md:p-12 shadow-lg shadow-slate-200/50 border border-slate-100">
       <div>
-        <div class="flex items-center gap-2 mb-3 text-xs font-bold uppercase tracking-wider text-blue-700">
-          <span class="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-sm shadow-blue-400"></span>
+        <div class="mb-3 text-xs font-bold uppercase tracking-wider text-blue-700">
           Centro de Ayuda
         </div>
         <h2 id="faq-title" class="text-slate-900 font-bold text-3xl">Preguntas frecuentes</h2>
@@ -360,76 +358,89 @@ export default defineComponent({
 
   <!-- Sección Síguenos en nuestras Redes Sociales -->
   <section class="section wrap pt-0" aria-labelledby="social-title">
-    <div class="social-banner bg-white rounded-3xl p-8 md:p-12 shadow-lg shadow-slate-200/50 border border-slate-200/80 relative overflow-hidden">
-      <div class="flex flex-col lg:flex-row items-center justify-between gap-8">
-        <div class="max-w-xl text-center lg:text-left">
-          <div class="flex items-center justify-center lg:justify-start gap-2 mb-2 text-xs font-bold uppercase tracking-wider text-blue-700">
-            <span class="w-1.5 h-1.5 rounded-full bg-blue-600 shadow-sm shadow-blue-400"></span>
-            Canales Oficiales
+    <div class="social-banner">
+      <div class="social-banner__header">
+        <span class="social-banner__eyebrow">CANALES OFICIALES DE INFORMACIÓN</span>
+        <h2 id="social-title" class="social-banner__title">Síguenos en nuestras redes sociales</h2>
+        <p class="social-banner__desc">
+          Mantente al día con los nuevos peajes habilitados, estados del tránsito en tiempo real, operativos viales y noticias oficiales de VenVías.
+        </p>
+      </div>
+
+      <div class="social-cards-grid">
+        <!-- Instagram -->
+        <a
+          href="https://www.instagram.com/mtransportegobve"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-card social-card--instagram"
+        >
+          <div class="social-card__icon social-card__icon--instagram">
+            <svg viewBox="0 0 24 24" class="social-svg" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
           </div>
-          <h2 id="social-title" class="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 mb-3">
-            Síguenos en nuestras redes sociales
-          </h2>
-          <p class="text-slate-600 text-sm md:text-base leading-relaxed">
-            Mantente al día con los nuevos peajes habilitados, estados del tránsito en tiempo real, operativos nacionales y actualizaciones del servicio VenVías.
-          </p>
-        </div>
+          <div class="social-card__content">
+            <span class="social-card__platform">Instagram</span>
+            <span class="social-card__handle">@mtransportegobve</span>
+          </div>
+          <span class="social-card__arrow" aria-hidden="true">↗</span>
+        </a>
 
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 w-full lg:w-auto">
-          <!-- Instagram -->
-          <a
-            href="https://www.instagram.com/mtransportegobve"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="social-btn flex flex-col items-center justify-center p-4 rounded-2xl bg-slate-50 hover:bg-pink-50/50 border border-slate-200 hover:border-pink-300 transition-all duration-300 group shadow-sm hover:shadow"
-          >
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex items-center justify-center text-white mb-2 shadow-md group-hover:scale-110 transition-transform">
-              <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            </div>
-            <span class="text-xs font-bold text-slate-900 group-hover:text-pink-600 transition-colors">Instagram</span>
-            <span class="text-[11px] text-slate-500 font-medium">@mtransportegobve</span>
-          </a>
+        <!-- X (Twitter) -->
+        <a
+          href="https://twitter.com/TransporteGobVe"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-card social-card--x"
+        >
+          <div class="social-card__icon social-card__icon--x">
+            <svg viewBox="0 0 24 24" class="social-svg" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </div>
+          <div class="social-card__content">
+            <span class="social-card__platform">X / Twitter</span>
+            <span class="social-card__handle">@TransporteGobVe</span>
+          </div>
+          <span class="social-card__arrow" aria-hidden="true">↗</span>
+        </a>
 
-          <!-- X / Twitter -->
-          <a
-            href="https://twitter.com/TransporteGobVe"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="social-btn flex flex-col items-center justify-center p-4 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-400 transition-all duration-300 group shadow-sm hover:shadow"
-          >
-            <div class="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center text-white mb-2 shadow-md group-hover:scale-110 transition-transform">
-              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </div>
-            <span class="text-xs font-bold text-slate-900 group-hover:text-slate-800 transition-colors">X / Twitter</span>
-            <span class="text-[11px] text-slate-500 font-medium">@TransporteGobVe</span>
-          </a>
+        <!-- Telegram -->
+        <a
+          href="https://t.me/mtransportegobve"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-card social-card--telegram"
+        >
+          <div class="social-card__icon social-card__icon--telegram">
+            <svg viewBox="0 0 24 24" class="social-svg" fill="currentColor">
+              <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+            </svg>
+          </div>
+          <div class="social-card__content">
+            <span class="social-card__platform">Telegram</span>
+            <span class="social-card__handle">Canal Oficial MPPT</span>
+          </div>
+          <span class="social-card__arrow" aria-hidden="true">↗</span>
+        </a>
 
-          <!-- Telegram -->
-          <a
-            href="https://t.me/mtransportegobve"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="social-btn flex flex-col items-center justify-center p-4 rounded-2xl bg-slate-50 hover:bg-sky-50/50 border border-slate-200 hover:border-sky-300 transition-all duration-300 group shadow-sm hover:shadow"
-          >
-            <div class="w-12 h-12 rounded-xl bg-[#229ED9] flex items-center justify-center text-white mb-2 shadow-md group-hover:scale-110 transition-transform">
-              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-            </div>
-            <span class="text-xs font-bold text-slate-900 group-hover:text-sky-600 transition-colors">Telegram</span>
-            <span class="text-[11px] text-slate-500 font-medium">Canal Oficial</span>
-          </a>
-
-          <!-- Atención Telefónica -->
-          <a
-            href="tel:08008368427"
-            class="social-btn flex flex-col items-center justify-center p-4 rounded-2xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200 hover:border-emerald-300 transition-all duration-300 group shadow-sm hover:shadow"
-          >
-            <div class="w-12 h-12 rounded-xl bg-emerald-600 flex items-center justify-center text-white mb-2 shadow-md group-hover:scale-110 transition-transform">
-              <svg class="w-5 h-5 fill-none stroke-current stroke-2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-            </div>
-            <span class="text-xs font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Atención 24/7</span>
-            <span class="text-[11px] text-slate-500 font-medium">0800-VENVIAS</span>
-          </a>
-        </div>
+        <!-- Atención Telefónica -->
+        <a
+          href="tel:08008368427"
+          class="social-card social-card--phone"
+        >
+          <div class="social-card__icon social-card__icon--phone">
+            <svg viewBox="0 0 24 24" class="social-svg" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+            </svg>
+          </div>
+          <div class="social-card__content">
+            <span class="social-card__platform">0800-VENVIAS</span>
+            <span class="social-card__handle">Línea Gratuita 24/7</span>
+          </div>
+          <span class="social-card__arrow" aria-hidden="true">↗</span>
+        </a>
       </div>
     </div>
   </section>
@@ -1394,6 +1405,169 @@ details[open] p {
 @keyframes faqSlide {
   from { opacity: 0; transform: translateY(-6px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   SECCIÓN CANALES OFICIALES Y REDES SOCIALES
+   ========================================================================== */
+.social-banner {
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 24px;
+  padding: clamp(24px, 4vw, 36px);
+  box-shadow: 0 10px 30px -5px rgba(18, 33, 66, 0.05);
+}
+
+.social-banner__header {
+  margin-bottom: var(--space-6);
+  max-width: 680px;
+}
+
+.social-banner__eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--azul-700);
+  margin-bottom: 6px;
+}
+
+.social-banner__title {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.5vw, 30px);
+  font-weight: 700;
+  color: var(--marino-900);
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+}
+
+.social-banner__desc {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #64748b;
+  margin: 0;
+}
+
+.social-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 600px) {
+  .social-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .social-cards-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.social-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  text-decoration: none !important;
+  color: inherit;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.social-card:hover {
+  background: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px -6px rgba(18, 33, 66, 0.1);
+  text-decoration: none !important;
+}
+
+.social-card--instagram:hover { border-color: #e1306c; }
+.social-card--x:hover { border-color: #0f172a; }
+.social-card--telegram:hover { border-color: #229ed9; }
+.social-card--phone:hover { border-color: #10b981; }
+
+.social-card__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transition: transform 0.25s ease;
+}
+
+.social-card:hover .social-card__icon {
+  transform: scale(1.08);
+}
+
+.social-card__icon--instagram {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+.social-card__icon--x {
+  background: #000000;
+}
+
+.social-card__icon--telegram {
+  background: #229ed9;
+}
+
+.social-card__icon--phone {
+  background: #059669;
+}
+
+.social-svg {
+  width: 22px;
+  height: 22px;
+}
+
+.social-card__content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex-grow: 1;
+}
+
+.social-card__platform {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--marino-900);
+  line-height: 1.2;
+  text-decoration: none !important;
+}
+
+.social-card__handle {
+  font-size: 11px;
+  font-weight: 500;
+  color: #64748b;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: none !important;
+}
+
+.social-card__arrow {
+  font-size: 14px;
+  font-weight: 700;
+  color: #94a3b8;
+  transition: transform 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.social-card:hover .social-card__arrow {
+  color: var(--azul-700);
+  transform: translate(2px, -2px);
 }
 
 @media (prefers-reduced-motion: reduce) {
