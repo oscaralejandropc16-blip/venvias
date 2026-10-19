@@ -159,12 +159,12 @@ export default defineComponent({
 /* Conmutador de modo */
 .pf__modo {
   position: relative; display: grid; grid-template-columns: 1fr 1fr;
-  margin: 0 0 var(--space-4); padding: 4px; border: 0;
-  background: var(--azul-100); border-radius: var(--radius-pill);
+  margin: 0 0 var(--space-4); padding: 4px; border: 1px solid rgba(226, 232, 240, 0.8);
+  background: var(--azul-100); border-radius: 10px;
 }
 .pf__modo label {
-  position: relative; z-index: 1; display: grid; place-items: center; min-height: 44px;
-  border-radius: var(--radius-pill); font-weight: 500; font-size: 15px; color: var(--marino-900);
+  position: relative; z-index: 1; display: grid; place-items: center; min-height: 42px;
+  border-radius: 8px; font-weight: 600; font-size: 14.5px; color: var(--marino-900);
   cursor: pointer; transition: color .3s var(--ease-out);
 }
 .pf__modo label.on { color: #fff; }
@@ -172,36 +172,50 @@ export default defineComponent({
 .pf__modo label:has(input:focus-visible) { outline: 3px solid var(--accion); outline-offset: 3px; }
 .pf__modo-thumb {
   position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px);
-  background: var(--azul-700); border-radius: var(--radius-pill);
-  transition: transform .45s var(--ease-out);
+  background: var(--azul-700); border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 56, 168, 0.25);
+  transition: transform .35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .pf__modo-thumb.right { transform: translateX(100%); }
 
 /* Montos: aparecen cuando la placa es válida */
 .pf__montos { border: 0; margin: var(--space-3) 0 0; padding: 0; }
-.pf__montos legend { padding: 0; margin-bottom: var(--space-2); font-size: 14px; font-weight: 500; color: var(--marino-900); }
+.pf__montos legend { padding: 0; margin-bottom: var(--space-2); font-size: 14px; font-weight: 600; color: var(--marino-900); }
 .pf__chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-2); }
 .pf__chips label {
   position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  min-height: 50px; padding: 4px; border: 1px solid var(--borde); border-radius: var(--radius-pill);
-  cursor: pointer; transition: border-color .2s, background-color .2s;
+  min-height: 48px; padding: 6px 4px; border: 1px solid var(--borde); border-radius: 8px;
+  cursor: pointer; transition: all .2s ease;
 }
-.pf__chips label:hover { border-color: var(--azul-700); }
-.pf__chips label.on { background: var(--azul-100); border-color: var(--azul-700); }
+.pf__chips label:hover { border-color: var(--azul-700); background: #f8fafc; }
+.pf__chips label.on { background: var(--azul-100); border-color: var(--azul-700); box-shadow: 0 2px 8px rgba(0, 56, 168, 0.15); }
 .pf__chips label:has(input:focus-visible) { outline: 3px solid var(--accion); outline-offset: 3px; }
 .pf__chips input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-.pf__chips span { font: 500 15px/1.2 var(--font-body); color: var(--marino-900); }
-.pf__chips .pf__chip-amount { font: 500 15px/1.2 var(--font-mono); }
+.pf__chips span { font: 600 15px/1.2 var(--font-body); color: var(--marino-900); }
+.pf__chips .pf__chip-amount { font: 600 15px/1.2 var(--font-mono); }
 .pf__chips small { font: 500 11px/1.4 var(--font-mono); color: var(--texto-suave); }
 .pf__chips label.on small { color: var(--marino-900); }
 .montos-enter-active { transition: opacity .35s var(--ease-out), transform .35s var(--ease-out); }
 .montos-enter-from { opacity: 0; transform: translateY(-8px); }
 
-.pf__go { width: 100%; min-height: 56px; margin-top: var(--space-3); font-size: 16px; }
-.pf__nota { margin-top: var(--space-3); text-align: center; font-size: 14px; line-height: 20px; color: var(--texto-suave); }
+.pf__go {
+  width: 100%;
+  min-height: 52px;
+  margin-top: var(--space-3);
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 14px rgba(0, 56, 168, 0.3);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pf__go:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 56, 168, 0.4);
+}
+.pf__nota { margin-top: var(--space-3); text-align: center; font-size: 13px; line-height: 18px; color: var(--texto-suave); }
 
 @media (min-width: 768px) {
-  .pf__modo { width: 380px; align-self: center; margin-bottom: var(--space-6); }
-  .pf__go { margin-top: var(--space-6); }
+  .pf__modo { width: 380px; align-self: center; margin-bottom: var(--space-5); }
+  .pf__go { margin-top: var(--space-5); }
 }
 </style>

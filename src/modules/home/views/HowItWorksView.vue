@@ -249,7 +249,7 @@ export default defineComponent({
         </div>
 
         <!-- PIPELINE DE FASES: Stepper interactivo de alta gama con línea de avance -->
-        <nav class="sim-pipeline" aria-label="Fases del proceso de telepeaje">
+        <nav class="sim-pipeline" aria-label="Fases del paso por peajes">
           <div class="sim-pipeline__track" aria-hidden="true">
             <div
               class="sim-pipeline__progress"

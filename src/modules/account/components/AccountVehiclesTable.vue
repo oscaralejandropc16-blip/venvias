@@ -1,17 +1,97 @@
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue'
+import { defineComponent, type PropType, ref, computed } from 'vue'
 import AppIcon from '@/shared/icons/AppIcon.vue'
-import PlatePreview from '@/modules/plates/components/PlatePreview.vue'
+import PlateImage from '@/modules/plates/components/PlateImage.vue'
 import { ROUTE_NAMES } from '@/core/constants/routing'
 import type { AccountVehicle } from '../types/AccountTypes'
 
 export default defineComponent({
   name: 'AccountVehiclesTable',
-  components: { AppIcon, PlatePreview },
+  components: { AppIcon, PlateImage },
   props: {
     vehicles: { type: Array as PropType<AccountVehicle[]>, required: true },
   },
-  emits: ['add-vehicle'],
+  emits: ['add-vehicle', 'assign-balance', 'notify'],
+  setup(props, { emit }) {
+    const searchQuery = ref('')
+    const activeFilter = ref<'all' | 'tags' | 'plates' | 'low_balance'>('all')
+
+    // Mapeo de telemetría y tipos para enriquecer cada tarjeta
+    const vehicleTelemetry = (plate: string) => {
+      switch (plate.toUpperCase()) {
+        case 'AB123CD':
+          return {
+            category: 'Pick-up · Categoría 1',
+            lastPass: 'Peaje Tazón · Hace 3 horas',
+            statusDesc: 'Antena RFID 915 MHz activa',
+            isLow: false,
+          }
+        case 'AC456EF':
+          return {
+            category: 'Carga Pesada · 4 Ejes',
+            lastPass: 'Peaje Guacara · Ayer 18:40',
+            statusDesc: 'Antena RFID 915 MHz activa',
+            isLow: false,
+          }
+        case 'AD789GH':
+          return {
+            category: 'Camión Mediano · 2 Ejes',
+            lastPass: 'Peaje La Cabrera · Hace 2 días',
+            statusDesc: 'Lectura Óptica ALPR en Cabina',
+            isLow: true,
+          }
+        default:
+          return {
+            category: 'Vehículo Liviano · Categoría 1',
+            lastPass: 'Sin tránsitos recientes',
+            statusDesc: 'Lectura Óptica ALPR',
+            isLow: false,
+          }
+      }
+    }
+
+    const filteredVehicles = computed(() => {
+      return props.vehicles.filter((v) => {
+        // Filtro por texto
+        const query = searchQuery.value.toLowerCase().trim()
+        const matchesQuery =
+          !query ||
+          v.plate.toLowerCase().includes(query) ||
+          v.alias.toLowerCase().includes(query)
+
+        if (!matchesQuery) return false
+
+        // Filtro por categoría
+        if (activeFilter.value === 'tags') return v.tagStatus === 'ACTIVE'
+        if (activeFilter.value === 'plates') return v.tagStatus !== 'ACTIVE'
+        if (activeFilter.value === 'low_balance') return v.balance <= 50
+
+        return true
+      })
+    })
+
+    const counts = computed(() => {
+      return {
+        all: props.vehicles.length,
+        tags: props.vehicles.filter((v) => v.tagStatus === 'ACTIVE').length,
+        plates: props.vehicles.filter((v) => v.tagStatus !== 'ACTIVE').length,
+        lowBalance: props.vehicles.filter((v) => v.balance <= 50).length,
+      }
+    })
+
+    const onQuickAssignBalance = (v: AccountVehicle) => {
+      emit('assign-balance', { plate: v.plate, amount: 50 })
+    }
+
+    return {
+      searchQuery,
+      activeFilter,
+      filteredVehicles,
+      counts,
+      vehicleTelemetry,
+      onQuickAssignBalance,
+    }
+  },
   methods: {
     vehicleRechargeRoute(plate: string) {
       return {
@@ -24,48 +104,191 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="vehicles-wrap">
-    <div class="vehicles-header">
+  <div class="vehicles-hub">
+    <!-- Barra Superior de Gestión de Flota -->
+    <div class="vehicles-hub__header">
       <div>
-        <h3 class="vehicles-title">Vehículos y TAGs asociados</h3>
-        <p class="vehicles-sub">Consulta el saldo individual y estado del dispositivo de cada unidad.</p>
+        <h3 class="vehicles-hub__title">Vehículos y Unidades de Flota</h3>
+        <p class="vehicles-hub__sub">
+          Monitorea el saldo individual, telemetría de pasos y tecnología de cobro de cada unidad.
+        </p>
       </div>
-      <button type="button" class="btn btn--primario btn--sm" @click="$emit('add-vehicle')">
+
+      <button type="button" class="btn-rect btn-rect--primary" @click="$emit('add-vehicle')">
         <AppIcon name="plus" :size="16" />
-        Asociar vehículo
+        <span>Asociar Vehículo</span>
       </button>
     </div>
 
-    <div class="vehicles-grid">
-      <article v-for="v in vehicles" :key="v.plate" class="v-card">
+    <!-- Barra de Filtros y Búsqueda Automatizada (Sin Píldoras) -->
+    <div class="vehicles-hub__toolbar">
+      <!-- Buscador en tiempo real -->
+      <div class="vehicles-hub__search-box">
+        <svg viewBox="0 0 20 20" class="vehicles-hub__search-icon" fill="currentColor">
+          <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+        </svg>
+        <input
+          v-model="searchQuery"
+          type="text"
+          class="vehicles-hub__search-input"
+          placeholder="Buscar por placa o alias de unidad..."
+          aria-label="Buscar vehículos"
+        />
+        <button
+          v-if="searchQuery"
+          type="button"
+          class="vehicles-hub__clear-search"
+          @click="searchQuery = ''"
+          title="Limpiar búsqueda"
+        >
+          ✕
+        </button>
+      </div>
+
+      <!-- Pestañas de Filtro Rectangulares (Sin forma de píldora) -->
+      <div class="vehicles-hub__filters" role="group" aria-label="Filtrar por estatus">
+        <button
+          type="button"
+          class="filter-rect-btn"
+          :class="{ 'is-active': activeFilter === 'all' }"
+          @click="activeFilter = 'all'"
+        >
+          Todos <span class="filter-count">{{ counts.all }}</span>
+        </button>
+
+        <button
+          type="button"
+          class="filter-rect-btn"
+          :class="{ 'is-active': activeFilter === 'tags' }"
+          @click="activeFilter = 'tags'"
+        >
+          Con TAG RFID <span class="filter-count">{{ counts.tags }}</span>
+        </button>
+
+        <button
+          type="button"
+          class="filter-rect-btn"
+          :class="{ 'is-active': activeFilter === 'plates' }"
+          @click="activeFilter = 'plates'"
+        >
+          Por Placa ALPR <span class="filter-count">{{ counts.plates }}</span>
+        </button>
+
+        <button
+          type="button"
+          class="filter-rect-btn filter-rect-btn--alert"
+          :class="{ 'is-active': activeFilter === 'low_balance' }"
+          @click="activeFilter = 'low_balance'"
+        >
+          ⚠️ Saldo Crítico <span class="filter-count filter-count--alert">{{ counts.lowBalance }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Lista Vacía si el filtro no coincide -->
+    <div v-if="filteredVehicles.length === 0" class="vehicles-empty">
+      <AppIcon name="info" :size="32" class="text-slate-400" />
+      <p class="font-semibold text-slate-700">No se encontraron unidades con los filtros seleccionados.</p>
+      <button type="button" class="btn-rect btn-rect--secondary" @click="searchQuery = ''; activeFilter = 'all'">
+        Restablecer filtros
+      </button>
+    </div>
+
+    <!-- Cuadrícula Moderna de Tarjetas de Vehículos -->
+    <div v-else class="vehicles-grid">
+      <article
+        v-for="v in filteredVehicles"
+        :key="v.plate"
+        class="v-card"
+        :class="{ 'v-card--critical': v.balance <= 0 }"
+      >
+        <!-- Cabecera de la tarjeta: Placa y Estatus Rectangular -->
         <div class="v-card__top">
-          <PlatePreview :value="v.plate" size="sm" />
-          <span class="v-badge" :class="`v-badge--${v.tagStatusTone}`">
-            <AppIcon v-if="v.tagStatus === 'ACTIVE'" name="check" :size="14" />
-            <AppIcon v-else name="info" :size="14" />
-            {{ v.tagStatusLabel }}
-          </span>
+          <PlateImage :value="v.plate" class="v-card__plate-img" />
+
+          <!-- Distintivo Rectangular de Estatus (Sin forma de píldora) -->
+          <div
+            class="v-status-badge"
+            :class="v.tagStatus === 'ACTIVE' ? 'v-status-badge--active' : 'v-status-badge--plate'"
+          >
+            <span
+              class="v-status-badge__dot"
+              :class="v.tagStatus === 'ACTIVE' ? 'bg-emerald-500' : 'bg-sky-500'"
+              aria-hidden="true"
+            ></span>
+            <span>{{ v.tagStatus === 'ACTIVE' ? 'TAG RFID Activo' : 'Lectura por Placa' }}</span>
+          </div>
         </div>
 
+        <!-- Cuerpo: Alias, Categoría y Telemetría -->
         <div class="v-card__body">
           <h4 class="v-card__alias">{{ v.alias }}</h4>
-          <p v-if="v.tagId" class="v-card__tag">
-            <AppIcon name="recibo" :size="14" />
-            TAG: <strong>{{ v.tagId }}</strong>
-          </p>
-          <p v-else class="v-card__tag text-suave">Sin dispositivo TAG vinculado</p>
-        </div>
 
-        <div class="v-card__footer">
-          <div class="v-card__balance">
-            <span class="bal-label">Saldo disponible</span>
-            <span class="bal-value">{{ v.balanceFormatted }}</span>
+          <div class="v-card__meta-strip">
+            <span class="v-card__category">{{ vehicleTelemetry(v.plate).category }}</span>
+            <span class="v-card__meta-sep">•</span>
+            <span v-if="v.tagId" class="v-card__tag-id">
+              ID: <strong>{{ v.tagId }}</strong>
+            </span>
+            <span v-else class="v-card__tag-id text-slate-500">
+              Lectura Digital OCR
+            </span>
           </div>
 
-          <RouterLink :to="vehicleRechargeRoute(v.plate)" class="btn btn--secundario btn--sm">
-            <AppIcon name="rayo" :size="14" />
-            Recargar
-          </RouterLink>
+          <!-- Telemetría de Último Paso -->
+          <div class="v-card__telemetry">
+            <AppIcon name="peaje" :size="13" class="text-slate-400" />
+            <span>{{ vehicleTelemetry(v.plate).lastPass }}</span>
+          </div>
+        </div>
+
+        <!-- Pie Financiero y Acciones Rápidas -->
+        <div class="v-card__footer">
+          <div class="v-card__balance-col">
+            <span class="bal-label">Saldo Disponible</span>
+            <div class="bal-val-row">
+              <span
+                class="bal-val"
+                :class="v.balance <= 0 ? 'text-amber-600' : 'text-slate-900'"
+              >
+                {{ v.balanceFormatted }}
+              </span>
+              <span
+                v-if="v.balance <= 0"
+                class="bal-warning-tag"
+                title="Sin saldo para transitar"
+              >
+                Requiere Saldo
+              </span>
+            </div>
+          </div>
+
+          <!-- Acciones Rápidas -->
+          <div class="v-card__actions">
+            <!-- Botón Inteligente de Asignación si tiene saldo 0 -->
+            <button
+              v-if="v.balance <= 0"
+              type="button"
+              class="btn-quick-transfer"
+              @click="onQuickAssignBalance(v)"
+              title="Asignar Bs. 50 inmediatamente desde la cuenta consolidada"
+            >
+              <AppIcon name="rayo" :size="13" />
+              <span>+Bs. 50 Auto</span>
+            </button>
+
+            <!-- Botón de Recarga Tradicional Rectangular (Sin píldora) -->
+            <RouterLink
+              :to="vehicleRechargeRoute(v.plate)"
+              class="btn-action-rect"
+              :class="v.balance <= 0 ? 'btn-action-rect--primary' : 'btn-action-rect--secondary'"
+            >
+              <span>Recargar</span>
+              <svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd" />
+              </svg>
+            </RouterLink>
+          </div>
         </div>
       </article>
     </div>
@@ -73,159 +296,440 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.vehicles-wrap {
+/* ==========================================================================
+   GESTIÓN DE FLOTA Y VEHÍCULOS (DISEÑO RECTANGULAR EJECUTIVO - SIN PÍLDORAS)
+   ========================================================================== */
+
+.vehicles-hub {
   display: grid;
-  gap: var(--space-4);
+  gap: 20px;
 }
 
-.vehicles-header {
+.vehicles-hub__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-4);
+  gap: 16px;
   flex-wrap: wrap;
 }
 
-.vehicles-title {
-  font: 600 18px/24px var(--font-display);
-  color: var(--marino-900);
+.vehicles-hub__title {
+  font-family: var(--font-display, 'Poppins', sans-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
 }
 
-.vehicles-sub {
+.vehicles-hub__sub {
   font-size: 14px;
-  color: var(--texto-suave);
-  margin-top: 2px;
+  color: #64748b;
+  margin-top: 3px;
 }
 
+/* Barra de Filtros y Herramientas */
+.vehicles-hub__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  background: #ffffff;
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 2px 6px rgba(18, 33, 66, 0.03);
+}
+
+.vehicles-hub__search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 7px 12px;
+  min-width: 260px;
+  flex-grow: 1;
+  max-width: 380px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vehicles-hub__search-box:focus-within {
+  border-color: #0057a3;
+  box-shadow: 0 0 0 3px rgba(0, 87, 163, 0.12);
+  background: #ffffff;
+}
+
+.vehicles-hub__search-icon {
+  width: 16px;
+  height: 16px;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.vehicles-hub__search-input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 13.5px;
+  color: #0f172a;
+  width: 100%;
+}
+
+.vehicles-hub__clear-search {
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 4px;
+}
+.vehicles-hub__clear-search:hover {
+  color: #0f172a;
+}
+
+/* Botones de Filtro Rectangulares (Sin forma de píldora) */
+.vehicles-hub__filters {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filter-rect-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #64748b;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.filter-rect-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.filter-rect-btn.is-active {
+  background: #0057a3;
+  color: #ffffff;
+  border-color: #0057a3;
+  box-shadow: 0 2px 8px rgba(0, 87, 163, 0.25);
+}
+
+.filter-count {
+  font-size: 11px;
+  padding: 1px 5px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.filter-rect-btn.is-active .filter-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+.filter-rect-btn--alert {
+  color: #b45309;
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.filter-rect-btn--alert.is-active {
+  background: #d97706;
+  border-color: #d97706;
+  color: #ffffff;
+}
+
+/* Estado Vacío */
+.vehicles-empty {
+  background: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 16px;
+  padding: 40px 20px;
+  text-align: center;
+  display: grid;
+  place-items: center;
+  gap: 12px;
+}
+
+/* Cuadrícula de Tarjetas */
 .vehicles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 16px;
 }
 
 .v-card {
   background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  border-radius: var(--radius-xl, 20px);
-  padding: var(--space-6);
-  box-shadow: 0 10px 28px -6px rgba(18, 33, 66, 0.06), 0 1px 3px rgba(18, 33, 66, 0.04);
-  display: grid;
-  gap: var(--space-4);
-  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
-  animation: vCardIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-@keyframes vCardIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow:
+    0 10px 24px -6px rgba(18, 33, 66, 0.05),
+    0 1px 3px rgba(18, 33, 66, 0.03);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), border-color 0.25s var(--ease-out);
 }
 
 .v-card:hover {
   transform: translateY(-3px);
-  border-color: #0038A8;
-  box-shadow: 0 16px 36px -8px rgba(0, 56, 168, 0.12);
+  border-color: #93c5fd;
+  box-shadow: 0 16px 36px -8px rgba(0, 87, 163, 0.12);
 }
 
-.v-card :deep(.plate) {
-  transition: transform 0.25s var(--ease-out);
-}
-.v-card:hover :deep(.plate) {
-  transform: scale(1.03);
+.v-card--critical {
+  border-color: #fed7aa;
+  background: linear-gradient(180deg, #fffbf5 0%, #ffffff 100%);
 }
 
 .v-card__top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-2);
+  gap: 12px;
 }
 
-.v-badge {
+.v-card__plate-img {
+  width: 164px;
+  flex-shrink: 0;
+}
+
+/* Distintivos Rectangulares (Sin forma de píldora) */
+.v-status-badge {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   font-size: 11px;
-  font-weight: 600;
-  padding: 3px 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 8px;
   border-radius: 6px;
 }
 
-.v-badge--success {
-  background: #f0fdf4;
-  color: var(--exito);
-  border: 1px solid rgba(0, 177, 64, 0.2);
+.v-status-badge--active {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
 }
 
-.v-badge--warning {
-  background: #fefce8;
-  color: #854d0e;
-  border: 1px solid rgba(234, 179, 8, 0.3);
+.v-status-badge--plate {
+  background: #f0f9ff;
+  color: #0284c7;
+  border: 1px solid #bae6fd;
 }
 
-.v-badge--alert {
-  background: #fdf2f2;
-  color: var(--rojo-sistema);
-  border: 1px solid rgba(207, 20, 43, 0.2);
+.v-status-badge__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
 }
 
 .v-card__body {
-  display: grid;
-  gap: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .v-card__alias {
+  font-family: var(--font-display, 'Poppins', sans-serif);
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
   margin: 0;
-  font: 600 15px/20px var(--font-display);
-  color: var(--marino-900);
+  line-height: 1.25;
 }
 
-.v-card__tag {
+.v-card__meta-strip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.v-card__meta-sep {
+  opacity: 0.4;
+}
+
+.v-card__telemetry {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   font-size: 12px;
-  color: var(--texto-suave);
-  margin: 0;
-}
-
-.v-card__tag strong {
-  font-family: var(--font-mono);
-  color: var(--azul-700);
+  color: #64748b;
+  margin-top: 4px;
+  padding: 4px 8px;
+  background: #f8fafc;
+  border-radius: 6px;
+  border: 1px solid #f1f5f9;
+  width: fit-content;
 }
 
 .v-card__footer {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--borde);
-  gap: var(--space-2);
+  padding-top: 14px;
+  border-top: 1px solid #f1f5f9;
+  gap: 10px;
 }
 
-.v-card__balance {
-  display: grid;
+.v-card__balance-col {
+  display: flex;
+  flex-direction: column;
 }
 
 .bal-label {
   font-size: 11px;
-  color: var(--texto-suave);
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
+  color: #64748b;
 }
 
-.bal-value {
-  font: 600 16px/20px var(--font-mono);
-  color: var(--marino-900);
+.bal-val-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 2px;
 }
 
-.text-suave {
-  color: var(--texto-suave);
+.bal-val {
+  font-family: var(--font-mono, monospace);
+  font-size: 17px;
+  font-weight: 800;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .v-card,
-  .v-card :deep(.plate) {
-    animation: none !important;
-    transition: none !important;
-  }
+.bal-warning-tag {
+  font-size: 10px;
+  font-weight: 700;
+  color: #c2410c;
+  background: #ffedd5;
+  border: 1px solid #fed7aa;
+  padding: 1px 5px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.v-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Botón de Asignación Rápida Automática */
+.btn-quick-transfer {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 10px;
+  font-size: 11.5px;
+  font-weight: 700;
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-quick-transfer:hover {
+  background: #047857;
+  color: #ffffff;
+  border-color: #047857;
+  box-shadow: 0 4px 10px rgba(4, 120, 87, 0.25);
+}
+
+/* Botón de Recarga Rectangular */
+.btn-action-rect {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-action-rect--secondary {
+  background: #f8fafc;
+  color: #0057a3;
+  border: 1px solid #bae6fd;
+}
+
+.btn-action-rect--secondary:hover {
+  background: #0057a3;
+  color: #ffffff;
+  border-color: #0057a3;
+  box-shadow: 0 4px 10px rgba(0, 87, 163, 0.25);
+}
+
+.btn-action-rect--primary {
+  background: linear-gradient(135deg, #0057a3 0%, #0a6cc4 100%);
+  color: #ffffff;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 12px rgba(0, 87, 163, 0.25);
+}
+
+.btn-action-rect--primary:hover {
+  background: linear-gradient(135deg, #004b8d 0%, #0057a3 100%);
+  box-shadow: 0 6px 14px rgba(0, 87, 163, 0.35);
+}
+
+/* Botón Rectangular Compartido */
+.btn-rect {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none !important;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.btn-rect--primary {
+  background: linear-gradient(135deg, #0057a3 0%, #0a6cc4 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 87, 163, 0.25);
+}
+
+.btn-rect--primary:hover {
+  background: linear-gradient(135deg, #004b8d 0%, #0057a3 100%);
+  transform: translateY(-1px);
+}
+
+.btn-rect--secondary {
+  background: #f8fafc;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+}
+
+.btn-rect--secondary:hover {
+  background: #ffffff;
+  border-color: #0057a3;
+  color: #0057a3;
 }
 </style>

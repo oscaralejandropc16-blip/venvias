@@ -43,7 +43,7 @@ export default defineComponent({
               <div class="toll-loc">{{ t.highway }} · {{ t.state }}</div>
             </td>
             <td>
-              <span class="plate-pill">{{ t.plateFormatted }}</span>
+              <span class="plate-tag">{{ t.plateFormatted }}</span>
             </td>
             <td>
               <span class="method-tag">{{ t.methodLabel }}</span>
@@ -153,7 +153,7 @@ export default defineComponent({
   color: var(--texto-suave);
 }
 
-.plate-pill {
+.plate-tag {
   display: inline-block;
   font-family: var(--font-mono);
   font-weight: 600;

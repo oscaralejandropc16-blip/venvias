@@ -2,6 +2,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   scrollbar-color: var(--azul-300) var(--fondo-frio);
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 body {
   margin: 0;
@@ -9,6 +11,8 @@ body {
   color: var(--texto);
   font: 400 16px/24px var(--font-body);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 h1, h2, h3 {
   margin: 0;
@@ -30,17 +34,17 @@ button { font: inherit; color: inherit; }
 .skip {
   position: absolute; left: 12px; top: -48px; z-index: 50;
   background: var(--marino-900); color: #fff; padding: 10px 16px;
-  border-radius: var(--radius-pill); text-decoration: none;
+  border-radius: 8px; text-decoration: none;
 }
 .skip:focus { top: 12px; }
 
 .wrap { width: min(100% - 2 * var(--page-pad), var(--page-max)); margin-inline: auto; }
 
-/* Botón del sistema: píldora total en los tres niveles */
+/* Botón del sistema: estilo rectangular moderno de 10px (sin forma de pastilla/píldora) */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
-  min-height: 48px; padding: 13px 30px; border-radius: var(--radius-pill);
-  font: 500 15px/17px var(--font-body); text-decoration: none; cursor: pointer;
+  min-height: 48px; padding: 12px 26px; border-radius: 10px;
+  font: 600 15px/17px var(--font-body); text-decoration: none; cursor: pointer;
   border: 1px solid transparent;
   transition: all .2s var(--ease-out);
 }

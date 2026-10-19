@@ -24,7 +24,7 @@ export const TIME_OF_DAY_OPTIONS: readonly TimeSceneOption[] = [
     id: 'night',
     label: 'Noche',
     emoji: '🌙',
-    location: 'Autopista GMA · Telepeaje Caracas',
+    location: 'Autopista GMA · Peaje Caracas',
     timeRange: '19:00 - 05:59',
   },
 ] as const

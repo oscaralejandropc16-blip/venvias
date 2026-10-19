@@ -17,10 +17,11 @@ export default defineComponent({
       anchorId: HOW_IT_WORKS_ANCHOR,
       slides: HOW_IT_WORKS_SLIDES,
       active: 0,
-      // Mientras la pista viaja, las paradas intermedias no deben robarse el paso activo.
       steering: null as number | null,
       settle: undefined as ReturnType<typeof setTimeout> | undefined,
       observer: null as IntersectionObserver | null,
+      autoplayTimer: null as ReturnType<typeof setInterval> | null,
+      isPaused: false,
     }
   },
   mounted() {
@@ -42,20 +43,24 @@ export default defineComponent({
       ),
     )
     Array.from(track.children).forEach((el) => this.observer?.observe(el))
+
+    // Avance automático suave
+    this.startAutoplay()
   },
 
   beforeUnmount() {
     this.observer?.disconnect()
     clearTimeout(this.settle)
+    this.stopAutoplay()
   },
 
   methods: {
     track(): HTMLElement | undefined {
       return this.$refs.track as HTMLElement | undefined
     },
-    // Posición real de cada paso dentro de la pista (los anchos pueden ser fraccionarios).
     offsetOf(n: number): number {
       const kids = (this.track() as HTMLElement).children as HTMLCollectionOf<HTMLElement>
+      if (!kids || !kids[n] || !kids[0]) return 0
       return kids[n].offsetLeft - kids[0].offsetLeft
     },
 
@@ -67,19 +72,49 @@ export default defineComponent({
       this.steering = n
       this.active = n
       t.scrollTo({ left: this.offsetOf(n), behavior: reduce ? 'auto' : 'smooth' })
-      // Respaldo para navegadores sin el evento scrollend
       if (!('onscrollend' in window)) {
         clearTimeout(this.settle)
         this.settle = setTimeout(this.onScrollEnd, 900)
       }
     },
-    // Al detenerse la pista: alinea al paso exacto (nunca durante el viaje: rompe el snap).
+    next(userInitiated = true): void {
+      const nextIndex = (this.active + 1) % this.slides.length
+      this.go(nextIndex)
+      if (userInitiated) {
+        this.startAutoplay()
+      }
+    },
+    prev(userInitiated = true): void {
+      const prevIndex = this.active === 0 ? this.slides.length - 1 : this.active - 1
+      this.go(prevIndex)
+      if (userInitiated) {
+        this.startAutoplay()
+      }
+    },
+    startAutoplay(): void {
+      this.stopAutoplay()
+      this.autoplayTimer = setInterval(() => {
+        if (this.isPaused) return
+        this.next(false)
+      }, 5000)
+    },
+    stopAutoplay(): void {
+      if (this.autoplayTimer) {
+        clearInterval(this.autoplayTimer)
+        this.autoplayTimer = null
+      }
+    },
+    pause(): void {
+      this.isPaused = true
+    },
+    resume(): void {
+      this.isPaused = false
+    },
     onScrollEnd(): void {
       const t = this.track()
       if (!t) return
       this.steering = null
       clearTimeout(this.settle)
-      // Con el asomo en móvil el último paso no llega al inicio: se elige el más cercano a la posición real.
       const n = this.slides.reduce(
         (best, _, i) =>
           Math.abs(this.offsetOf(i) - t.scrollLeft) < Math.abs(this.offsetOf(best) - t.scrollLeft) ? i : best,
@@ -97,11 +132,11 @@ export default defineComponent({
     onKey(e: KeyboardEvent): void {
       if (e.key === 'ArrowRight') {
         e.preventDefault()
-        this.go(this.active + 1)
+        this.next(true)
       }
       if (e.key === 'ArrowLeft') {
         e.preventDefault()
-        this.go(this.active - 1)
+        this.prev(true)
       }
     },
   },
@@ -109,47 +144,39 @@ export default defineComponent({
 </script>
 
 <template>
-  <section :id="anchorId" class="how" :class="{ 'how--plain': plain, 'how--no-head': hideHeader }" aria-labelledby="how-title">
+  <section
+    :id="anchorId"
+    class="how"
+    :class="{ 'how--plain': plain, 'how--no-head': hideHeader }"
+    aria-labelledby="how-title"
+    @mouseenter="pause"
+    @mouseleave="resume"
+  >
     <div class="wrap how__panel">
-      <!-- Barra superior de navegación / Encabezado -->
+      <!-- Encabezado Limpio con Controles -->
       <header class="how__head" :class="{ 'how__head--solo-nav': hideHeader }">
         <div v-if="!hideHeader" class="how__head-intro">
           <h2 id="how-title">Tu placa paga. Tú no te detienes.</h2>
-          <p>Así funciona el pago por placa.</p>
+          <p>Así funciona el telepeaje por placa.</p>
         </div>
 
-        <div class="how__nav-bar">
-          <div class="how__step-nav" role="tablist" aria-label="Etapas del telepeaje">
-            <button
-              v-for="(s, i) in slides"
-              :key="s.stop"
-              type="button"
-              role="tab"
-              :aria-selected="i === active"
-              :tabindex="i === active ? 0 : -1"
-              class="how__step-tab"
-              :class="{ 'is-active': i === active, 'is-passed': i < active }"
-              @click="go(i)"
-            >
-              <span class="how__step-badge">{{ String(i + 1).padStart(2, '0') }}</span>
-              <div class="how__step-info">
-                <span class="how__step-title">{{ s.stop }}</span>
-                <span v-if="s.subtitle" class="how__step-sub">{{ s.subtitle }}</span>
-              </div>
-            </button>
-          </div>
-
-          <div class="how__controls">
-            <span class="how__counter" aria-hidden="true">{{ String(active + 1).padStart(2, '0') }} / {{ String(slides.length).padStart(2, '0') }}</span>
-            <div class="how__arrows">
-              <button type="button" class="how__arrow" :disabled="active === 0" aria-label="Paso anterior" @click="go(active - 1)">
-                <AppIcon name="arrow" :size="20" class="how__flip" />
-              </button>
-              <button type="button" class="how__arrow" :disabled="active === slides.length - 1" aria-label="Paso siguiente" @click="go(active + 1)">
-                <AppIcon name="arrow" :size="20" />
-              </button>
-            </div>
-          </div>
+        <div class="how__arrows">
+          <button
+            type="button"
+            class="how__arrow"
+            aria-label="Paso anterior"
+            @click="prev(true)"
+          >
+            <AppIcon name="arrow" :size="20" class="how__flip" />
+          </button>
+          <button
+            type="button"
+            class="how__arrow"
+            aria-label="Paso siguiente"
+            @click="next(true)"
+          >
+            <AppIcon name="arrow" :size="20" />
+          </button>
         </div>
       </header>
 
@@ -267,166 +294,68 @@ export default defineComponent({
 
 .how__head {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-4);
   margin-bottom: var(--space-4);
 }
 
-.how__head:not(.how__head--solo-nav) {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-}
-
-@media (min-width: 1024px) {
-  .how__head:not(.how__head--solo-nav) {
-    display: grid;
-    grid-template-columns: auto 1fr;
+@media (max-width: 640px) {
+  .how__head {
     align-items: center;
-    gap: var(--space-8);
+    gap: var(--space-3);
   }
 }
 
-.how__head-intro h2 { color: #fff; max-width: 18ch; }
-.how__head-intro p { margin-top: var(--space-2); color: #c9d4ea; }
-
-.how__nav-bar {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  width: 100%;
-}
-
-@media (min-width: 768px) {
-  .how__nav-bar {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-}
-
-.how__step-nav {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  flex: 1;
-}
-
-@media (min-width: 900px) {
-  .how__step-nav {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-  }
-}
-
-.how__step-tab {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #c9d4ea;
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-}
-
-.how__step-tab:hover {
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(255, 255, 255, 0.25);
-  color: #ffffff;
-}
-
-.how__step-tab.is-active {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.06) 100%);
-  border-color: #f59e0b;
-  box-shadow: 0 4px 20px -2px rgba(245, 158, 11, 0.25);
-  color: #ffffff;
-}
-
-.how__step-badge {
-  font-family: var(--font-mono, monospace);
-  font-size: 11px;
+.how__head-intro h2 {
+  color: #fff;
+  font-size: clamp(24px, 2.5vw, 36px);
   font-weight: 700;
-  padding: 3px 6px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
-  letter-spacing: 0.05em;
-  flex-shrink: 0;
-  transition: all 0.25s ease;
-}
-
-.how__step-tab.is-active .how__step-badge {
-  background: #f59e0b;
-  color: #122142;
-}
-
-.how__step-tab.is-passed .how__step-badge {
-  background: rgba(34, 197, 94, 0.2);
-  color: #86efac;
-}
-
-.how__step-info {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.how__step-title {
-  font-size: 13px;
-  font-weight: 600;
   line-height: 1.2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.how__step-sub {
-  font-size: 11px;
-  color: #94a3b8;
-  line-height: 1.2;
-  margin-top: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.how__head-intro p {
+  margin-top: var(--space-1);
+  color: #c9d4ea;
+  font-size: clamp(14px, 1.4vw, 16px);
 }
 
-.how__step-tab.is-active .how__step-sub {
-  color: #fed7aa;
-}
-
-.how__controls {
+.how__arrows {
   display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  flex-shrink: 0;
+  gap: 8px;
+  flex: none;
 }
 
-.how__counter {
-  font-family: var(--font-mono, monospace);
-  font-size: 12px;
-  font-weight: 600;
-  color: #94a3b8;
-  letter-spacing: 0.05em;
-  padding: 6px 10px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.how__arrows { display: flex; gap: var(--space-2); flex: none; }
 .how__arrow {
-  width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
-  background: transparent; color: #fff; border: 1px solid rgba(255, 255, 255, .28);
-  transition: background-color .2s var(--ease-out), border-color .2s var(--ease-out), opacity .2s;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.how__arrow:hover:not(:disabled) { background: rgba(255, 255, 255, .08); border-color: #fff; }
-.how__arrow:disabled { opacity: .3; cursor: default; }
-.how__flip { transform: scaleX(-1); }
+
+.how__arrow:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.how__arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+  transform: none;
+}
+
+.how__flip {
+  transform: scaleX(-1);
+}
 
 .how__step-kicker {
   display: inline-flex;
@@ -439,11 +368,8 @@ export default defineComponent({
   font-family: var(--font-mono, monospace);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   color: #f59e0b;
-  background: rgba(245, 158, 11, 0.12);
-  padding: 2px 7px;
-  border-radius: 4px;
 }
 
 .how__step-kicker-name {
@@ -586,38 +512,6 @@ export default defineComponent({
 .how--plain .how__text .how__stat { border-top-color: var(--borde); }
 .how--plain .how__text .how__note { border-left-color: var(--borde); }
 .how--plain .how__note svg { color: var(--azul-700); }
-.how--plain .how__step-tab {
-  background: #f8fafc;
-  border-color: #e2e8f0;
-  color: #475569;
-}
-.how--plain .how__step-tab:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-  color: #0f172a;
-}
-.how--plain .how__step-tab.is-active {
-  background: #ffffff;
-  border-color: #0038A8;
-  box-shadow: 0 4px 16px -2px rgba(0, 56, 168, 0.15);
-  color: #0038A8;
-}
-.how--plain .how__step-badge {
-  background: #e2e8f0;
-  color: #334155;
-}
-.how--plain .how__step-tab.is-active .how__step-badge {
-  background: #0038A8;
-  color: #ffffff;
-}
-.how--plain .how__step-tab.is-active .how__step-sub {
-  color: #0284c7;
-}
-.how--plain .how__counter {
-  background: #f1f5f9;
-  border-color: #e2e8f0;
-  color: #64748b;
-}
 .how--plain .how__step-kicker-tag {
   color: #0038A8;
   background: rgba(0, 56, 168, 0.08);
@@ -626,9 +520,10 @@ export default defineComponent({
   color: #64748b;
 }
 .how--plain .how__route {
-  margin-inline: calc(50% - 50vw);
-  margin-top: clamp(48px, 6vw, 76px);
-  margin-bottom: clamp(56px, 7vw, 92px);
+  margin-inline: calc(-1 * var(--page-pad));
+  margin-top: clamp(40px, 5vw, 64px);
+  margin-bottom: clamp(48px, 6vw, 76px);
+  overflow: hidden;
 }
 .how--plain .how__pins { width: min(100% - 2 * var(--page-pad), var(--page-max)); margin-inline: auto; padding-inline: 0; }
 .how--plain .how__stop { color: var(--texto-suave); }

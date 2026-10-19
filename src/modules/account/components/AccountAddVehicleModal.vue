@@ -221,4 +221,8 @@ export default defineComponent({
   padding-top: var(--space-4);
   border-top: 1px solid var(--borde);
 }
+
+.modal-footer .btn {
+  border-radius: 8px !important;
+}
 </style>

@@ -3,6 +3,7 @@ import { defineComponent, type PropType } from 'vue'
 import { plateImageLabel } from '../constants/plateEntry.messages'
 import type { PlateChar } from '../types/Plate'
 import { formatPlate, plateChars } from '../utils/plate'
+import plateBg from '@/assets/plate-venezuela.svg'
 
 /**
  * La placa venezolana de solo lectura: el mismo dibujo de `PlateField`, para
@@ -13,6 +14,11 @@ export default defineComponent({
   props: {
     value: { type: String, required: true },
     size: { type: String as PropType<'xs' | 'sm' | 'md'>, default: 'md' },
+  },
+  data() {
+    return {
+      plateBg,
+    }
   },
   computed: {
     chars(): PlateChar[] {
@@ -26,7 +32,13 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="pi" :class="`pi--${size}`" role="img" :aria-label="label">
+  <div
+    class="pi"
+    :class="`pi--${size}`"
+    :style="{ backgroundImage: `url(${plateBg})` }"
+    role="img"
+    :aria-label="label"
+  >
     <span class="pi__chars" aria-hidden="true">
       <span v-for="c in chars" :key="c.key">{{ c.ch }}</span>
     </span>

@@ -35,11 +35,11 @@
   --space-14: 56px;
   --space-16: 64px;
 
-  --radius-pill: 500px;
-  --radius-xl: 40px;
-  --radius-lg: 28px;
-  --radius-md: 20px;
-  --radius-sm: 16px;
+  --radius-pill: 10px;
+  --radius-xl: 32px;
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
   --radius-placa: 8px;
 
   --elev-1: 0 10px 25px -5px rgba(18, 33, 66, 0.06), 0 8px 10px -6px rgba(18, 33, 66, 0.04);

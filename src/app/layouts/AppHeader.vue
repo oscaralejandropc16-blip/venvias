@@ -1,10 +1,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import AppIcon from '@/shared/icons/AppIcon.vue'
-import { useHeroStore } from '@/app/stores/hero.store'
-import { accountLink, mainNavLinks, mobileNavLinks, navCtaLink } from '@/app/navigation/mainNav'
+import { accountLink, mainNavLinks, mobileNavLinks } from '@/app/navigation/mainNav'
 import { ROUTE_NAMES } from '@/core/constants/routing'
 import type { NavLink } from '@/core/types/Nav'
+import type { IconName } from '@/shared/icons/iconPaths'
 import logo from '@/assets/logos/venvias-positivo.png'
 
 export default defineComponent({
@@ -12,83 +12,171 @@ export default defineComponent({
   components: { AppIcon },
   data() {
     return {
-      hero: useHeroStore(),
       logo,
       links: mainNavLinks,
       mobileLinks: mobileNavLinks,
-      ctaLink: navCtaLink,
       accountLink,
       homeRoute: { name: ROUTE_NAMES.home },
       open: false,
+      isScrolled: false,
+      scrollHandler: null as (() => void) | null,
     }
-  },
-  computed: {
-    // En el móvil el «Recargar» de la nav cede su lugar mientras la placa del hero está a la vista.
-    heroPlateVisible(): boolean {
-      return this.$route.name === ROUTE_NAMES.home && this.hero.plateInView !== false
-    },
   },
   watch: {
     '$route.fullPath'() {
       this.open = false
     },
   },
+  mounted() {
+    this.scrollHandler = () => {
+      this.isScrolled = window.scrollY > 20
+    }
+    window.addEventListener('scroll', this.scrollHandler, { passive: true })
+    this.scrollHandler()
+  },
+  beforeUnmount() {
+    if (this.scrollHandler) {
+      window.removeEventListener('scroll', this.scrollHandler)
+    }
+  },
   methods: {
-    // Los enlaces a una sección de inicio no se marcan como página actual.
     exactActiveClass(link: NavLink): string {
       const isAnchor = typeof link.to === 'object' && 'hash' in link.to && !!link.to.hash
       return isAnchor ? '' : 'router-link-exact-active'
+    },
+    getLinkIcon(label: string): IconName {
+      const map: Record<string, IconName> = {
+        'Inicio': 'carro',
+        'Recargar placa': 'rayo',
+        'Consultar saldo': 'placa',
+        'Pagar deuda': 'alert',
+        'Peajes habilitados': 'peaje',
+        'Cómo funciona': 'info',
+      }
+      return map[label] ?? 'arrow'
     },
   },
 })
 </script>
 
 <template>
-  <header class="nav" :class="{ 'is-open': open }">
+  <header class="nav" :class="{ 'is-open': open, 'is-scrolled': isScrolled }">
+    <!-- Barra Tricolor Superior Dinámica con Barrido Luminoso -->
     <div class="nav__tricolor" aria-hidden="true"></div>
-    <div class="wrap flex items-center gap-6 h-16 min-[1080px]:h-[76px]">
-      <RouterLink :to="homeRoute" class="flex items-center gap-3" aria-label="VenVías, inicio">
-        <img :src="logo" alt="VenVías" width="992" height="380" class="h-[34px] w-auto min-[1080px]:h-10 transition-transform duration-200 hover:scale-[1.02]" />
-      </RouterLink>
 
-      <nav class="nav__links hidden gap-8 mx-auto min-[1080px]:flex" aria-label="Principal">
+    <div class="wrap nav__container">
+      <!-- Marca Institucional VenVías (Limpia, sin badges ni pastillas) -->
+      <div class="nav__brand-group">
+        <RouterLink :to="homeRoute" class="nav-brand" aria-label="VenVías - Inicio">
+          <img
+            :src="logo"
+            alt="VenVías"
+            width="992"
+            height="380"
+            class="nav-brand__logo"
+            loading="eager"
+          />
+        </RouterLink>
+      </div>
+
+      <!-- Enlaces Centrales de Navegación de Escritorio -->
+      <nav class="nav__links" aria-label="Navegación principal">
         <RouterLink
           v-for="l in links"
           :key="l.label"
           :to="l.to"
-          class="nav__link link-quiet"
+          class="nav__link"
           :exact-active-class="exactActiveClass(l)"
         >
-          {{ l.label }}
+          <span>{{ l.label }}</span>
         </RouterLink>
       </nav>
 
-      <div class="flex items-center gap-3 ml-auto min-[1080px]:ml-0">
-        <RouterLink :to="ctaLink.to" class="btn btn--primario btn--sm" :class="{ 'max-[1079px]:hidden': heroPlateVisible }">
-          <AppIcon name="rayo" :size="16" />
-          {{ ctaLink.label }}
-        </RouterLink>
-        <RouterLink :to="accountLink.to" class="btn btn--secundario btn--sm hidden min-[1080px]:inline-flex">
+      <!-- Acciones en la Cabecera -->
+      <div class="nav__actions">
+        <!-- Botón Ejecutivo de Acceso al Portal / Mi Cuenta (Rectangular Estándar - Sin Píldoras) -->
+        <RouterLink
+          :to="accountLink.to"
+          class="nav-btn-account"
+          aria-label="Portal de gestión y vehículos Mi Cuenta"
+        >
           <AppIcon name="carro" :size="16" />
-          {{ accountLink.label }}
+          <span>Mi cuenta</span>
         </RouterLink>
-        <button class="nav__menu" type="button" :aria-expanded="open" aria-controls="menu-movil" @click="open = !open">
-          <AppIcon :name="open ? 'close' : 'menu'" />
+
+        <!-- Botón Hamburguesa Móvil / Tablet (Solo visible bajo 1080px) -->
+        <button
+          class="nav__menu-btn"
+          type="button"
+          :aria-expanded="open"
+          aria-controls="menu-movil"
+          @click="open = !open"
+        >
+          <AppIcon :name="open ? 'close' : 'menu'" :size="19" />
           <span>{{ open ? 'Cerrar' : 'Menú' }}</span>
         </button>
       </div>
     </div>
 
-    <div id="menu-movil" class="nav__sheet rule-top pt-3 pb-6 min-[1080px]:hidden" :hidden="!open">
-      <nav aria-label="Principal móvil" class="wrap flex flex-col">
-        <RouterLink v-for="l in mobileLinks" :key="l.label" :to="l.to">
-          {{ l.label }}<AppIcon name="arrow" :size="20" />
-        </RouterLink>
-        <RouterLink :to="accountLink.to" class="btn btn--secundario mt-6 self-start">
-          <AppIcon name="carro" :size="16" />
-          {{ accountLink.label }}
-        </RouterLink>
-      </nav>
+    <!-- Fondo Oscurecido para Menú Móvil -->
+    <div
+      v-if="open"
+      class="nav__backdrop"
+      @click="open = false"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Menú Desplegable Móvil -->
+    <div
+      id="menu-movil"
+      class="nav__sheet"
+      :hidden="!open"
+    >
+      <div class="wrap nav__sheet-container">
+        <!-- Acciones Rápidas en Móvil -->
+        <div class="nav__sheet-quick-actions">
+          <RouterLink
+            :to="accountLink.to"
+            class="nav-sheet-account-btn"
+          >
+            <AppIcon name="carro" :size="17" />
+            <span>Portal Mi Cuenta</span>
+          </RouterLink>
+
+          <a
+            href="tel:08008368427"
+            class="nav-sheet-call-btn"
+          >
+            <AppIcon name="audifonos" :size="17" />
+            <span>0800-VENVIAS</span>
+          </a>
+        </div>
+
+        <!-- Lista de Enlaces Móviles -->
+        <nav aria-label="Navegación principal móvil" class="nav__sheet-links">
+          <RouterLink
+            v-for="l in mobileLinks"
+            :key="l.label"
+            :to="l.to"
+            class="nav__sheet-link"
+            :exact-active-class="exactActiveClass(l)"
+          >
+            <div class="nav__sheet-link-left">
+              <span class="nav__sheet-link-icon-box">
+                <AppIcon :name="getLinkIcon(l.label)" :size="17" />
+              </span>
+              <span class="nav__sheet-link-label">{{ l.label }}</span>
+            </div>
+            <AppIcon name="arrow" :size="16" class="nav__sheet-link-arrow" />
+          </RouterLink>
+        </nav>
+
+        <!-- Estatus Operativo al Fondo del Menú Móvil -->
+        <div class="nav__sheet-status">
+          <span class="nav__sheet-status-dot" aria-hidden="true"></span>
+          <span>Red Nacional Operativa 24/7 · Peajes Interoperables ALPR & RFID</span>
+        </div>
+      </div>
     </div>
   </header>
 </template>
@@ -98,94 +186,251 @@ export default defineComponent({
   position: sticky;
   top: 0;
   z-index: 50;
-  background-color: #ffffff !important;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
-  box-shadow: 0 4px 20px -2px rgba(18, 33, 66, 0.08);
+  background-color: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+  box-shadow: 0 4px 20px -2px rgba(18, 33, 66, 0.05), 0 1px 3px 0 rgba(18, 33, 66, 0.02);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+/* Barra Tricolor Superior Dinámica con Barrido Luminoso */
 .nav__tricolor {
+  position: relative;
   height: 3px;
   width: 100%;
   background: var(--tricolor-vzla, linear-gradient(90deg, #F9D616 0%, #0038A8 50%, #CE1126 100%));
-  position: relative;
   overflow: hidden;
 }
+
 .nav__tricolor::after {
   content: '';
   position: absolute;
   top: 0;
   left: -50%;
-  width: 30%;
+  width: 32%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.85), transparent);
-  animation: tricolorSweep 4.5s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+  animation: tricolorSweep 5s ease-in-out infinite;
 }
+
 @keyframes tricolorSweep {
   0% { left: -50%; }
   35%, 100% { left: 150%; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .nav__tricolor::after {
-    animation: none;
+
+/* Contenedor Principal de la Barra */
+.nav__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 64px;
+}
+
+@media (min-width: 1080px) {
+  .nav__container {
+    height: 74px;
+    gap: 20px;
   }
 }
-.nav__links a.nav__link {
+
+/* Grupo de Marca y Distintivo Oficial */
+.nav__brand-group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.nav-brand__logo {
+  height: 34px;
+  width: auto;
+  transition: transform 0.2s ease;
+}
+
+@media (min-width: 1080px) {
+  .nav-brand__logo {
+    height: 38px;
+  }
+}
+
+.nav-brand:hover .nav-brand__logo {
+  transform: scale(1.02);
+}
+
+/* Enlaces de Navegación Centrales */
+.nav__links {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  margin-inline: auto;
+}
+
+@media (min-width: 1080px) {
+  .nav__links {
+    display: flex;
+  }
+}
+
+.nav__link {
   position: relative;
-  padding-block: 8px;
-  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
   font-weight: 500;
-  color: var(--texto);
-  transition: color 0.2s var(--ease-out);
+  color: #334155;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s ease, background-color 0.15s ease;
 }
-.nav__links a.nav__link:hover {
+
+@media (min-width: 1240px) {
+  .nav__link {
+    padding: 8px 14px;
+    font-size: 14.5px;
+  }
+}
+
+.nav__link:hover {
   color: #0038A8;
+  background-color: rgba(0, 56, 168, 0.04);
 }
-.nav__links a.nav__link::after {
+
+.nav__link::after {
   content: '';
   position: absolute;
-  bottom: 0;
-  left: 50%;
-  right: 50%;
+  bottom: -2px;
+  left: 12px;
+  right: 12px;
   height: 2.5px;
   background: #0038A8;
   border-radius: 2px;
-  transition: left 0.25s var(--ease-out), right 0.25s var(--ease-out), opacity 0.2s;
   opacity: 0;
-}
-.nav__links a.nav__link:hover::after {
-  left: 25%;
-  right: 25%;
-  opacity: 0.4;
-}
-.nav__links a.router-link-exact-active {
-  color: #0038A8;
-  font-weight: 600;
-}
-.nav__links a.router-link-exact-active::after {
-  left: 0;
-  right: 0;
-  opacity: 1;
+  transform: scaleX(0.4);
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.nav__menu {
-  display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px 0 10px;
-  border: 1px solid var(--borde); border-radius: var(--radius-pill); background: #fff;
-  color: var(--marino-900); font-size: 14px; font-weight: 500; cursor: pointer;
-  box-shadow: 0 2px 6px rgba(18, 33, 66, 0.05);
-  transition: all 0.2s var(--ease-out);
+.nav__link:hover::after {
+  opacity: 0.35;
+  transform: scaleX(0.7);
 }
-.nav__menu:hover {
+
+.nav__link.router-link-exact-active {
+  color: #0038A8;
+  font-weight: 600;
+  background-color: rgba(0, 56, 168, 0.06);
+}
+
+.nav__link.router-link-exact-active::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Área de Acciones Derecha */
+.nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* Botón Ejecutivo de Mi Cuenta */
+.nav-btn-account {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 8px;
+  background: #070e1e;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(7, 14, 30, 0.15);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 1080px) {
+  .nav-btn-account {
+    display: inline-flex;
+  }
+}
+
+.nav-btn-account:hover {
+  background: #0038A8;
+  border-color: rgba(0, 56, 168, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 56, 168, 0.3);
+}
+
+/* Botón Hamburguesa Móvil */
+.nav__menu-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 14px 0 10px;
+  border: 1px solid var(--borde, #e2e8f0);
+  border-radius: 8px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(18, 33, 66, 0.05);
+  transition: all 0.2s ease;
+}
+
+@media (min-width: 1080px) {
+  .nav__menu-btn {
+    display: none !important;
+  }
+}
+
+.nav__menu-btn:hover {
   border-color: #93c5fd;
   transform: translateY(-1px);
   box-shadow: 0 4px 10px rgba(18, 33, 66, 0.08);
 }
 
-.nav__sheet {
-  animation: navSheetIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+/* Menú Desplegable Móvil */
+.nav__backdrop {
+  position: fixed;
+  inset: 0;
+  top: 67px;
+  background: rgba(7, 14, 30, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 40;
 }
+
+.nav__sheet {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #cbd5e1;
+  box-shadow: 0 20px 30px -10px rgba(18, 33, 66, 0.15);
+  animation: navSheetIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+  z-index: 50;
+}
+
 @keyframes navSheetIn {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
@@ -193,25 +438,150 @@ export default defineComponent({
   }
 }
 
-.nav__sheet a:not(.btn) {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 14px 0; border-bottom: 1px solid var(--borde);
-  color: #122142; text-decoration: none; font: 500 18px/24px var(--font-display);
-  transition: color 0.2s, padding-left 0.2s;
-}
-.nav__sheet a:not(.btn):hover {
-  color: #0038A8;
-  padding-left: 6px;
+@media (min-width: 1080px) {
+  .nav__backdrop,
+  .nav__sheet {
+    display: none !important;
+  }
 }
 
-@media (min-width: 1080px) {
-  .nav__menu { display: none; }
+.nav__sheet-container {
+  padding-block: 18px 22px;
+}
+
+/* Botones Rápidos en Móvil */
+.nav__sheet-quick-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.nav-sheet-account-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background: #070e1e;
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(7, 14, 30, 0.15);
+}
+
+.nav-sheet-call-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Lista de Enlaces en Móvil */
+.nav__sheet-links {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav__sheet-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 10px;
+  border-radius: 8px;
+  color: #1e293b;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.nav__sheet-link:hover,
+.nav__sheet-link.router-link-exact-active {
+  background: rgba(0, 56, 168, 0.05);
+  color: #0038A8;
+}
+
+.nav__sheet-link.router-link-exact-active {
+  font-weight: 600;
+}
+
+.nav__sheet-link-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav__sheet-link-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  color: #0038A8;
+}
+
+.nav__sheet-link.router-link-exact-active .nav__sheet-link-icon-box {
+  background: #0038A8;
+  color: #ffffff;
+}
+
+.nav__sheet-link-arrow {
+  color: #94a3b8;
+  transition: transform 0.15s ease;
+}
+
+.nav__sheet-link:hover .nav__sheet-link-arrow {
+  transform: translateX(3px);
+  color: #0038A8;
+}
+
+/* Estado Operativo Móvil */
+.nav__sheet-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #475569;
+  text-align: center;
+}
+
+.nav__sheet-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.7);
+  flex-shrink: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .nav__links a.nav__link::after,
+  .nav__tricolor::after,
   .nav__sheet,
-  .nav__menu {
+  .nav__menu-btn {
     animation: none !important;
     transition: none !important;
   }

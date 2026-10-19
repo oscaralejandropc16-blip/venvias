@@ -3,6 +3,7 @@ import { defineComponent } from 'vue'
 import AppIcon from '@/shared/icons/AppIcon.vue'
 import { PLATE_MAX, plateChars, plateInputChange } from '../utils/plate'
 import type { PlateChar } from '../types/Plate'
+import plateBg from '@/assets/plate-venezuela.svg'
 
 /**
  * Campo de placa con el dibujo de la placa venezolana: normaliza lo escrito,
@@ -29,6 +30,7 @@ export default defineComponent({
   },
   data() {
     return {
+      plateBg,
       maxLength: PLATE_MAX + 4,
       caret: 0,
       focused: false,
@@ -78,6 +80,7 @@ export default defineComponent({
   <div
     class="plate"
     :class="{ 'is-focused': focused, 'is-error': error, 'is-valid': isValid, 'is-swinging': swinging }"
+    :style="{ backgroundImage: `url(${plateBg})` }"
     @click="focus"
     @animationend.self="$emit('swing-end')"
   >
@@ -153,10 +156,14 @@ export default defineComponent({
 
 .plate__input {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  border: 0; background: transparent; color: transparent; caret-color: transparent;
+  border: 0; background: transparent;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  opacity: 0 !important;
+  caret-color: transparent !important;
   font: 500 16px var(--font-mono); text-align: center; outline: none;
 }
-.plate__input::selection { background: transparent; }
+.plate__input::selection { background: transparent; color: transparent; }
 
 /* La matrícula escala con la placa (no con la pantalla) para caber en paneles más angostos que el hero */
 .plate__chars {
