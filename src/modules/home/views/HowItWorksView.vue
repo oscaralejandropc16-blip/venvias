@@ -1,8 +1,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink, type RouteLocationRaw } from 'vue-router'
 import AppIcon from '@/shared/icons/AppIcon.vue'
 import { ROUTE_NAMES } from '@/core/constants/routing'
+import { normalizePlate, plateStatus } from '@/modules/plates/utils/plate'
 import HowItWorksInfographic from '../components/HowItWorksInfographic.vue'
 
 import camaraImg from '@/assets/how-it-works/2-camara.webp'
@@ -72,6 +73,10 @@ export default defineComponent({
 
       // Comparativa Antes vs Ahora
       activeCompare: 'now' as 'now' | 'before',
+
+      // Consola de consulta rápida en CTA
+      quickPlate: 'AB123CD',
+      samplePlates: ['AB123CD', 'AF820KK', 'AE742MB'],
     }
   },
 
@@ -82,6 +87,21 @@ export default defineComponent({
     },
     currentStepMeta(): StepMeta {
       return this.steps.find((s) => s.id === this.currentStep) || this.steps[0]
+    },
+    isQuickPlateValid(): boolean {
+      return plateStatus(this.quickPlate) === 'valid'
+    },
+    quickBalanceRoute(): RouteLocationRaw {
+      return {
+        name: ROUTE_NAMES.balance,
+        query: this.quickPlate ? { placa: this.quickPlate } : undefined,
+      }
+    },
+    quickRechargeRoute(): RouteLocationRaw {
+      return {
+        name: ROUTE_NAMES.recharge,
+        query: this.quickPlate ? { placa: this.quickPlate } : undefined,
+      }
     },
   },
 
@@ -98,6 +118,16 @@ export default defineComponent({
   },
 
   methods: {
+    onQuickPlateInput(e: Event): void {
+      const input = e.target as HTMLInputElement
+      this.quickPlate = normalizePlate(input.value)
+      input.value = this.quickPlate
+    },
+
+    setSamplePlate(plate: string): void {
+      this.quickPlate = plate
+    },
+
     setStep(step: SimStep, userAction = true): void {
       this.currentStep = step
       this.progress = 0
@@ -678,27 +708,125 @@ export default defineComponent({
         <HowItWorksInfographic />
       </section>
 
-      <!-- BANNER DE CONVERSIÓN FINAL -->
+      <!-- BANNER DE CONVERSIÓN FINAL: CENTRO DE ACCIÓN Y CONSULTA RÁPIDA -->
       <section class="cta-banner reveal-on-scroll" aria-labelledby="cta-banner-title">
-        <div class="cta-banner__card">
-          <div class="cta-banner__glow" aria-hidden="true"></div>
-          <div class="cta-banner__shimmer" aria-hidden="true"></div>
-          <div class="cta-banner__content">
-            <span class="cta-banner__tag">PREPÁRATE PARA TU VIAJE</span>
-            <h2 id="cta-banner-title" class="cta-banner__title">¿Listo para circular sin colas por los peajes?</h2>
-            <p class="cta-banner__sub">
-              Ingresa tu placa para consultar tu saldo disponible o recargar fondos de inmediato.
-            </p>
-            <div class="cta-banner__actions">
-              <RouterLink :to="rechargeRoute" class="cta-btn cta-btn--primary">
-                <AppIcon name="rayo" :size="18" />
-                <span>Recargar placa ahora</span>
-                <span class="cta-btn__shine" aria-hidden="true"></span>
-              </RouterLink>
-              <RouterLink :to="balanceRoute" class="cta-btn cta-btn--secondary">
-                <AppIcon name="placa" :size="18" />
-                <span>Consultar saldo disponible</span>
-              </RouterLink>
+        <div class="cta-card">
+          <div class="cta-card__ambient-glow" aria-hidden="true"></div>
+          <div class="cta-card__cyber-grid" aria-hidden="true"></div>
+
+          <div class="cta-grid">
+            <!-- Columna Izquierda: Mensaje Ejecutivo y Beneficios Clave -->
+            <div class="cta-info">
+              <div class="cta-status-tag">
+                <span class="cta-status-dot" aria-hidden="true"></span>
+                <span>ACCESO INMEDIATO · RED NACIONAL DE PEAJES</span>
+              </div>
+
+              <h2 id="cta-banner-title" class="cta-title">
+                ¿Listo para circular <span class="gradient-text">sin detenerte?</span>
+              </h2>
+
+              <p class="cta-desc">
+                Consulta tu saldo en 3 segundos o realiza una recarga instantánea antes de salir. Con VenVías viajas a velocidad de autopista sin colas ni esperas en cabina.
+              </p>
+
+              <!-- Beneficios en micro-píldoras de alto contraste -->
+              <div class="cta-benefits">
+                <div class="cta-benefit-item">
+                  <span class="cta-benefit-icon"><AppIcon name="rayo" :size="16" /></span>
+                  <span>Acreditación en 2 seg por Pago Móvil y BDV en Línea</span>
+                </div>
+                <div class="cta-benefit-item">
+                  <span class="cta-benefit-icon"><AppIcon name="check" :size="16" /></span>
+                  <span>Tránsito garantizado y fluido sin barreras físicas</span>
+                </div>
+                <div class="cta-benefit-item">
+                  <span class="cta-benefit-icon"><AppIcon name="recibo" :size="16" /></span>
+                  <span>Comprobante y conciliación digital al instante</span>
+                </div>
+              </div>
+
+              <!-- Enlaces rápidos de acción -->
+              <div class="cta-action-row">
+                <RouterLink :to="rechargeRoute" class="cta-btn cta-btn--primary">
+                  <AppIcon name="rayo" :size="18" />
+                  <span>Recargar placa ahora</span>
+                  <span class="cta-btn__shine" aria-hidden="true"></span>
+                </RouterLink>
+                <RouterLink :to="balanceRoute" class="cta-btn cta-btn--secondary">
+                  <AppIcon name="placa" :size="18" />
+                  <span>Consultar saldo</span>
+                </RouterLink>
+              </div>
+            </div>
+
+            <!-- Columna Derecha: Consola Interactiva de Placa en Vivo -->
+            <div class="cta-console">
+              <div class="console-box">
+                <div class="console-box__header">
+                  <span class="console-box__label">CONSULTA EXPRÉS DE MATRÍCULA</span>
+                  <span class="console-box__live">
+                    <span class="live-ping" aria-hidden="true"></span>
+                    ALPR ONLINE
+                  </span>
+                </div>
+
+                <!-- Placa interactiva editable -->
+                <div class="console-plate">
+                  <div class="console-plate__flag" aria-hidden="true"></div>
+                  <div class="console-plate__header">REPÚBLICA BOLIVARIANA DE VENEZUELA</div>
+                  <div class="console-plate__input-wrap">
+                    <input
+                      type="text"
+                      :value="quickPlate"
+                      maxlength="7"
+                      autocomplete="off"
+                      spellcheck="false"
+                      placeholder="AB123CD"
+                      class="console-plate__input mono"
+                      aria-label="Ingresa tu placa vehicular para consulta exprés"
+                      @input="onQuickPlateInput"
+                    />
+                    <div class="console-plate__laser" aria-hidden="true"></div>
+                  </div>
+                  <div class="console-plate__footer">TRANSPORTE TERRESTRE</div>
+                </div>
+
+                <!-- Placas de prueba / Atajos rápidos -->
+                <div class="console-quick-picks">
+                  <span class="console-quick-label">Probar matrícula:</span>
+                  <div class="console-chips">
+                    <button
+                      v-for="p in samplePlates"
+                      :key="p"
+                      type="button"
+                      class="console-chip mono"
+                      :class="{ 'is-selected': quickPlate === p }"
+                      @click="setSamplePlate(p)"
+                    >
+                      {{ p }}
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Botones de Acción de la Consola -->
+                <div class="console-actions">
+                  <RouterLink :to="quickBalanceRoute" class="console-btn console-btn--query">
+                    <AppIcon name="placa" :size="16" />
+                    <span>Consultar saldo</span>
+                  </RouterLink>
+                  <RouterLink :to="quickRechargeRoute" class="console-btn console-btn--pay">
+                    <AppIcon name="rayo" :size="16" />
+                    <span>Recargar</span>
+                  </RouterLink>
+                </div>
+
+                <!-- Nota informativa de seguridad -->
+                <div class="console-footer-note">
+                  <AppIcon name="info" :size="14" />
+                  <span>Sin registros previos ni contraseñas. Valida con tu número de placa.</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -2216,77 +2344,147 @@ export default defineComponent({
 }
 
 /* ==========================================================================
-   BANNER FINAL CTA
+   BANNER FINAL CTA: CENTRO DE ACCIÓN RÁPIDA (REDISEÑO HIGH-TECH)
    ========================================================================== */
-.cta-banner__card {
+.cta-card {
   position: relative;
-  background: linear-gradient(135deg, #0038A8 0%, #0c2360 100%);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 28px;
-  padding: clamp(36px, 6vw, 64px) clamp(24px, 5vw, 48px);
-  text-align: center;
+  background: radial-gradient(130% 120% at 20% 0%, #0d1e4c 0%, #081126 70%, #050a17 100%);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 32px;
+  padding: clamp(32px, 5vw, 56px);
   overflow: hidden;
-  box-shadow: 0 30px 70px -15px rgba(0, 56, 168, 0.55);
+  box-shadow: 0 30px 90px -20px rgba(0, 56, 168, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.cta-banner__glow {
+.cta-card:hover {
+  border-color: rgba(56, 189, 248, 0.45);
+  box-shadow: 0 35px 100px -20px rgba(0, 56, 168, 0.55);
+}
+
+.cta-card__ambient-glow {
   position: absolute;
-  top: -50%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 600px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.35) 0%, transparent 70%);
+  top: -60px;
+  right: -60px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.18) 0%, transparent 70%);
   pointer-events: none;
 }
 
-.cta-banner__shimmer {
+.cta-card__cyber-grid {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.15) 0%, transparent 50%);
+  background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse at 80% 20%, black 10%, transparent 75%);
   pointer-events: none;
 }
 
-.cta-banner__content {
+.cta-grid {
   position: relative;
   z-index: 2;
-  max-width: 680px;
-  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(32px, 4vw, 56px);
+  align-items: center;
 }
 
-.cta-banner__tag {
-  display: inline-block;
+@media (min-width: 960px) {
+  .cta-grid {
+    grid-template-columns: 1.15fr 0.95fr;
+  }
+}
+
+/* Columna Izquierda: Información */
+.cta-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.cta-status-tag {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--font-mono, monospace);
   font-size: 11px;
   font-weight: 700;
-  color: #f59e0b;
-  background: rgba(245, 158, 11, 0.16);
-  border: 1px solid rgba(245, 158, 11, 0.35);
-  padding: 4px 12px;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  padding: 5px 14px;
   border-radius: 9999px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   margin-bottom: var(--space-4);
 }
 
-.cta-banner__title {
-  font: 800 clamp(28px, 4vw, 44px)/1.15 var(--font-display);
+.cta-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 10px #38bdf8;
+  animation: beaconPulse 1.8s infinite;
+}
+
+.cta-title {
+  font: 800 clamp(30px, 3.8vw, 46px)/1.15 var(--font-display);
   color: #ffffff;
-  margin: 0 0 var(--space-3);
+  margin: 0 0 var(--space-4);
   letter-spacing: -0.02em;
 }
 
-.cta-banner__sub {
-  font-size: clamp(15px, 1.6vw, 18px);
-  color: #e0f2fe;
+.cta-desc {
+  font-size: clamp(15px, 1.5vw, 17px);
+  color: #94a3b8;
   line-height: 1.6;
-  margin: 0 0 var(--space-8);
+  margin: 0 0 var(--space-6);
 }
 
-.cta-banner__actions {
+.cta-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: var(--space-8);
+}
+
+.cta-benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.cta-benefit-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.cta-benefit-item:nth-child(2) .cta-benefit-icon {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.cta-benefit-item:nth-child(3) .cta-benefit-icon {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.cta-action-row {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-4);
-  justify-content: center;
+  gap: var(--space-3);
 }
 
 .cta-btn {
@@ -2294,9 +2492,9 @@ export default defineComponent({
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 26px;
+  padding: 13px 24px;
   border-radius: 14px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   text-decoration: none;
   overflow: hidden;
@@ -2304,15 +2502,15 @@ export default defineComponent({
 }
 
 .cta-btn--primary {
-  background: #ffffff;
-  color: #0038A8;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  background: #0038A8;
+  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(0, 56, 168, 0.4);
 }
 
 .cta-btn--primary:hover {
-  background: #f8fafc;
+  background: #0284c7;
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 10px 28px rgba(2, 132, 199, 0.55);
 }
 
 .cta-btn--primary:active {
@@ -2325,7 +2523,7 @@ export default defineComponent({
   left: -100%;
   width: 50%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
   transform: skewX(-20deg);
   transition: left 0.75s ease;
 }
@@ -2335,19 +2533,253 @@ export default defineComponent({
 }
 
 .cta-btn--secondary {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .cta-btn--secondary:hover {
-  background: rgba(255, 255, 255, 0.22);
-  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #38bdf8;
   transform: translateY(-2px);
 }
 
 .cta-btn--secondary:active {
   transform: scale(0.98);
+}
+
+/* Columna Derecha: Consola Interactiva */
+.cta-console {
+  display: flex;
+  justify-content: center;
+}
+
+.console-box {
+  width: 100%;
+  max-width: 440px;
+  background: rgba(11, 19, 43, 0.88);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: clamp(20px, 3vw, 28px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.console-box:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 24px 60px rgba(0, 56, 168, 0.35);
+}
+
+.console-box__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.1em;
+}
+
+.console-box__live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #10b981;
+}
+
+.live-ping {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: beaconPulse 1.5s infinite;
+}
+
+/* Placa interactiva editable */
+.console-plate {
+  position: relative;
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 12px;
+  padding: 10px 16px;
+  text-align: center;
+  border: 2px solid #cbd5e1;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.console-plate:focus-within {
+  border-color: #0038A8;
+  box-shadow: 0 10px 30px rgba(0, 56, 168, 0.35);
+}
+
+.console-plate__flag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #f59e0b 0% 33%, #0038A8 33% 66%, #dc2626 66% 100%);
+}
+
+.console-plate__header {
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #475569;
+  margin-top: 2px;
+}
+
+.console-plate__input-wrap {
+  position: relative;
+  margin: 2px 0;
+}
+
+.console-plate__input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  color: #0f172a;
+  outline: none;
+  text-transform: uppercase;
+  padding: 2px 0;
+  line-height: 1.1;
+}
+
+.console-plate__laser {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, rgba(56, 189, 248, 0.18) 50%, transparent 100%);
+  animation: plateScan 3.5s ease-in-out infinite;
+}
+
+.console-plate__footer {
+  font-size: 8px;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.1em;
+}
+
+/* Placas de prueba / chips rápidos */
+.console-quick-picks {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.console-quick-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.console-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.console-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.console-chip:hover {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: #38bdf8;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.console-chip.is-selected {
+  background: rgba(56, 189, 248, 0.22);
+  border-color: #38bdf8;
+  color: #38bdf8;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+/* Botones de la consola */
+.console-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.console-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.console-btn--query {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+.console-btn--query:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #38bdf8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.console-btn--pay {
+  background: #0038A8;
+  border: 1px solid transparent;
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 56, 168, 0.4);
+}
+
+.console-btn--pay:hover {
+  background: #0284c7;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.55);
+}
+
+.console-btn:active {
+  transform: scale(0.97);
+}
+
+.console-footer-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.console-footer-note svg {
+  flex-shrink: 0;
+  color: #38bdf8;
 }
 
 /* ==========================================================================
