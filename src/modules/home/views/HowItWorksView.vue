@@ -345,12 +345,12 @@ export default defineComponent({
                     <span class="hud-signal-beacon hud-signal-beacon--green"></span>
                     <span class="hud-signal-text">PASO LIBRE · FLUJO CONTINUO</span>
                   </div>
-                  <div class="hud-ticket-pill">
-                    <div class="hud-ticket-pill__icon">
+                  <div class="hud-ticket-card">
+                    <div class="hud-ticket-card__icon">
                       <AppIcon name="check" :size="16" />
                     </div>
                     <div>
-                      <strong>Débito oficial: 15,00 Bs</strong>
+                      <strong>Débito oficial: 350,00 Bs</strong>
                       <span>Conciliado en tiempo real</span>
                     </div>
                   </div>
@@ -362,12 +362,12 @@ export default defineComponent({
                     <span class="hud-signal-beacon hud-signal-beacon--amber"></span>
                     <span class="hud-signal-text">PASO SEGURO · SALDO PENDIENTE</span>
                   </div>
-                  <div class="hud-ticket-pill hud-ticket-pill--amber">
-                    <div class="hud-ticket-pill__icon hud-ticket-pill__icon--amber">
+                  <div class="hud-ticket-card hud-ticket-card--amber">
+                    <div class="hud-ticket-card__icon hud-ticket-card__icon--amber">
                       <AppIcon name="info" :size="16" />
                     </div>
                     <div>
-                      <strong>Tránsito registrado</strong>
+                      <strong>Tránsito registrado (350,00 Bs)</strong>
                       <span>Págala en 72h sin recargo de grúa</span>
                     </div>
                   </div>
@@ -444,7 +444,7 @@ export default defineComponent({
                     </div>
                     <div class="sim-stat-box">
                       <span class="sim-stat-box__label">Tarifa</span>
-                      <span class="sim-stat-box__val">Oficial MPPT</span>
+                      <span class="sim-stat-box__val">Oficial MPPT (350 Bs)</span>
                     </div>
                   </div>
                 </div>
@@ -1488,7 +1488,7 @@ export default defineComponent({
   color: #ffffff;
 }
 
-.hud-ticket-pill {
+.hud-ticket-card {
   align-self: flex-end;
   display: inline-flex;
   align-items: center;
@@ -1496,38 +1496,40 @@ export default defineComponent({
   background: rgba(16, 185, 129, 0.95);
   color: #042f1d;
   padding: 10px 18px;
-  border-radius: 14px;
+  border-radius: 12px;
   box-shadow: 0 12px 32px rgba(16, 185, 129, 0.45);
   animation: badgeSlideUp 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.hud-ticket-pill strong {
+.hud-ticket-card strong {
   display: block;
   font-size: 14px;
+  font-weight: 800;
   line-height: 1.2;
 }
 
-.hud-ticket-pill span {
+.hud-ticket-card span {
   font-size: 11px;
   opacity: 0.9;
+  font-weight: 500;
 }
 
-.hud-ticket-pill__icon {
+.hud-ticket-card__icon {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: 8px;
   background: rgba(4, 47, 29, 0.15);
   display: grid;
   place-items: center;
 }
 
-.hud-ticket-pill--amber {
+.hud-ticket-card--amber {
   background: rgba(245, 158, 11, 0.95);
   color: #451a03;
   box-shadow: 0 12px 32px rgba(245, 158, 11, 0.45);
 }
 
-.hud-ticket-pill__icon--amber {
+.hud-ticket-card__icon--amber {
   background: rgba(69, 26, 3, 0.15);
 }
 
