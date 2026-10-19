@@ -219,11 +219,12 @@ export default defineComponent({
     </div>
 
     <div class="wrap how-content">
-      <!-- HERO PRINCIPAL DE ALTO IMPACTO -->
+      <!-- HERO PRINCIPAL DE ALTO IMPACTO (SIN PÍLDORAS) -->
       <header class="hero-tech">
-        <div class="hero-tech__badge animate-in-1">
-          <span class="hero-tech__beacon" aria-hidden="true"></span>
-          <span>TECNOLOGÍA DE TELEPEAJE POR PLACA</span>
+        <div class="hero-tech__eyebrow animate-in-1">
+          <span class="hero-tech__dot" aria-hidden="true"></span>
+          <span class="hero-tech__label mono">SISTEMA NACIONAL DE TELEPEAJE POR PLACA</span>
+          <span class="hero-tech__badge-tag mono">OFICIAL MPPT</span>
         </div>
 
         <h1 class="hero-tech__title animate-in-2">
@@ -234,26 +235,27 @@ export default defineComponent({
           Transita a velocidad de autopista. La cámara lee tu placa venezolana en milisegundos y el importe se debita automáticamente de tu saldo. Sin colas, sin efectivo y sin demoras en cabina.
         </p>
 
-        <!-- Métricas ejecutivas en vivo con animación de entrada y brillo de hover -->
-        <div class="hero-kpis animate-in-4">
-          <div class="hero-kpi">
-            <span class="hero-kpi__val">0 seg</span>
-            <span class="hero-kpi__lbl">Espera en cabina</span>
+        <!-- Métricas ejecutivas en cuadrícula moderna (sin cápsulas/píldoras) -->
+        <div class="hero-stats-grid animate-in-4">
+          <div class="hero-stat-card">
+            <span class="hero-stat-card__val">0 <small>seg</small></span>
+            <span class="hero-stat-card__lbl">Espera en cabina</span>
+            <span class="hero-stat-card__line hero-stat-card__line--cyan" aria-hidden="true"></span>
           </div>
-          <div class="hero-kpi__divider" aria-hidden="true"></div>
-          <div class="hero-kpi">
-            <span class="hero-kpi__val">&lt; 60 ms</span>
-            <span class="hero-kpi__lbl">Lectura óptica ALPR</span>
+          <div class="hero-stat-card">
+            <span class="hero-stat-card__val">&lt; 60 <small>ms</small></span>
+            <span class="hero-stat-card__lbl">Lectura óptica ALPR</span>
+            <span class="hero-stat-card__line hero-stat-card__line--blue" aria-hidden="true"></span>
           </div>
-          <div class="hero-kpi__divider" aria-hidden="true"></div>
-          <div class="hero-kpi">
-            <span class="hero-kpi__val">100%</span>
-            <span class="hero-kpi__lbl">Cobertura nacional</span>
+          <div class="hero-stat-card">
+            <span class="hero-stat-card__val">100<small>%</small></span>
+            <span class="hero-stat-card__lbl">Cobertura nacional</span>
+            <span class="hero-stat-card__line hero-stat-card__line--green" aria-hidden="true"></span>
           </div>
-          <div class="hero-kpi__divider" aria-hidden="true"></div>
-          <div class="hero-kpi">
-            <span class="hero-kpi__val">24/7</span>
-            <span class="hero-kpi__lbl">Recarga al instante</span>
+          <div class="hero-stat-card">
+            <span class="hero-stat-card__val">24/7</span>
+            <span class="hero-stat-card__lbl">Recarga al instante</span>
+            <span class="hero-stat-card__line hero-stat-card__line--amber" aria-hidden="true"></span>
           </div>
         </div>
       </header>
@@ -982,36 +984,47 @@ export default defineComponent({
   padding-top: var(--space-4);
 }
 
-.hero-tech__badge {
+.hero-tech__eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 6px 18px;
-  border-radius: 9999px;
-  background: rgba(0, 56, 168, 0.22);
-  border: 1px solid rgba(56, 189, 248, 0.4);
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(56, 189, 248, 0.35);
   color: #38bdf8;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
   margin-bottom: var(--space-6);
-  box-shadow: 0 0 24px rgba(2, 132, 199, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   transition: all 0.3s ease;
 }
 
-.hero-tech__badge:hover {
+.hero-tech__eyebrow:hover {
   border-color: #38bdf8;
-  box-shadow: 0 0 32px rgba(56, 189, 248, 0.45);
+  box-shadow: 0 6px 26px rgba(56, 189, 248, 0.3);
   transform: translateY(-1px);
 }
 
-.hero-tech__beacon {
-  width: 8px;
-  height: 8px;
+.hero-tech__dot {
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: #38bdf8;
   box-shadow: 0 0 10px #38bdf8;
   animation: beaconPulse 2s ease-in-out infinite;
+}
+
+.hero-tech__badge-tag {
+  font-size: 9px;
+  font-weight: 800;
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.08em;
 }
 
 @keyframes beaconPulse {
@@ -1047,63 +1060,91 @@ export default defineComponent({
   margin: 0 auto var(--space-8);
 }
 
-/* KPIS TICKER CON EFECTO GLASSMORPHIC */
-.hero-kpis {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-4) var(--space-8);
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 16px 32px;
-  border-radius: 22px;
-  box-shadow: 0 16px 45px -10px rgba(0, 0, 0, 0.6);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+/* MÉTRICAS EJECUTIVAS: CUADRÍCULA MODERNA (SIN CÁPSULAS/PÍLDORAS) */
+.hero-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  max-width: 820px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-.hero-kpis:hover {
-  border-color: rgba(56, 189, 248, 0.35);
-  box-shadow: 0 20px 50px -10px rgba(0, 56, 168, 0.25);
+@media (min-width: 680px) {
+  .hero-stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
-.hero-kpi {
+.hero-stat-card {
+  position: relative;
+  background: rgba(11, 19, 43, 0.65);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 16px 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  transition: transform 0.2s ease;
+  justify-content: center;
+  gap: 4px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.hero-kpi:hover {
-  transform: translateY(-2px);
+.hero-stat-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: 0 16px 36px -10px rgba(0, 56, 168, 0.3);
+  background: rgba(15, 23, 42, 0.85);
 }
 
-.hero-kpi__val {
-  font: 800 clamp(20px, 2.5vw, 26px)/1 var(--font-display);
+.hero-stat-card__val {
+  font: 800 clamp(22px, 2.6vw, 28px)/1 var(--font-display);
   color: #ffffff;
   letter-spacing: -0.02em;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
 }
 
-.hero-kpi__lbl {
-  font-size: 12px;
-  font-weight: 500;
-  color: #64748b;
+.hero-stat-card__val small {
+  font-size: 13px;
+  font-weight: 600;
+  color: #38bdf8;
+}
+
+.hero-stat-card__lbl {
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
+  text-align: center;
 }
 
-.hero-kpi__divider {
-  width: 1px;
-  height: 28px;
-  background: rgba(255, 255, 255, 0.12);
+.hero-stat-card__line {
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  border-radius: 1px;
+  opacity: 0.7;
+  transition: left 0.3s ease, right 0.3s ease, opacity 0.3s ease;
 }
 
-@media (max-width: 640px) {
-  .hero-kpi__divider { display: none; }
-  .hero-kpis { gap: var(--space-4); width: 100%; justify-content: space-around; }
+.hero-stat-card:hover .hero-stat-card__line {
+  left: 10%;
+  right: 10%;
+  opacity: 1;
 }
+
+.hero-stat-card__line--cyan { background: #38bdf8; box-shadow: 0 0 8px #38bdf8; }
+.hero-stat-card__line--blue { background: #0284c7; box-shadow: 0 0 8px #0284c7; }
+.hero-stat-card__line--green { background: #10b981; box-shadow: 0 0 8px #10b981; }
+.hero-stat-card__line--amber { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
 
 /* ==========================================================================
    SECCIÓN SIMULADOR INTERACTIVO
@@ -1604,7 +1645,7 @@ export default defineComponent({
   background: rgba(15, 23, 42, 0.85);
   backdrop-filter: blur(14px);
   padding: 8px 16px;
-  border-radius: 9999px;
+  border-radius: 8px;
   border: 1px solid rgba(16, 185, 129, 0.4);
   box-shadow: 0 0 24px rgba(16, 185, 129, 0.25);
   animation: badgeSlideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -2416,7 +2457,7 @@ export default defineComponent({
   background: rgba(56, 189, 248, 0.12);
   border: 1px solid rgba(56, 189, 248, 0.35);
   padding: 5px 14px;
-  border-radius: 9999px;
+  border-radius: 6px;
   letter-spacing: 0.1em;
   margin-bottom: var(--space-4);
 }
