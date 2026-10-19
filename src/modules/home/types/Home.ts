@@ -20,6 +20,7 @@ export interface HowItWorksLink {
 export interface HowItWorksSlide {
   title: string
   stop: string
+  subtitle?: string
   text: string
   points?: string[]
   stat?: { value: string; label: string }

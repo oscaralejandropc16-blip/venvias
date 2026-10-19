@@ -17,24 +17,24 @@ export default defineComponent({
       balanceRoute: { name: ROUTE_NAMES.balance },
       pillars: [
         {
-          icon: 'rayo' as const,
-          title: 'Flujo continuo sin detenciones',
-          desc: 'Los pórticos inteligentes leen tu vehículo a velocidad reglamentaria de autopista sin que tengas que bajar la ventanilla.',
-        },
-        {
-          icon: 'carro' as const,
-          title: 'Detección por Placa y TAG',
-          desc: 'Cámaras de alta resolución combinadas con antenas de radiofrecuencia (RFID) identifican tu vehículo con total precisión.',
-        },
-        {
           icon: 'peaje' as const,
-          title: 'Interoperabilidad nacional',
-          desc: 'Tu saldo es válido en todos los peajes habilitados de Venezuela. Un solo registro para transitar por todo el país.',
+          title: 'Cobertura nacional en autopistas',
+          desc: 'Un único registro válido en todos los peajes habilitados de Venezuela, tanto para vehículos particulares como flotas comerciales.',
+        },
+        {
+          icon: 'recibo' as const,
+          title: 'Tarifas oficiales sin recargos',
+          desc: 'El débito corresponde con exactitud a la tarifa oficial publicada en Gaceta, sin cobros ocultos ni comisiones por uso de plataforma.',
         },
         {
           icon: 'tarjeta' as const,
-          title: 'Recarga multicanal inmediata',
-          desc: 'Acredita fondos al instante a través de Pago Móvil, BDV en Línea o mediante tarjeta de débito/crédito con el Botón IPG.',
+          title: 'Respaldo bancario y pagos seguros',
+          desc: 'Integración en tiempo real con Banco de Venezuela, Pago Móvil C2P y botón de pagos IPG bajo estándares de cifrado bancario.',
+        },
+        {
+          icon: 'audifonos' as const,
+          title: 'Soporte y consulta al conductor 24/7',
+          desc: 'Canales de atención digital para verificar tu saldo, revisar comprobantes de tránsito y gestionar los vehículos de tu familia.',
         },
       ],
     }
@@ -52,22 +52,22 @@ export default defineComponent({
       </div>
       <h1 class="how-hero__title">Tu placa es tu pase libre</h1>
       <p class="how-hero__sub">
-        Conoce el sistema de paso continuo por lectura de placa que moderniza los peajes de Venezuela, sin colas ni demoras en cabina.
+        Conoce el paso a paso del sistema de telepeaje por placa en Venezuela: desde tu recarga hasta el tránsito continuo por el peaje sin colas ni demoras.
       </p>
     </header>
 
     <!-- Interactive Stepper Track -->
     <section class="how-stepper-wrap" aria-label="Recorrido paso a paso">
-      <HowItWorks :plain="false" />
+      <HowItWorks :plain="false" :hide-header="true" />
     </section>
 
     <!-- Key Pillars Bento Grid -->
     <section class="how-pillars" aria-labelledby="pillars-title">
       <div class="how-pillars__header">
-        <span class="how-pillars__eyebrow">TECNOLOGÍA Y EFICIENCIA</span>
+        <span class="how-pillars__eyebrow">VENTAJAS DEL SISTEMA</span>
         <h2 id="pillars-title" class="how-pillars__title">¿Por qué el sistema VenVías es diferente?</h2>
         <p class="how-pillars__desc">
-          Diseñado para optimizar los tiempos de viaje de millones de conductores en las principales vías del territorio nacional.
+          Tecnología y logística vial diseñadas para brindar una experiencia ágil, transparente y segura a todos los conductores del país.
         </p>
       </div>
 
