@@ -64,13 +64,6 @@ export default defineComponent({
           loading="eager"
         />
         <img
-          :src="sunsetImg"
-          alt=""
-          class="hero__photo-layer"
-          :class="{ 'is-active': currentTime === 'sunset' }"
-          loading="eager"
-        />
-        <img
           :src="nightImg"
           alt=""
           class="hero__photo-layer"
@@ -89,42 +82,6 @@ export default defineComponent({
     <div class="wrap hero__grid">
       <!-- Columna Izquierda: Mensaje Institucional, Métricas y Pilares Oficiales -->
       <div class="hero__intro">
-        <!-- Selector ambiental sobrio (Día / Tarde / Noche) -->
-        <div class="hero__scene-switch" role="group" aria-label="Ambiente de autopista">
-          <button
-            type="button"
-            class="hero__scene-btn"
-            :class="{ 'is-active': currentTime === 'day' }"
-            @click="setTimeOfDay('day')"
-          >
-            ☀️ Día
-          </button>
-          <button
-            type="button"
-            class="hero__scene-btn"
-            :class="{ 'is-active': currentTime === 'sunset' }"
-            @click="setTimeOfDay('sunset')"
-          >
-            🌅 Tarde
-          </button>
-          <button
-            type="button"
-            class="hero__scene-btn"
-            :class="{ 'is-active': currentTime === 'night' }"
-            @click="setTimeOfDay('night')"
-          >
-            🌙 Noche
-          </button>
-          <button
-            v-if="timeMode === 'manual'"
-            type="button"
-            class="hero__scene-btn hero__scene-btn--auto"
-            @click="setAuto()"
-          >
-            Auto
-          </button>
-        </div>
-
         <h1 id="hero-title" class="hero__title">
           Paga tus peajes <br class="hidden sm:inline" />con tu placa.
           <span class="hero__title-accent">Rápido. Seguro. Sin registrarte.</span>
@@ -136,50 +93,35 @@ export default defineComponent({
 
         <!-- Barra de métricas institucionales en vivo -->
         <div class="hero__stats">
-          <div class="hero__stat-card">
+          <div class="hero__stat-card hero__stat-card--blue">
             <div class="hero__stat-val">10+</div>
             <div class="hero__stat-lbl">Peajes Activos</div>
           </div>
-          <div class="hero__stat-card">
+          <div class="hero__stat-card hero__stat-card--emerald">
             <div class="hero__stat-val">0 seg</div>
             <div class="hero__stat-lbl">Espera en Cabina</div>
           </div>
-          <div class="hero__stat-card">
+          <div class="hero__stat-card hero__stat-card--amber">
             <div class="hero__stat-val">100%</div>
             <div class="hero__stat-lbl">Digital en Bolívares</div>
           </div>
         </div>
 
-        <!-- Pilares clave del servicio gubernamental con micro-tarjetas estilizadas -->
-        <div class="hero__features">
-          <div class="hero__feature-card">
-            <div class="hero__feature-icon hero__feature-icon--cyan">
-              <AppIcon name="rayo" :size="20" />
-            </div>
-            <div>
-              <h3 class="hero__feature-title">Paso continuo sin colas</h3>
-              <p class="hero__feature-desc">Sin necesidad de detenerte a pagar en efectivo</p>
-            </div>
+        <!-- Fila de garantías y respaldo institucional (discreta, moderna, sin tarjetas repetitivas) -->
+        <div class="hero__guarantees">
+          <div class="hero__guarantee-item">
+            <AppIcon name="rayo" :size="15" class="hero__guarantee-icon text-sky-500" />
+            <span>Paso continuo automatizado</span>
           </div>
-
-          <div class="hero__feature-card">
-            <div class="hero__feature-icon hero__feature-icon--emerald">
-              <AppIcon name="tarjeta" :size="20" />
-            </div>
-            <div>
-              <h3 class="hero__feature-title">Recargas en Bolívares (Bs.)</h3>
-              <p class="hero__feature-desc">Pago Móvil, BDV y Botón IPG bancario</p>
-            </div>
+          <span class="hero__guarantee-dot" aria-hidden="true">·</span>
+          <div class="hero__guarantee-item">
+            <AppIcon name="tarjeta" :size="15" class="hero__guarantee-icon text-emerald-500" />
+            <span>Conexión interbancaria oficial</span>
           </div>
-
-          <div class="hero__feature-card">
-            <div class="hero__feature-icon hero__feature-icon--amber">
-              <AppIcon name="peaje" :size="20" />
-            </div>
-            <div>
-              <h3 class="hero__feature-title">Red Oficial Nacional</h3>
-              <p class="hero__feature-desc">Válido en los principales corredores del país</p>
-            </div>
+          <span class="hero__guarantee-dot" aria-hidden="true">·</span>
+          <div class="hero__guarantee-item">
+            <AppIcon name="check" :size="15" class="hero__guarantee-icon text-amber-500" />
+            <span>Sin trámites obligatorios</span>
           </div>
         </div>
       </div>
@@ -227,35 +169,58 @@ export default defineComponent({
   <section class="section wrap" aria-labelledby="tag-title">
     <div class="tag-bento grid md:grid-cols-2 gap-6 items-stretch">
       <!-- Tarjeta TAG -->
-      <div class="tag-bento-card bg-white rounded-2xl p-8 md:p-10 shadow-lg shadow-slate-200/50 border border-slate-100 flex flex-col justify-between">
+      <div class="tag-bento-card tag-bento-card--tag bg-white rounded-2xl p-8 md:p-10 shadow-lg shadow-slate-200/50 border border-slate-100 flex flex-col justify-between relative overflow-hidden group">
+        <div class="tag-bento-card__accent tag-bento-card__accent--emerald" aria-hidden="true"></div>
         <div>
-          <div class="mb-3 text-xs font-bold uppercase tracking-wider text-emerald-700">
-            Dispositivo Adherido
+          <div class="flex items-center gap-1.5 mb-3 text-xs font-bold uppercase tracking-wider text-emerald-700">
+            <AppIcon name="peaje" :size="14" />
+            Dispositivo Adherido · RFID
           </div>
           <h2 id="tag-title" class="text-2xl font-bold text-slate-900 mb-3">¿Tienes TAG? Sigue con él.</h2>
           <p class="text-slate-600 leading-relaxed text-[15px]">
             El TAG es el método preferido para usuarios frecuentes y flotas comerciales. Adherido al parabrisas, el débito se procesa de inmediato en cada paso.
           </p>
+          <ul class="tag-bento-perks mt-4 space-y-2">
+            <li class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              Débito instantáneo por antena 915 MHz
+            </li>
+            <li class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              Recomendado para transporte pesado y flotas
+            </li>
+          </ul>
         </div>
-        <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-center min-h-[100px] overflow-hidden">
-          <img :src="tagImg" alt="TAG VenVías" width="360" height="162" loading="lazy" class="max-h-24 w-auto object-contain" />
+        <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-center min-h-[110px] overflow-hidden bg-slate-50/60 rounded-xl p-4">
+          <img :src="tagImg" alt="TAG VenVías" width="360" height="162" loading="lazy" class="tag-bento-img max-h-24 w-auto object-contain transition-transform duration-500 group-hover:scale-105" />
         </div>
       </div>
 
       <!-- Tarjeta Pago por Placa -->
-      <div class="tag-bento-card bg-white rounded-2xl p-8 md:p-10 shadow-lg shadow-slate-200/50 border border-slate-100 flex flex-col justify-between">
+      <div class="tag-bento-card tag-bento-card--placa bg-white rounded-2xl p-8 md:p-10 shadow-lg shadow-slate-200/50 border border-slate-100 flex flex-col justify-between relative overflow-hidden group">
+        <div class="tag-bento-card__accent tag-bento-card__accent--blue" aria-hidden="true"></div>
         <div>
           <div class="flex items-center gap-1.5 mb-3 text-xs font-bold uppercase tracking-wider text-blue-700">
             <AppIcon name="rayo" :size="14" />
-            Sin Trámites ni Instalaciones
+            Sin Trámites ni Instalaciones · ALPR
           </div>
           <h2 class="text-2xl font-bold text-slate-900 mb-3">¿No tienes TAG? Usa tu Placa.</h2>
           <p class="text-slate-600 leading-relaxed text-[15px]">
             El pago por placa es la alternativa oficial: no requieres comprar ningún dispositivo ni citas previas. Solo necesitas tu matrícula activa con saldo recargado.
           </p>
+          <ul class="tag-bento-perks mt-4 space-y-2">
+            <li class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+              <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+              Cero costo de dispositivo o adhesivos
+            </li>
+            <li class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+              <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+              Lectura óptica de alta precisión en cabina
+            </li>
+          </ul>
         </div>
-        <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-center min-h-[100px] overflow-hidden">
-          <img :src="plateImg" alt="Placa venezolana" width="240" height="121" loading="lazy" class="max-h-24 w-auto object-contain drop-shadow-md" />
+        <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-center min-h-[110px] overflow-hidden bg-slate-50/60 rounded-xl p-4">
+          <img :src="plateImg" alt="Placa venezolana" width="240" height="121" loading="lazy" class="plate-bento-img max-h-24 w-auto object-contain drop-shadow-md transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-1" />
         </div>
       </div>
     </div>
@@ -289,11 +254,15 @@ export default defineComponent({
 
     <div class="grid md:grid-cols-3 gap-6">
       <div
-        v-for="s in safety"
+        v-for="(s, idx) in safety"
         :key="s.title"
-        class="safety-card bg-white rounded-2xl p-6 md:p-8 shadow-lg shadow-slate-200/50 border border-slate-100 flex flex-col items-start"
+        class="safety-card bg-white rounded-2xl p-6 md:p-8 shadow-lg shadow-slate-200/50 border border-slate-100 flex flex-col items-start transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-blue-200"
+        :class="`safety-card--${idx}`"
       >
-        <div class="safety-icon-box w-12 h-12 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center mb-5 flex-shrink-0">
+        <div
+          class="safety-icon-box w-12 h-12 rounded-xl flex items-center justify-center mb-5 flex-shrink-0 transition-transform duration-300"
+          :class="`safety-icon-box--${idx}`"
+        >
           <AppIcon :name="s.icon" :size="22" />
         </div>
         <h3 class="text-lg font-bold text-slate-900 mb-2">{{ s.title }}</h3>
@@ -305,6 +274,8 @@ export default defineComponent({
   <!-- Sección Mi Cuenta / Flotas: Banner Ejecutivo de Alto Nivel -->
   <section class="section wrap pt-0" aria-labelledby="account-title">
     <div class="account-card bg-white rounded-3xl p-8 md:p-12 shadow-xl shadow-slate-200/50 border border-slate-200/80 relative overflow-hidden">
+      <!-- Barra Tricolor Superior Sutil -->
+      <div class="account-card__tricolor" aria-hidden="true"></div>
       <div class="split min-[900px]:grid-cols-[1.25fr_1fr] relative z-10 items-center gap-8">
         <div>
           <div class="flex items-center gap-2 mb-3 text-xs font-bold uppercase tracking-wider text-blue-700">
@@ -322,7 +293,7 @@ export default defineComponent({
           </RouterLink>
         </div>
         <ul class="plain-list gap-3.5 bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-100 shadow-sm">
-          <li v-for="p in accountPerks" :key="p" class="flex items-start gap-3 text-slate-800 text-sm md:text-base font-medium">
+          <li v-for="p in accountPerks" :key="p" class="account-perk-item flex items-start gap-3 text-slate-800 text-sm md:text-base font-medium">
             <AppIcon name="check" :size="18" class="text-blue-600 mt-0.5 flex-shrink-0" />
             <span>{{ p }}</span>
           </li>
@@ -456,153 +427,76 @@ export default defineComponent({
   transition: background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1), color 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* --- TEMA DÍA (06:00 - 17:59): Luminoso, cielo despejado, azul institucional VenVías --- */
+/* --- TEMA DÍA (06:00 - 18:59): Luminoso, cielo despejado, azul institucional VenVías --- */
 .hero--day {
-  background-color: #f1f5f9;
+  background-color: #f8fafc;
   color: #0f172a;
 }
 .hero--day .hero__photo-layer.is-active {
-  opacity: 0.55;
-  filter: contrast(1.05) saturate(1.1);
+  opacity: 0.45;
+  filter: contrast(1.04) saturate(1.08);
 }
 .hero--day .hero__scrim {
   background: linear-gradient(
     90deg,
-    rgba(241, 245, 249, 0.96) 0%,
-    rgba(241, 245, 249, 0.88) 42%,
-    rgba(241, 245, 249, 0.50) 72%,
-    rgba(241, 245, 249, 0.15) 100%
+    rgba(248, 250, 252, 0.97) 0%,
+    rgba(248, 250, 252, 0.90) 42%,
+    rgba(248, 250, 252, 0.55) 72%,
+    rgba(248, 250, 252, 0.20) 100%
   );
 }
 .hero--day .hero__title {
   color: #0f172a;
 }
 .hero--day .hero__title-accent {
-  color: #0038A8;
+  background: linear-gradient(135deg, #0038A8 0%, #0284c7 60%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .hero--day .hero__sub {
   color: #475569;
 }
-.hero--day .hero__stat-card,
-.hero--day .hero__feature-card {
-  background: rgba(255, 255, 255, 0.94);
+.hero--day .hero__stat-card {
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(12px);
-  border: 1px solid #cbd5e1;
+  border: 1px solid #e2e8f0;
   box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
 }
-.hero--day .hero__stat-card:hover,
-.hero--day .hero__stat-card:focus-within,
-.hero--day .hero__feature-card:hover,
-.hero--day .hero__feature-card:focus-within {
+.hero--day .hero__stat-card:hover {
   background: #ffffff;
-  border-color: #0038A8;
-  box-shadow: 0 8px 24px rgba(0, 56, 168, 0.12);
 }
-.hero--day .hero__stat-val {
-  color: #0038A8;
+.hero--day .hero__stat-card--blue .hero__stat-val { color: #0038A8; }
+.hero--day .hero__stat-card--emerald .hero__stat-val { color: #059669; }
+.hero--day .hero__stat-card--amber .hero__stat-val { color: #d97706; }
+.hero--day .hero__stat-card--blue:hover {
+  border-color: #93c5fd;
+  box-shadow: 0 10px 24px -2px rgba(0, 56, 168, 0.16);
+}
+.hero--day .hero__stat-card--emerald:hover {
+  border-color: #a7f3d0;
+  box-shadow: 0 10px 24px -2px rgba(5, 150, 105, 0.16);
+}
+.hero--day .hero__stat-card--amber:hover {
+  border-color: #fde68a;
+  box-shadow: 0 10px 24px -2px rgba(217, 119, 6, 0.16);
 }
 .hero--day .hero__stat-lbl {
   color: #64748b;
 }
-.hero--day .hero__feature-title {
-  color: #0f172a;
+.hero--day .hero__bg-bottom-fade {
+  background: linear-gradient(to bottom, transparent, rgba(248, 250, 252, 0.95) 60%, #ffffff 100%);
 }
-.hero--day .hero__feature-desc {
+.hero--day .hero__guarantees {
   color: #475569;
 }
-.hero--day .hero__feature-icon--cyan {
-  background: rgba(2, 132, 199, 0.12);
-  color: #0284c7;
-}
-.hero--day .hero__feature-icon--emerald {
-  background: rgba(16, 185, 129, 0.12);
-  color: #059669;
-}
-.hero--day .hero__feature-icon--amber {
-  background: rgba(245, 158, 11, 0.12);
-  color: #d97706;
-}
-.hero--day .hero__bg-bottom-fade {
-  background: linear-gradient(to bottom, transparent, rgba(241, 245, 249, 0.9) 65%, #ffffff 100%);
-}
 
-/* --- TEMA ATARDECER (18:00 - 19:59): Crepúsculo natural, ámbar y pizarra cálido --- */
-.hero--sunset {
-  background-color: #1a1224;
-  color: #f8fafc;
-}
-.hero--sunset .hero__photo-layer.is-active {
-  opacity: 0.65;
-  filter: contrast(1.1) saturate(1.15);
-}
-.hero--sunset .hero__scrim {
-  background: linear-gradient(
-    90deg,
-    rgba(26, 18, 36, 0.96) 0%,
-    rgba(26, 18, 36, 0.86) 42%,
-    rgba(26, 18, 36, 0.48) 72%,
-    rgba(26, 18, 36, 0.15) 100%
-  );
-}
-.hero--sunset .hero__title {
-  color: #ffffff;
-}
-.hero--sunset .hero__title-accent {
-  color: #f59e0b;
-}
-.hero--sunset .hero__sub {
-  color: #fed7aa;
-}
-.hero--sunset .hero__stat-card,
-.hero--sunset .hero__feature-card {
-  background: rgba(35, 24, 48, 0.82);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
-}
-.hero--sunset .hero__stat-card:hover,
-.hero--sunset .hero__stat-card:focus-within,
-.hero--sunset .hero__feature-card:hover,
-.hero--sunset .hero__feature-card:focus-within {
-  background: rgba(48, 32, 66, 0.95);
-  border-color: rgba(245, 158, 11, 0.5);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
-}
-.hero--sunset .hero__stat-val {
-  color: #f59e0b;
-}
-.hero--sunset .hero__stat-lbl {
-  color: #e2e8f0;
-}
-.hero--sunset .hero__feature-title {
-  color: #ffffff;
-}
-.hero--sunset .hero__feature-desc {
-  color: #cbd5e1;
-}
-.hero--sunset .hero__feature-icon--cyan {
-  background: rgba(2, 132, 199, 0.18);
-  color: #7dd3fc;
-}
-.hero--sunset .hero__feature-icon--emerald {
-  background: rgba(16, 185, 129, 0.18);
-  color: #6ee7b7;
-}
-.hero--sunset .hero__feature-icon--amber {
-  background: rgba(245, 158, 11, 0.18);
-  color: #fcd34d;
-}
-.hero--sunset .hero__bg-bottom-fade {
-  background: linear-gradient(to bottom, transparent, rgba(26, 18, 36, 0.9) 65%, #ffffff 100%);
-}
-
-/* --- TEMA NOCHE (20:00 - 05:59): Azul noche profundo institucional, sobrio y elegante --- */
+/* --- TEMA NOCHE (19:00 - 05:59): Azul noche profundo institucional, sobrio y elegante --- */
 .hero--night {
   background-color: #070d1e;
   color: #f8fafc;
 }
 .hero--night .hero__photo-layer.is-active {
-  opacity: 0.68;
+  opacity: 0.65;
   filter: contrast(1.12) saturate(1.2);
 }
 .hero--night .hero__scrim {
@@ -618,113 +512,43 @@ export default defineComponent({
   color: #ffffff;
 }
 .hero--night .hero__title-accent {
-  color: #38bdf8;
+  background: linear-gradient(135deg, #38bdf8 0%, #60a5fa 60%, #93c5fd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .hero--night .hero__sub {
   color: #cbd5e1;
 }
-.hero--night .hero__stat-card,
-.hero--night .hero__feature-card {
-  background: rgba(13, 21, 40, 0.80);
+.hero--night .hero__stat-card {
+  background: rgba(13, 21, 40, 0.85);
   backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
 }
-.hero--night .hero__stat-card:hover,
-.hero--night .hero__stat-card:focus-within,
-.hero--night .hero__feature-card:hover,
-.hero--night .hero__feature-card:focus-within {
-  background: rgba(18, 29, 56, 0.95);
-  border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+.hero--night .hero__stat-card:hover {
+  background: rgba(18, 29, 56, 0.98);
+  border-color: rgba(255, 255, 255, 0.25);
 }
-.hero--night .hero__stat-val {
-  color: #ffffff;
+.hero--night .hero__stat-card--blue .hero__stat-val { color: #38bdf8; }
+.hero--night .hero__stat-card--emerald .hero__stat-val { color: #34d399; }
+.hero--night .hero__stat-card--amber .hero__stat-val { color: #fbbf24; }
+.hero--night .hero__stat-card--blue:hover {
+  box-shadow: 0 12px 28px -2px rgba(56, 189, 248, 0.25);
+}
+.hero--night .hero__stat-card--emerald:hover {
+  box-shadow: 0 12px 28px -2px rgba(52, 211, 153, 0.25);
+}
+.hero--night .hero__stat-card--amber:hover {
+  box-shadow: 0 12px 28px -2px rgba(251, 191, 36, 0.25);
 }
 .hero--night .hero__stat-lbl {
   color: #94a3b8;
 }
-.hero--night .hero__feature-title {
-  color: #ffffff;
-}
-.hero--night .hero__feature-desc {
-  color: #94a3b8;
-}
-.hero--night .hero__feature-icon--cyan {
-  background: rgba(56, 189, 248, 0.12);
-  color: #7dd3fc;
-}
-.hero--night .hero__feature-icon--emerald {
-  background: rgba(16, 185, 129, 0.12);
-  color: #34d399;
-}
-.hero--night .hero__feature-icon--amber {
-  background: rgba(245, 158, 11, 0.12);
-  color: #fbbf24;
-}
 .hero--night .hero__bg-bottom-fade {
   background: linear-gradient(to bottom, transparent, rgba(7, 13, 30, 0.95) 60%, #ffffff 100%);
 }
-
-/* Selector ambiental sobrio (Día / Tarde / Noche) */
-.hero__scene-switch {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(8px);
-  padding: 4px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  margin-bottom: var(--space-4);
-}
-
-.hero--day .hero__scene-switch {
-  background: rgba(255, 255, 255, 0.85);
-  border-color: #cbd5e1;
-}
-
-.hero__scene-btn {
-  background: transparent;
-  border: none;
-  font-size: 12px;
-  font-weight: 600;
+.hero--night .hero__guarantees {
   color: #94a3b8;
-  padding: 5px 10px;
-  border-radius: 7px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.hero--day .hero__scene-btn {
-  color: #64748b;
-}
-
-.hero__scene-btn:hover {
-  color: #ffffff;
-}
-
-.hero--day .hero__scene-btn:hover {
-  color: #0f172a;
-}
-
-.hero__scene-btn.is-active {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  font-weight: 700;
-}
-
-.hero--day .hero__scene-btn.is-active {
-  background: #ffffff;
-  color: #0038A8;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-}
-
-.hero__scene-btn--auto {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  opacity: 0.8;
 }
 
 /* Contenedor maestro de fondo multicapa */
@@ -858,96 +682,71 @@ export default defineComponent({
   animation: heroFadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
 }
 .hero__stat-card {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  border-radius: 12px;
-  padding: 8px 12px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  padding: 10px 12px;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(18, 33, 66, 0.04);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s var(--ease-out), border-color 0.25s;
 }
+.hero__stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+}
+.hero__stat-card--blue::before { background: linear-gradient(90deg, #0057a3, #38bdf8); }
+.hero__stat-card--emerald::before { background: linear-gradient(90deg, #059669, #34d399); }
+.hero__stat-card--amber::before { background: linear-gradient(90deg, #d97706, #fbbf24); }
+
 .hero__stat-card:hover {
-  transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 10px 24px -2px rgba(0, 87, 163, 0.14);
-  border-color: #93c5fd;
+  transform: translateY(-4px) scale(1.02);
 }
 .hero__stat-val {
-  font-size: 19px;
-  font-weight: 700;
-  color: #0057a3;
+  font-size: 20px;
+  font-weight: 800;
   line-height: 1.15;
   transition: color 0.2s;
-}
-.hero__stat-card:hover .hero__stat-val {
-  color: #0284c7;
+  letter-spacing: -0.01em;
 }
 .hero__stat-lbl {
   font-size: 10.5px;
-  color: #64748b;
   font-weight: 600;
-  margin-top: 2px;
+  margin-top: 3px;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
 }
 
-/* 3 Pilares clave en el hero izquierdo con hover y acentos */
-.hero__features {
-  display: grid;
-  gap: 8px;
-  width: 100%;
+/* Fila de garantías y respaldo institucional en el Hero */
+.hero__guarantees {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-top: 8px;
+  font-size: 12.5px;
   animation: heroFadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.32s both;
 }
-@media (min-width: 560px) and (max-width: 959px) {
-  .hero__features {
-    grid-template-columns: repeat(3, 1fr);
+@media (max-width: 959px) {
+  .hero__guarantees {
+    justify-content: center;
   }
 }
-.hero__feature-card {
-  display: flex;
+.hero__guarantee-item {
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(10px);
-  padding: 8px 14px;
-  border-radius: 14px;
-  border: 1px solid rgba(226, 232, 240, 0.85);
-  box-shadow: 0 2px 10px rgba(18, 33, 66, 0.03);
-  text-align: left;
-  transition: all 0.25s var(--ease-out);
+  gap: 6px;
+  font-weight: 500;
 }
-.hero__feature-card:hover,
-.hero__feature-card:focus-within {
-  transform: translateX(4px);
-}
-.hero__feature-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.hero__guarantee-icon {
   flex-shrink: 0;
-  transition: transform 0.25s var(--ease-out);
 }
-.hero__feature-card:hover .hero__feature-icon,
-.hero__feature-card:focus-within .hero__feature-icon {
-  transform: scale(1.1) rotate(5deg);
-}
-.hero__feature-icon--cyan { background: #ecfeff; color: #0891b2; box-shadow: 0 2px 8px rgba(8, 145, 178, 0.15); }
-.hero__feature-icon--emerald { background: #ecfdf5; color: #059669; box-shadow: 0 2px 8px rgba(5, 150, 105, 0.15); }
-.hero__feature-icon--amber { background: #fffbeb; color: #d97706; box-shadow: 0 2px 8px rgba(217, 119, 6, 0.15); }
-
-.hero__feature-title {
-  font-size: 13.5px;
-  font-weight: 600;
-  color: #122142;
-  margin: 0;
-}
-.hero__feature-desc {
-  font-size: 12px;
-  color: #64748b;
-  margin: 1px 0 0;
+.hero__guarantee-dot {
+  opacity: 0.35;
+  font-size: 14px;
 }
 
 /* Columna Derecha: Tarjeta de Pago Kiosco Digital */
@@ -1243,18 +1042,42 @@ export default defineComponent({
 
 /* Bento cards interactividad y animación */
 .tag-bento-card {
+  position: relative;
+  overflow: hidden;
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s;
+}
+.tag-bento-card__accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+.tag-bento-card__accent--emerald {
+  background: linear-gradient(90deg, #059669, #10b981);
+}
+.tag-bento-card__accent--blue {
+  background: linear-gradient(90deg, #0057a3, #0284c7);
 }
 .tag-bento-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 20px 40px -10px rgba(18, 33, 66, 0.12);
-  border-color: #93c5fd;
 }
-.tag-bento-card img {
+.tag-bento-card--tag:hover { border-color: #6ee7b7; }
+.tag-bento-card--placa:hover { border-color: #93c5fd; }
+
+.tag-bento-img {
+  animation: tagFloat 4s ease-in-out infinite;
+}
+@keyframes tagFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.plate-bento-img {
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.tag-bento-card:hover img {
-  transform: scale(1.08) translateY(-2px);
+.tag-bento-card--placa:hover .plate-bento-img {
+  transform: scale(1.06) rotate(-1.5deg);
 }
 
 /* Tarjetas de Seguridad y Confianza */
@@ -1264,25 +1087,55 @@ export default defineComponent({
 .safety-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 20px 35px -8px rgba(18, 33, 66, 0.1);
-  border-color: #93c5fd;
+  border-color: #bfdbfe;
 }
 .safety-icon-box {
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s, color 0.3s;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.safety-icon-box--0 {
+  background: linear-gradient(135deg, #0038A8 0%, #0284c7 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 18px -2px rgba(0, 56, 168, 0.3);
+}
+.safety-icon-box--1 {
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 18px -2px rgba(16, 185, 129, 0.3);
+}
+.safety-icon-box--2 {
+  background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 18px -2px rgba(99, 102, 241, 0.3);
 }
 .safety-card:hover .safety-icon-box {
   transform: scale(1.12) rotate(-6deg);
-  background-color: #dbeafe;
-  color: #0057a3;
 }
 
 /* Tarjeta Mi Cuenta Corporativa */
 .account-card {
+  position: relative;
+  overflow: hidden;
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s;
+}
+.account-card__tricolor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--tricolor-vzla, linear-gradient(90deg, #F9D616 0%, #0038A8 50%, #CE1126 100%));
 }
 .account-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 25px 50px -12px rgba(18, 33, 66, 0.14);
   border-color: #93c5fd;
+}
+.account-perk-item {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+.account-perk-item:hover {
+  transform: translateX(4px);
+  color: #0038A8;
 }
 
 /* Peajes habilitados */
@@ -1481,7 +1334,7 @@ details[open] p {
   .hero__title,
   .hero__sub,
   .hero__stats,
-  .hero__features,
+  .hero__guarantees,
   .hero__card,
   .hero__badge-pulse,
   .hero__ocr-indicator::after,

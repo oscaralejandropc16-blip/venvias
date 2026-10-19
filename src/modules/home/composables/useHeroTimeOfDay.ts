@@ -1,10 +1,8 @@
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import dayImg from '@/assets/hero/highway-day.jpg'
-import sunsetImg from '@/assets/hero/highway-sunset.jpg'
 import nightImg from '@/assets/hero/highway-night.jpg'
 
-export type HeroTimeOfDay = 'day' | 'sunset' | 'night'
-export type HeroTimeMode = 'auto' | 'manual'
+export type HeroTimeOfDay = 'day' | 'night'
 
 export interface TimeSceneOption {
   id: HeroTimeOfDay
@@ -20,63 +18,35 @@ export const TIME_OF_DAY_OPTIONS: readonly TimeSceneOption[] = [
     label: 'Día',
     emoji: '☀️',
     location: 'Autopista GMA · El Ávila',
-    timeRange: '06:00 - 17:59',
-  },
-  {
-    id: 'sunset',
-    label: 'Tarde',
-    emoji: '🌅',
-    location: 'Peaje La Guaira · Corredor Central',
-    timeRange: '18:00 - 19:59',
+    timeRange: '06:00 - 18:59',
   },
   {
     id: 'night',
     label: 'Noche',
     emoji: '🌙',
     location: 'Autopista GMA · Telepeaje Caracas',
-    timeRange: '20:00 - 05:59',
+    timeRange: '19:00 - 05:59',
   },
 ] as const
 
 function detectLocalTimeOfDay(): HeroTimeOfDay {
   const hour = new Date().getHours()
-  if (hour >= 6 && hour < 18) return 'day'
-  if (hour >= 18 && hour < 20) return 'sunset'
-  return 'night'
+  return hour >= 6 && hour < 19 ? 'day' : 'night'
 }
 
-// Estado singleton para que persista durante la sesión
-const timeMode = ref<HeroTimeMode>('auto')
-const selectedTime = ref<HeroTimeOfDay>(detectLocalTimeOfDay())
-
 export function useHeroTimeOfDay() {
-  const currentTime = computed<HeroTimeOfDay>(() => {
-    return timeMode.value === 'auto' ? detectLocalTimeOfDay() : selectedTime.value
-  })
+  const currentTime = computed<HeroTimeOfDay>(() => detectLocalTimeOfDay())
 
   const currentScene = computed<TimeSceneOption>(() => {
     return TIME_OF_DAY_OPTIONS.find((opt) => opt.id === currentTime.value) ?? TIME_OF_DAY_OPTIONS[0]
   })
 
-  function setTimeOfDay(time: HeroTimeOfDay): void {
-    timeMode.value = 'manual'
-    selectedTime.value = time
-  }
-
-  function setAuto(): void {
-    timeMode.value = 'auto'
-    selectedTime.value = detectLocalTimeOfDay()
-  }
-
   return {
     currentTime,
     currentScene,
-    timeMode,
-    setTimeOfDay,
-    setAuto,
     dayImg,
-    sunsetImg,
     nightImg,
     options: TIME_OF_DAY_OPTIONS,
   }
 }
+
