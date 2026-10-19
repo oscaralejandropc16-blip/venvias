@@ -146,7 +146,7 @@ export default defineComponent({
   font-size: 11px;
   font-weight: 600;
   padding: 3px 8px;
-  border-radius: var(--radius-pill);
+  border-radius: 6px;
 }
 
 .v-badge--success {

@@ -1,9 +1,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { RouterLink, type RouteLocationRaw } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import AppIcon from '@/shared/icons/AppIcon.vue'
 import { ROUTE_NAMES } from '@/core/constants/routing'
-import { normalizePlate, plateStatus } from '@/modules/plates/utils/plate'
+import PlateImage from '@/modules/plates/components/PlateImage.vue'
 import HowItWorksInfographic from '../components/HowItWorksInfographic.vue'
 
 import camaraImg from '@/assets/how-it-works/2-camara.webp'
@@ -24,7 +24,7 @@ interface StepMeta {
 
 export default defineComponent({
   name: 'HowItWorksView',
-  components: { AppIcon, HowItWorksInfographic, RouterLink },
+  components: { AppIcon, HowItWorksInfographic, RouterLink, PlateImage },
   data() {
     return {
       rechargeRoute: { name: ROUTE_NAMES.recharge },
@@ -73,10 +73,6 @@ export default defineComponent({
 
       // Comparativa Antes vs Ahora
       activeCompare: 'now' as 'now' | 'before',
-
-      // Consola de consulta rápida en CTA
-      quickPlate: 'AB123CD',
-      samplePlates: ['AB123CD', 'AF820KK', 'AE742MB'],
     }
   },
 
@@ -87,21 +83,6 @@ export default defineComponent({
     },
     currentStepMeta(): StepMeta {
       return this.steps.find((s) => s.id === this.currentStep) || this.steps[0]
-    },
-    isQuickPlateValid(): boolean {
-      return plateStatus(this.quickPlate) === 'valid'
-    },
-    quickBalanceRoute(): RouteLocationRaw {
-      return {
-        name: ROUTE_NAMES.balance,
-        query: this.quickPlate ? { placa: this.quickPlate } : undefined,
-      }
-    },
-    quickRechargeRoute(): RouteLocationRaw {
-      return {
-        name: ROUTE_NAMES.recharge,
-        query: this.quickPlate ? { placa: this.quickPlate } : undefined,
-      }
     },
   },
 
@@ -118,16 +99,6 @@ export default defineComponent({
   },
 
   methods: {
-    onQuickPlateInput(e: Event): void {
-      const input = e.target as HTMLInputElement
-      this.quickPlate = normalizePlate(input.value)
-      input.value = this.quickPlate
-    },
-
-    setSamplePlate(plate: string): void {
-      this.quickPlate = plate
-    },
-
     setStep(step: SimStep, userAction = true): void {
       this.currentStep = step
       this.progress = 0
@@ -209,34 +180,26 @@ export default defineComponent({
 
 <template>
   <div class="how-page">
-    <!-- Atmósfera dinámica viva: orbes de gradiente flotante y partículas sutiles -->
+    <!-- Atmósfera dinámica viva: iluminación suave y profesional sin cuadrículas -->
     <div class="how-ambient" aria-hidden="true">
       <div class="how-ambient__orb how-ambient__orb--blue"></div>
       <div class="how-ambient__orb how-ambient__orb--cyan"></div>
-      <div class="how-ambient__orb how-ambient__orb--amber"></div>
-      <div class="how-ambient__grid"></div>
       <div class="how-ambient__beam"></div>
     </div>
 
     <div class="wrap how-content">
-      <!-- HERO PRINCIPAL DE ALTO IMPACTO (SIN PÍLDORAS) -->
+      <!-- HERO PRINCIPAL (DIRECTO, SIN PÍLDORAS) -->
       <header class="hero-tech">
-        <div class="hero-tech__eyebrow animate-in-1">
-          <span class="hero-tech__dot" aria-hidden="true"></span>
-          <span class="hero-tech__label mono">SISTEMA NACIONAL DE TELEPEAJE POR PLACA</span>
-          <span class="hero-tech__badge-tag mono">OFICIAL MPPT</span>
-        </div>
-
-        <h1 class="hero-tech__title animate-in-2">
+        <h1 class="hero-tech__title animate-in-1">
           Tu viaje <span class="gradient-text">sin paradas ni barreras</span>
         </h1>
 
-        <p class="hero-tech__sub animate-in-3">
+        <p class="hero-tech__sub animate-in-2">
           Transita a velocidad de autopista. La cámara lee tu placa venezolana en milisegundos y el importe se debita automáticamente de tu saldo. Sin colas, sin efectivo y sin demoras en cabina.
         </p>
 
-        <!-- Métricas ejecutivas en cuadrícula moderna (sin cápsulas/píldoras) -->
-        <div class="hero-stats-grid animate-in-4">
+        <!-- Métricas ejecutivas en cuadrícula moderna -->
+        <div class="hero-stats-grid animate-in-3">
           <div class="hero-stat-card">
             <span class="hero-stat-card__val">0 <small>seg</small></span>
             <span class="hero-stat-card__lbl">Espera en cabina</span>
@@ -264,10 +227,6 @@ export default defineComponent({
       <section class="sim-section reveal-on-scroll" aria-labelledby="sim-title">
         <div class="sim-header">
           <div class="sim-header__meta">
-            <span class="sim-header__tag">
-              <span class="live-dot" aria-hidden="true"></span>
-              EXPERIENCIA INTERACTIVA EN VIVO
-            </span>
             <h2 id="sim-title" class="sim-header__title">Simulador de Paso por Pórtico Inteligente</h2>
           </div>
 
@@ -415,12 +374,6 @@ export default defineComponent({
                 </div>
               </div>
             </Transition>
-
-            <!-- Telemetría HUD persistente en la esquina inferior -->
-            <div class="hud-telemetry mono" aria-hidden="true">
-              <span class="hud-telemetry__dot"></span>
-              <span>ALPR_SYS_V3 // LATENCY: 42ms // GATELANE: 02 // FPS: 60</span>
-            </div>
           </div>
 
           <!-- Columna Derecha: Panel de Telemetría e Información Ejecutiva con Transición Suave -->
@@ -541,7 +494,6 @@ export default defineComponent({
       <!-- SECCIÓN BENTO GRID: ARQUITECTURA VISUAL DE ALTA GAMA -->
       <section class="bento-section reveal-on-scroll" aria-labelledby="bento-title">
         <div class="bento-header">
-          <span class="bento-header__eyebrow">TECNOLOGÍA VIAL NACIONAL</span>
           <h2 id="bento-title" class="bento-header__title">El Ecosistema Inteligente de Autopistas</h2>
           <p class="bento-header__desc">
             Diseñado para transformar la movilidad en Venezuela eliminando las fricciones del peaje tradicional.
@@ -551,23 +503,15 @@ export default defineComponent({
         <div class="bento-grid">
           <!-- Card 1 (Grande / Hero Bento): La Placa como Credencial Digital -->
           <article class="bento-card bento-card--large">
-            <div class="bento-card__badge">PATENTE DIGITAL</div>
             <h3 class="bento-card__title">Tu placa venezolana es tu pase de tránsito</h3>
             <p class="bento-card__text">
               No necesitas instalar dispositivos obligatorios ni tramitar tarjetas físicas. La matrícula oficial de tu vehículo funciona como tu identificador seguro de peaje en todo el país.
             </p>
 
-            <!-- Gráfico visual de la placa venezolana con holograma y escáner animado -->
+            <!-- Gráfico oficial de la placa vehicular venezolana -->
             <div class="bento-plate-display">
-              <div class="bento-plate-card">
-                <div class="bento-plate-card__hologram" aria-hidden="true"></div>
-                <div class="bento-plate-card__scanline" aria-hidden="true"></div>
-                <div class="bento-plate-card__flag" aria-hidden="true"></div>
-                <div class="bento-plate-card__header">REPÚBLICA BOLIVARIANA DE VENEZUELA</div>
-                <div class="bento-plate-card__body">
-                  <span class="bento-plate-card__number mono">AB123CD</span>
-                </div>
-                <div class="bento-plate-card__footer">TRANSPORTE TERRESTRE</div>
+              <div class="bento-plate-wrapper">
+                <PlateImage value="AB123CD" size="md" />
               </div>
               <div class="bento-plate-features">
                 <div class="bento-feat-pill"><AppIcon name="check" :size="14" /> Reconocimiento ALPR</div>
@@ -579,7 +523,6 @@ export default defineComponent({
 
           <!-- Card 2: Comparativa Interactiva "Antes vs Ahora" con Transición Suave -->
           <article class="bento-card bento-card--compare">
-            <div class="bento-card__badge">EVOLUCIÓN VIAL</div>
             <h3 class="bento-card__title">¿Qué cambia en tu viaje?</h3>
 
             <div class="compare-toggle" role="tablist">
@@ -658,7 +601,6 @@ export default defineComponent({
 
           <!-- Card 3: Recargas Multicanal en 3 segundos -->
           <article class="bento-card bento-card--payments">
-            <div class="bento-card__badge">ACREDITACIÓN INMEDIATA</div>
             <h3 class="bento-card__title">Recarga desde tu banca nacional</h3>
             <p class="bento-card__text">
               Conexión directa con la red interbancaria venezolana para abonar fondos a tu placa en segundos.
@@ -671,11 +613,18 @@ export default defineComponent({
                   <span>Acreditación en 2 segundos</span>
                 </div>
               </div>
-              <div class="payment-badge-pill">
-                <div class="payment-badge-pill__icon"><AppIcon name="tarjeta" :size="16" /></div>
+              <div class="payment-badge-pill payment-badge-pill--bdv">
+                <div class="payment-badge-pill__icon payment-badge-pill__icon--bdv" aria-label="Banco de Venezuela">
+                  <svg class="bdv-brand-icon" viewBox="0 0 32 32" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="7" fill="#003882"/>
+                    <path d="M6 6L26 26H6V6Z" fill="#002255" opacity="0.35"/>
+                    <path d="M16 4L28 16L22 22L10 10L16 4Z" fill="#D31424"/>
+                    <text x="16" y="21.5" font-family="'Inter', -apple-system, sans-serif" font-weight="900" font-size="9" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">BDV</text>
+                  </svg>
+                </div>
                 <div class="payment-badge-pill__label">
                   <strong>BDV en Línea</strong>
-                  <span>Débito directo en cuenta</span>
+                  <span>Débito directo Banco de Venezuela</span>
                 </div>
               </div>
               <div class="payment-badge-pill">
@@ -690,7 +639,6 @@ export default defineComponent({
 
           <!-- Card 4: Seguridad y Normativa Legal -->
           <article class="bento-card bento-card--law">
-            <div class="bento-card__badge">RESPALDO LEGAL</div>
             <h3 class="bento-card__title">Ley de Transporte Terrestre (Art. 72)</h3>
             <p class="bento-card__text">
               El cobro por placa está fundamentado en la legislación venezolana: la obligación nace con el uso de la vía y el titular registrado responde solidariamente por el tránsito.
@@ -710,124 +658,57 @@ export default defineComponent({
         <HowItWorksInfographic />
       </section>
 
-      <!-- BANNER DE CONVERSIÓN FINAL: CENTRO DE ACCIÓN Y CONSULTA RÁPIDA -->
+      <!-- BANNER DE CONVERSIÓN FINAL: MODERNO Y DIRECTO -->
       <section class="cta-banner reveal-on-scroll" aria-labelledby="cta-banner-title">
         <div class="cta-card">
           <div class="cta-card__ambient-glow" aria-hidden="true"></div>
-          <div class="cta-card__cyber-grid" aria-hidden="true"></div>
 
-          <div class="cta-grid">
-            <!-- Columna Izquierda: Mensaje Ejecutivo y Beneficios Clave -->
-            <div class="cta-info">
-              <div class="cta-status-tag">
-                <span class="cta-status-dot" aria-hidden="true"></span>
-                <span>ACCESO INMEDIATO · RED NACIONAL DE PEAJES</span>
-              </div>
+          <div class="cta-card__inner">
+            <h2 id="cta-banner-title" class="cta-title">
+              ¿Listo para circular <span class="gradient-text">sin detenerte?</span>
+            </h2>
 
-              <h2 id="cta-banner-title" class="cta-title">
-                ¿Listo para circular <span class="gradient-text">sin detenerte?</span>
-              </h2>
+            <p class="cta-desc">
+              Recarga el saldo de tu placa en segundos o consulta tu estatus antes de viajar. Con VenVías transitas a velocidad continua en todos los peajes del país.
+            </p>
 
-              <p class="cta-desc">
-                Consulta tu saldo en 3 segundos o realiza una recarga instantánea antes de salir. Con VenVías viajas a velocidad de autopista sin colas ni esperas en cabina.
-              </p>
-
-              <!-- Beneficios en micro-píldoras de alto contraste -->
-              <div class="cta-benefits">
-                <div class="cta-benefit-item">
-                  <span class="cta-benefit-icon"><AppIcon name="rayo" :size="16" /></span>
-                  <span>Acreditación en 2 seg por Pago Móvil y BDV en Línea</span>
-                </div>
-                <div class="cta-benefit-item">
-                  <span class="cta-benefit-icon"><AppIcon name="check" :size="16" /></span>
-                  <span>Tránsito garantizado y fluido sin barreras físicas</span>
-                </div>
-                <div class="cta-benefit-item">
-                  <span class="cta-benefit-icon"><AppIcon name="recibo" :size="16" /></span>
-                  <span>Comprobante y conciliación digital al instante</span>
-                </div>
-              </div>
-
-              <!-- Enlaces rápidos de acción -->
-              <div class="cta-action-row">
-                <RouterLink :to="rechargeRoute" class="cta-btn cta-btn--primary">
-                  <AppIcon name="rayo" :size="18" />
-                  <span>Recargar placa ahora</span>
-                  <span class="cta-btn__shine" aria-hidden="true"></span>
-                </RouterLink>
-                <RouterLink :to="balanceRoute" class="cta-btn cta-btn--secondary">
-                  <AppIcon name="placa" :size="18" />
-                  <span>Consultar saldo</span>
-                </RouterLink>
-              </div>
+            <div class="cta-action-row">
+              <RouterLink :to="rechargeRoute" class="cta-btn cta-btn--primary">
+                <AppIcon name="rayo" :size="18" />
+                <span>Recargar placa ahora</span>
+                <span class="cta-btn__shine" aria-hidden="true"></span>
+              </RouterLink>
+              <RouterLink :to="balanceRoute" class="cta-btn cta-btn--secondary">
+                <AppIcon name="placa" :size="18" />
+                <span>Consultar saldo</span>
+              </RouterLink>
             </div>
 
-            <!-- Columna Derecha: Consola Interactiva de Placa en Vivo -->
-            <div class="cta-console">
-              <div class="console-box">
-                <div class="console-box__header">
-                  <span class="console-box__label">CONSULTA EXPRÉS DE MATRÍCULA</span>
-                  <span class="console-box__live">
-                    <span class="live-ping" aria-hidden="true"></span>
-                    ALPR ONLINE
-                  </span>
-                </div>
+            <div class="cta-debt-hint">
+              <RouterLink :to="debtRoute" class="cta-debt-link">
+                ¿Tienes saldo pendiente de un tránsito reciente? Pagar aquí →
+              </RouterLink>
+            </div>
 
-                <!-- Placa interactiva editable -->
-                <div class="console-plate">
-                  <div class="console-plate__flag" aria-hidden="true"></div>
-                  <div class="console-plate__header">REPÚBLICA BOLIVARIANA DE VENEZUELA</div>
-                  <div class="console-plate__input-wrap">
-                    <input
-                      type="text"
-                      :value="quickPlate"
-                      maxlength="7"
-                      autocomplete="off"
-                      spellcheck="false"
-                      placeholder="AB123CD"
-                      class="console-plate__input mono"
-                      aria-label="Ingresa tu placa vehicular para consulta exprés"
-                      @input="onQuickPlateInput"
-                    />
-                    <div class="console-plate__laser" aria-hidden="true"></div>
-                  </div>
-                  <div class="console-plate__footer">TRANSPORTE TERRESTRE</div>
-                </div>
-
-                <!-- Placas de prueba / Atajos rápidos -->
-                <div class="console-quick-picks">
-                  <span class="console-quick-label">Probar matrícula:</span>
-                  <div class="console-chips">
-                    <button
-                      v-for="p in samplePlates"
-                      :key="p"
-                      type="button"
-                      class="console-chip mono"
-                      :class="{ 'is-selected': quickPlate === p }"
-                      @click="setSamplePlate(p)"
-                    >
-                      {{ p }}
-                    </button>
-                  </div>
-                </div>
-
-                <!-- Botones de Acción de la Consola -->
-                <div class="console-actions">
-                  <RouterLink :to="quickBalanceRoute" class="console-btn console-btn--query">
-                    <AppIcon name="placa" :size="16" />
-                    <span>Consultar saldo</span>
-                  </RouterLink>
-                  <RouterLink :to="quickRechargeRoute" class="console-btn console-btn--pay">
-                    <AppIcon name="rayo" :size="16" />
-                    <span>Recargar</span>
-                  </RouterLink>
-                </div>
-
-                <!-- Nota informativa de seguridad -->
-                <div class="console-footer-note">
-                  <AppIcon name="info" :size="14" />
-                  <span>Sin registros previos ni contraseñas. Valida con tu número de placa.</span>
-                </div>
+            <div class="cta-trust-strip">
+              <div class="cta-trust-item">
+                <span class="trust-dot"></span>
+                <span>Pago Móvil C2P</span>
+              </div>
+              <span class="cta-trust-sep" aria-hidden="true">·</span>
+              <div class="cta-trust-item">
+                <span class="trust-dot"></span>
+                <span>BDV en Línea</span>
+              </div>
+              <span class="cta-trust-sep" aria-hidden="true">·</span>
+              <div class="cta-trust-item">
+                <span class="trust-dot"></span>
+                <span>Botón IPG Débito</span>
+              </div>
+              <span class="cta-trust-sep" aria-hidden="true">·</span>
+              <div class="cta-trust-item">
+                <span class="trust-dot trust-dot--green"></span>
+                <span>Conciliación Inmediata</span>
               </div>
             </div>
           </div>
@@ -843,7 +724,7 @@ export default defineComponent({
    ========================================================================== */
 .how-page {
   position: relative;
-  background: #060b18;
+  background: radial-gradient(circle at 50% 0%, #0d1e3d 0%, #070e1e 50%, #040813 100%);
   color: #f8fafc;
   min-height: 100vh;
   padding-block: var(--space-8) var(--space-20);
@@ -929,16 +810,6 @@ export default defineComponent({
   animation: orbDrift2 18s ease-in-out infinite alternate;
 }
 
-.how-ambient__orb--amber {
-  top: 1050px;
-  right: 6%;
-  width: 640px;
-  height: 640px;
-  background: radial-gradient(circle, #f59e0b 0%, rgba(245, 158, 11, 0) 70%);
-  opacity: 0.18;
-  animation: orbDrift3 16s ease-in-out infinite alternate;
-}
-
 @keyframes orbDrift1 {
   0% { transform: translate(-50%, 0) scale(1); }
   100% { transform: translate(-46%, 40px) scale(1.08); }
@@ -952,15 +823,6 @@ export default defineComponent({
 @keyframes orbDrift3 {
   0% { transform: translate(0, 0) scale(1); }
   100% { transform: translate(-45px, 45px) scale(1.1); }
-}
-
-.how-ambient__grid {
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(circle at 50% 30%, black 20%, transparent 80%);
 }
 
 .how-ambient__beam {
@@ -981,55 +843,7 @@ export default defineComponent({
   text-align: center;
   max-width: 880px;
   margin: 0 auto;
-  padding-top: var(--space-4);
-}
-
-.hero-tech__eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 6px 14px;
-  border-radius: 6px;
-  background: rgba(15, 23, 42, 0.75);
-  border: 1px solid rgba(56, 189, 248, 0.35);
-  color: #38bdf8;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  margin-bottom: var(--space-6);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  transition: all 0.3s ease;
-}
-
-.hero-tech__eyebrow:hover {
-  border-color: #38bdf8;
-  box-shadow: 0 6px 26px rgba(56, 189, 248, 0.3);
-  transform: translateY(-1px);
-}
-
-.hero-tech__dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #38bdf8;
-  box-shadow: 0 0 10px #38bdf8;
-  animation: beaconPulse 2s ease-in-out infinite;
-}
-
-.hero-tech__badge-tag {
-  font-size: 9px;
-  font-weight: 800;
-  color: #f59e0b;
-  background: rgba(245, 158, 11, 0.15);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  padding: 2px 6px;
-  border-radius: 4px;
-  letter-spacing: 0.08em;
-}
-
-@keyframes beaconPulse {
-  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 10px #38bdf8; }
-  50% { opacity: 0.4; transform: scale(1.35); box-shadow: 0 0 20px #38bdf8; }
+  padding-top: var(--space-6);
 }
 
 .hero-tech__title {
@@ -1040,7 +854,7 @@ export default defineComponent({
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #ffffff 20%, #38bdf8 65%, #f59e0b 100%);
+  background: linear-gradient(135deg, #ffffff 20%, #38bdf8 65%, #0284c7 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1144,7 +958,7 @@ export default defineComponent({
 .hero-stat-card__line--cyan { background: #38bdf8; box-shadow: 0 0 8px #38bdf8; }
 .hero-stat-card__line--blue { background: #0284c7; box-shadow: 0 0 8px #0284c7; }
 .hero-stat-card__line--green { background: #10b981; box-shadow: 0 0 8px #10b981; }
-.hero-stat-card__line--amber { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
+.hero-stat-card__line--amber { background: #38bdf8; box-shadow: 0 0 8px #38bdf8; }
 
 /* ==========================================================================
    SECCIÓN SIMULADOR INTERACTIVO
@@ -1177,27 +991,6 @@ export default defineComponent({
     align-items: center;
     justify-content: space-between;
   }
-}
-
-.sim-header__tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono, monospace);
-  font-size: 11px;
-  font-weight: 700;
-  color: #f59e0b;
-  letter-spacing: 0.12em;
-  margin-bottom: 4px;
-}
-
-.live-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #f59e0b;
-  box-shadow: 0 0 10px #f59e0b;
-  animation: beaconPulse 1.8s infinite;
 }
 
 .sim-header__title {
@@ -1743,26 +1536,6 @@ export default defineComponent({
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.hud-telemetry {
-  position: absolute;
-  left: 16px;
-  bottom: 12px;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.45);
-  letter-spacing: 0.08em;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.hud-telemetry__dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #10b981;
-  animation: beaconPulse 1.5s infinite;
-}
-
 /* ==========================================================================
    INSPECTOR COLUMNA DERECHA
    ========================================================================== */
@@ -1952,13 +1725,13 @@ export default defineComponent({
 .sim-cta-link {
   font-size: 13px;
   font-weight: 600;
-  color: #f59e0b;
+  color: #38bdf8;
   text-decoration: none;
   text-align: center;
   transition: color 0.2s ease;
 }
 .sim-cta-link:hover {
-  color: #fbbf24;
+  color: #7dd3fc;
   text-decoration: underline;
 }
 
@@ -1974,16 +1747,6 @@ export default defineComponent({
   text-align: center;
   max-width: 680px;
   margin: 0 auto;
-}
-
-.bento-header__eyebrow {
-  display: inline-block;
-  font-family: var(--font-mono, monospace);
-  font-size: 11px;
-  font-weight: 700;
-  color: #0284c7;
-  letter-spacing: 0.14em;
-  margin-bottom: var(--space-2);
 }
 
 .bento-header__title {
@@ -2037,19 +1800,6 @@ export default defineComponent({
   box-shadow: 0 24px 50px -15px rgba(0, 56, 168, 0.4);
 }
 
-.bento-card__badge {
-  align-self: flex-start;
-  font-family: var(--font-mono, monospace);
-  font-size: 10px;
-  font-weight: 700;
-  color: #38bdf8;
-  background: rgba(56, 189, 248, 0.12);
-  padding: 3px 8px;
-  border-radius: 6px;
-  letter-spacing: 0.1em;
-  margin-bottom: var(--space-3);
-}
-
 .bento-card__title {
   font: 700 20px/1.3 var(--font-display);
   color: #ffffff;
@@ -2065,7 +1815,7 @@ export default defineComponent({
   flex-grow: 1;
 }
 
-/* Placa venezolana estilizada con holograma y escáner animado */
+/* Placa oficial venezolana */
 .bento-plate-display {
   display: flex;
   flex-direction: column;
@@ -2076,86 +1826,16 @@ export default defineComponent({
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.bento-plate-card {
-  position: relative;
-  background: #ffffff;
-  color: #0f172a;
-  border-radius: 12px;
-  padding: 10px 16px;
-  text-align: center;
-  border: 2px solid #cbd5e1;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  max-width: 280px;
-  margin: 0 auto;
-  overflow: hidden;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+.bento-plate-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.bento-plate-card:hover {
-  transform: perspective(600px) rotateX(4deg) translateY(-4px) scale(1.03);
-  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.6);
-}
-
-.bento-plate-card__hologram {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(115deg, transparent 35%, rgba(56, 189, 248, 0.25) 45%, rgba(245, 158, 11, 0.25) 55%, transparent 65%);
-  background-size: 250% 250%;
-  animation: holoSweep 5s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes holoSweep {
-  0% { background-position: 0% 0%; }
-  50% { background-position: 100% 100%; }
-  100% { background-position: 0% 0%; }
-}
-
-.bento-plate-card__scanline {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, transparent 0%, rgba(56, 189, 248, 0.25) 50%, transparent 100%);
-  animation: plateScan 3.2s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes plateScan {
-  0%, 100% { transform: translateY(-100%); }
-  50% { transform: translateY(100%); }
-}
-
-.bento-plate-card__flag {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #f59e0b 0% 33%, #0038A8 33% 66%, #dc2626 66% 100%);
-}
-
-.bento-plate-card__header {
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: #475569;
-  margin-top: 2px;
-}
-
-.bento-plate-card__number {
-  font-size: 32px;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  color: #0f172a;
-  display: block;
-  line-height: 1.1;
-  margin: 2px 0;
-}
-
-.bento-plate-card__footer {
-  font-size: 8px;
-  font-weight: 700;
-  color: #64748b;
-  letter-spacing: 0.1em;
+.bento-plate-wrapper:hover {
+  transform: translateY(-4px) scale(1.02);
 }
 
 .bento-plate-features {
@@ -2324,6 +2004,17 @@ export default defineComponent({
   flex-shrink: 0;
 }
 
+.payment-badge-pill__icon--bdv {
+  background: transparent !important;
+  padding: 0;
+}
+
+.bdv-brand-icon {
+  display: block;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0, 43, 127, 0.45);
+}
+
 .payment-badge-pill__label strong {
   display: block;
   font-size: 13px;
@@ -2340,11 +2031,11 @@ export default defineComponent({
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(245, 158, 11, 0.08);
-  border: 1px solid rgba(245, 158, 11, 0.25);
+  background: rgba(56, 189, 248, 0.06);
+  border: 1px solid rgba(56, 189, 248, 0.22);
   padding: 12px 14px;
   border-radius: 14px;
-  color: #f59e0b;
+  color: #e2e8f0;
   font-size: 13px;
   font-weight: 600;
   line-height: 1.4;
@@ -2352,16 +2043,18 @@ export default defineComponent({
 }
 
 .law-highlight-box:hover {
-  background: rgba(245, 158, 11, 0.14);
-  border-color: #f59e0b;
+  background: rgba(56, 189, 248, 0.12);
+  border-color: #38bdf8;
   transform: translateY(-2px);
+  box-shadow: 0 4px 18px rgba(56, 189, 248, 0.15);
 }
 
 .law-highlight-box__icon {
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: rgba(245, 158, 11, 0.15);
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
   display: grid;
   place-items: center;
   flex-shrink: 0;
@@ -2385,17 +2078,18 @@ export default defineComponent({
 }
 
 /* ==========================================================================
-   BANNER FINAL CTA: CENTRO DE ACCIÓN RÁPIDA (REDISEÑO HIGH-TECH)
+   BANNER FINAL CTA: MODERNO Y DIRECTO
    ========================================================================== */
 .cta-card {
   position: relative;
-  background: radial-gradient(130% 120% at 20% 0%, #0d1e4c 0%, #081126 70%, #050a17 100%);
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  border-radius: 32px;
-  padding: clamp(32px, 5vw, 56px);
+  background: radial-gradient(120% 120% at 50% 0%, #0d1e4c 0%, #081126 70%, #050a17 100%);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 28px;
+  padding: clamp(36px, 5vw, 60px) clamp(24px, 4vw, 48px);
   overflow: hidden;
   box-shadow: 0 30px 90px -20px rgba(0, 56, 168, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
 }
 
 .cta-card:hover {
@@ -2405,137 +2099,58 @@ export default defineComponent({
 
 .cta-card__ambient-glow {
   position: absolute;
-  top: -60px;
-  right: -60px;
-  width: 500px;
-  height: 500px;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.18) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.16) 0%, transparent 70%);
   pointer-events: none;
 }
 
-.cta-card__cyber-grid {
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: radial-gradient(ellipse at 80% 20%, black 10%, transparent 75%);
-  pointer-events: none;
-}
-
-.cta-grid {
+.cta-card__inner {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(32px, 4vw, 56px);
-  align-items: center;
-}
-
-@media (min-width: 960px) {
-  .cta-grid {
-    grid-template-columns: 1.15fr 0.95fr;
-  }
-}
-
-/* Columna Izquierda: Información */
-.cta-info {
+  max-width: 680px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-}
-
-.cta-status-tag {
-  align-self: flex-start;
-  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono, monospace);
-  font-size: 11px;
-  font-weight: 700;
-  color: #38bdf8;
-  background: rgba(56, 189, 248, 0.12);
-  border: 1px solid rgba(56, 189, 248, 0.35);
-  padding: 5px 14px;
-  border-radius: 6px;
-  letter-spacing: 0.1em;
-  margin-bottom: var(--space-4);
-}
-
-.cta-status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #38bdf8;
-  box-shadow: 0 0 10px #38bdf8;
-  animation: beaconPulse 1.8s infinite;
 }
 
 .cta-title {
-  font: 800 clamp(30px, 3.8vw, 46px)/1.15 var(--font-display);
+  font: 800 clamp(28px, 3.6vw, 42px)/1.2 var(--font-display);
   color: #ffffff;
   margin: 0 0 var(--space-4);
   letter-spacing: -0.02em;
 }
 
 .cta-desc {
-  font-size: clamp(15px, 1.5vw, 17px);
+  font-size: clamp(15px, 1.4vw, 17px);
   color: #94a3b8;
   line-height: 1.6;
-  margin: 0 0 var(--space-6);
-}
-
-.cta-benefits {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: var(--space-8);
-}
-
-.cta-benefit-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #e2e8f0;
-}
-
-.cta-benefit-icon {
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  background: rgba(56, 189, 248, 0.15);
-  color: #38bdf8;
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-}
-
-.cta-benefit-item:nth-child(2) .cta-benefit-icon {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
-}
-
-.cta-benefit-item:nth-child(3) .cta-benefit-icon {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
+  margin: 0 0 var(--space-8);
+  max-width: 580px;
 }
 
 .cta-action-row {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-3);
+  gap: var(--space-4);
+  justify-content: center;
+  margin-bottom: var(--space-5);
 }
 
 .cta-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
-  padding: 13px 24px;
+  padding: 14px 28px;
   border-radius: 14px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   text-decoration: none;
   overflow: hidden;
@@ -2545,13 +2160,13 @@ export default defineComponent({
 .cta-btn--primary {
   background: #0038A8;
   color: #ffffff;
-  box-shadow: 0 6px 20px rgba(0, 56, 168, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 56, 168, 0.45);
 }
 
 .cta-btn--primary:hover {
   background: #0284c7;
   transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(2, 132, 199, 0.55);
+  box-shadow: 0 12px 30px rgba(2, 132, 199, 0.6);
 }
 
 .cta-btn--primary:active {
@@ -2580,247 +2195,61 @@ export default defineComponent({
 }
 
 .cta-btn--secondary:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.16);
   border-color: #38bdf8;
   transform: translateY(-2px);
 }
 
-.cta-btn--secondary:active {
-  transform: scale(0.98);
+.cta-debt-hint {
+  margin-bottom: var(--space-8);
 }
 
-/* Columna Derecha: Consola Interactiva */
-.cta-console {
+.cta-debt-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: #38bdf8;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.cta-debt-link:hover {
+  color: #7dd3fc;
+  text-decoration: underline;
+}
+
+.cta-trust-strip {
   display: flex;
-  justify-content: center;
-}
-
-.console-box {
-  width: 100%;
-  max-width: 440px;
-  background: rgba(11, 19, 43, 0.88);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 24px;
-  padding: clamp(20px, 3vw, 28px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.console-box:hover {
-  border-color: rgba(56, 189, 248, 0.4);
-  box-shadow: 0 24px 60px rgba(0, 56, 168, 0.35);
-}
-
-.console-box__header {
-  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  font-size: 11px;
-  font-family: var(--font-mono, monospace);
-  font-weight: 700;
+  justify-content: center;
+  gap: 12px;
+  padding-top: var(--space-5);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  width: 100%;
+  font-size: 12px;
   color: #94a3b8;
-  letter-spacing: 0.1em;
 }
 
-.console-box__live {
+.cta-trust-item {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #10b981;
+  font-weight: 600;
 }
 
-.live-ping {
+.trust-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
+  background: #38bdf8;
+}
+
+.trust-dot--green {
   background: #10b981;
-  box-shadow: 0 0 8px #10b981;
-  animation: beaconPulse 1.5s infinite;
 }
 
-/* Placa interactiva editable */
-.console-plate {
-  position: relative;
-  background: #ffffff;
-  color: #0f172a;
-  border-radius: 12px;
-  padding: 10px 16px;
-  text-align: center;
-  border: 2px solid #cbd5e1;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-  overflow: hidden;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-.console-plate:focus-within {
-  border-color: #0038A8;
-  box-shadow: 0 10px 30px rgba(0, 56, 168, 0.35);
-}
-
-.console-plate__flag {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #f59e0b 0% 33%, #0038A8 33% 66%, #dc2626 66% 100%);
-}
-
-.console-plate__header {
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: #475569;
-  margin-top: 2px;
-}
-
-.console-plate__input-wrap {
-  position: relative;
-  margin: 2px 0;
-}
-
-.console-plate__input {
-  width: 100%;
-  border: none;
-  background: transparent;
-  text-align: center;
-  font-size: clamp(28px, 4vw, 36px);
-  font-weight: 900;
-  letter-spacing: 0.14em;
-  color: #0f172a;
-  outline: none;
-  text-transform: uppercase;
-  padding: 2px 0;
-  line-height: 1.1;
-}
-
-.console-plate__laser {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(180deg, transparent 0%, rgba(56, 189, 248, 0.18) 50%, transparent 100%);
-  animation: plateScan 3.5s ease-in-out infinite;
-}
-
-.console-plate__footer {
-  font-size: 8px;
-  font-weight: 700;
-  color: #64748b;
-  letter-spacing: 0.1em;
-}
-
-/* Placas de prueba / chips rápidos */
-.console-quick-picks {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.console-quick-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: #64748b;
-}
-
-.console-chips {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.console-chip {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #94a3b8;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.console-chip:hover {
-  background: rgba(56, 189, 248, 0.15);
-  border-color: #38bdf8;
-  color: #ffffff;
-  transform: translateY(-1px);
-}
-
-.console-chip.is-selected {
-  background: rgba(56, 189, 248, 0.22);
-  border-color: #38bdf8;
-  color: #38bdf8;
-  box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
-}
-
-/* Botones de la consola */
-.console-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.console-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 11px 14px;
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.console-btn--query {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #ffffff;
-}
-
-.console-btn--query:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: #38bdf8;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
-}
-
-.console-btn--pay {
-  background: #0038A8;
-  border: 1px solid transparent;
-  color: #ffffff;
-  box-shadow: 0 4px 16px rgba(0, 56, 168, 0.4);
-}
-
-.console-btn--pay:hover {
-  background: #0284c7;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.55);
-}
-
-.console-btn:active {
-  transform: scale(0.97);
-}
-
-.console-footer-note {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  color: #64748b;
-  line-height: 1.4;
-}
-
-.console-footer-note svg {
-  flex-shrink: 0;
-  color: #38bdf8;
+.cta-trust-sep {
+  color: rgba(255, 255, 255, 0.2);
 }
 
 /* ==========================================================================
@@ -2839,9 +2268,6 @@ export default defineComponent({
   .hud-target-box,
   .hud-signal-beacon--green,
   .hud-signal-beacon--amber,
-  .hud-telemetry__dot,
-  .bento-plate-card__scanline,
-  .bento-plate-card__hologram,
   .hud-plate-preview,
   .sim-viewport__img {
     animation: none !important;

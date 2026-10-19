@@ -170,7 +170,7 @@ export default defineComponent({
   color: var(--azul-700);
   background: var(--azul-100);
   padding: 2px 8px;
-  border-radius: var(--radius-pill);
+  border-radius: 6px;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -189,7 +189,7 @@ export default defineComponent({
   font-size: 12px;
   font-weight: 500;
   padding: 2px 8px;
-  border-radius: var(--radius-pill);
+  border-radius: 6px;
   white-space: nowrap;
 }
 
