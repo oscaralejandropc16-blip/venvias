@@ -45,7 +45,7 @@ export default defineComponent({
       <!-- Cabecera Ejecutiva -->
       <div class="social-hub__header">
         <div class="social-hub__eyebrow">
-          <AppIcon name="soporte" :size="15" />
+          <AppIcon name="audifonos" :size="15" />
           <span>Atención al Conductor y Canales Oficiales</span>
         </div>
         <h2 id="social-hub-title" class="social-hub__title">
