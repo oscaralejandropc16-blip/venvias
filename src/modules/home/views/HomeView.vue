@@ -82,38 +82,6 @@ export default defineComponent({
       <!-- Velo de legibilidad y contraste degradado (Atmospheric Scrim) -->
       <div class="hero__scrim"></div>
 
-      <!-- Malla degradada viva / Aurora Mesh -->
-      <div class="hero__aurora">
-        <div class="hero__aurora-orb hero__aurora-orb--primary"></div>
-        <div class="hero__aurora-orb hero__aurora-orb--cyan"></div>
-        <div class="hero__aurora-orb hero__aurora-orb--amber"></div>
-        <div class="hero__aurora-orb hero__aurora-orb--card-glow"></div>
-      </div>
-
-      <!-- Cuadrícula arquitectónica de precisión (Linear/Vercel style con fade radial suave) -->
-      <div class="hero__grid-pattern"></div>
-
-      <!-- Ondas lumínicas de autopista y telepeaje digital (Flow lines vectoriales) -->
-      <svg class="hero__highway-waves" viewBox="0 0 1440 720" fill="none" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="hw-gradient-1" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#0057a3" stop-opacity="0" />
-            <stop offset="25%" stop-color="#0057a3" stop-opacity="0.12" />
-            <stop offset="60%" stop-color="#0284c7" stop-opacity="0.18" />
-            <stop offset="100%" stop-color="#38bdf8" stop-opacity="0" />
-          </linearGradient>
-          <linearGradient id="hw-gradient-2" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0" />
-            <stop offset="40%" stop-color="#0284c7" stop-opacity="0.14" />
-            <stop offset="80%" stop-color="#f59e0b" stop-opacity="0.10" />
-            <stop offset="100%" stop-color="#f59e0b" stop-opacity="0" />
-          </linearGradient>
-        </defs>
-        <path d="M-80 620 C 320 540, 720 660, 1520 440" stroke="url(#hw-gradient-1)" stroke-width="2" stroke-dasharray="8 14" class="hero__flow-path hero__flow-path--1" />
-        <path d="M-80 650 C 360 570, 760 690, 1520 480" stroke="url(#hw-gradient-1)" stroke-width="1.2" stroke-opacity="0.6" />
-        <path d="M-80 580 C 420 490, 820 620, 1520 390" stroke="url(#hw-gradient-2)" stroke-width="1.8" stroke-dasharray="10 16" class="hero__flow-path hero__flow-path--2" />
-      </svg>
-
       <!-- Transición sutil al pie del Hero -->
       <div class="hero__bg-bottom-fade"></div>
     </div>
@@ -121,6 +89,42 @@ export default defineComponent({
     <div class="wrap hero__grid">
       <!-- Columna Izquierda: Mensaje Institucional, Métricas y Pilares Oficiales -->
       <div class="hero__intro">
+        <!-- Selector ambiental sobrio (Día / Tarde / Noche) -->
+        <div class="hero__scene-switch" role="group" aria-label="Ambiente de autopista">
+          <button
+            type="button"
+            class="hero__scene-btn"
+            :class="{ 'is-active': currentTime === 'day' }"
+            @click="setTimeOfDay('day')"
+          >
+            ☀️ Día
+          </button>
+          <button
+            type="button"
+            class="hero__scene-btn"
+            :class="{ 'is-active': currentTime === 'sunset' }"
+            @click="setTimeOfDay('sunset')"
+          >
+            🌅 Tarde
+          </button>
+          <button
+            type="button"
+            class="hero__scene-btn"
+            :class="{ 'is-active': currentTime === 'night' }"
+            @click="setTimeOfDay('night')"
+          >
+            🌙 Noche
+          </button>
+          <button
+            v-if="timeMode === 'manual'"
+            type="button"
+            class="hero__scene-btn hero__scene-btn--auto"
+            @click="setAuto()"
+          >
+            Auto
+          </button>
+        </div>
+
         <h1 id="hero-title" class="hero__title">
           Paga tus peajes <br class="hidden sm:inline" />con tu placa.
           <span class="hero__title-accent">Rápido. Seguro. Sin registrarte.</span>
@@ -184,14 +188,8 @@ export default defineComponent({
       <div class="hero__card-col">
         <div class="hero__card">
           <div class="hero__card-header">
-            <div class="flex items-center gap-2">
-              <span class="hero__card-status-dot"></span>
-              <span class="hero__card-status-text">Terminal Digital Oficial</span>
-            </div>
-            <span class="hero__card-badge">
-              <span class="hero__badge-pulse hero__badge-pulse--sm" aria-hidden="true"></span>
-              En línea 24/7
-            </span>
+            <span class="hero__card-status-text">TERMINAL DIGITAL OFICIAL</span>
+            <span class="hero__card-status-sub">24/7 · Recargas en Línea</span>
           </div>
 
           <div class="hero__ocr-indicator">
@@ -455,59 +453,53 @@ export default defineComponent({
   position: relative;
   overflow: hidden;
   padding-bottom: clamp(36px, 4.5vw, 64px);
-  transition: background-color 1.2s cubic-bezier(0.16, 1, 0.3, 1), color 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1), color 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* --- TEMA DÍA (06:00 - 17:59): Luminoso, Ávila nítido, azul institucional --- */
+/* --- TEMA DÍA (06:00 - 17:59): Luminoso, cielo despejado, azul institucional VenVías --- */
 .hero--day {
-  background-color: #f0f7ff;
+  background-color: #f1f5f9;
   color: #0f172a;
 }
 .hero--day .hero__photo-layer.is-active {
-  opacity: 0.52;
-  filter: contrast(1.08) saturate(1.15);
+  opacity: 0.55;
+  filter: contrast(1.05) saturate(1.1);
 }
 .hero--day .hero__scrim {
   background: linear-gradient(
     90deg,
-    rgba(240, 247, 255, 0.94) 0%,
-    rgba(240, 247, 255, 0.82) 36%,
-    rgba(240, 247, 255, 0.42) 66%,
-    rgba(240, 247, 255, 0.10) 100%
+    rgba(241, 245, 249, 0.96) 0%,
+    rgba(241, 245, 249, 0.88) 42%,
+    rgba(241, 245, 249, 0.50) 72%,
+    rgba(241, 245, 249, 0.15) 100%
   );
 }
 .hero--day .hero__title {
   color: #0f172a;
 }
 .hero--day .hero__title-accent {
-  background: linear-gradient(135deg, #0057a3 0%, #0284c7 60%, #38bdf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #0038A8;
 }
 .hero--day .hero__sub {
-  color: #334155;
+  color: #475569;
 }
 .hero--day .hero__stat-card,
 .hero--day .hero__feature-card {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(203, 213, 225, 0.9);
-  box-shadow: 0 4px 16px rgba(18, 33, 66, 0.05);
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
 }
 .hero--day .hero__stat-card:hover,
-.hero--day .hero__stat-card:focus-within {
-  background: #ffffff;
-  border-color: #93c5fd;
-  box-shadow: 0 10px 24px -2px rgba(0, 87, 163, 0.14);
-}
+.hero--day .hero__stat-card:focus-within,
 .hero--day .hero__feature-card:hover,
 .hero--day .hero__feature-card:focus-within {
   background: #ffffff;
-  border-color: #0057a3;
-  box-shadow: 0 10px 24px rgba(0, 87, 163, 0.12);
+  border-color: #0038A8;
+  box-shadow: 0 8px 24px rgba(0, 56, 168, 0.12);
 }
 .hero--day .hero__stat-val {
-  color: #0057a3;
+  color: #0038A8;
 }
 .hero--day .hero__stat-lbl {
   color: #64748b;
@@ -518,59 +510,66 @@ export default defineComponent({
 .hero--day .hero__feature-desc {
   color: #475569;
 }
+.hero--day .hero__feature-icon--cyan {
+  background: rgba(2, 132, 199, 0.12);
+  color: #0284c7;
+}
+.hero--day .hero__feature-icon--emerald {
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+}
+.hero--day .hero__feature-icon--amber {
+  background: rgba(245, 158, 11, 0.12);
+  color: #d97706;
+}
+.hero--day .hero__bg-bottom-fade {
+  background: linear-gradient(to bottom, transparent, rgba(241, 245, 249, 0.9) 65%, #ffffff 100%);
+}
 
-/* --- TEMA ATARDECER (18:00 - 19:59): Crepúsculo dorado, reflejos ámbar y violeta --- */
+/* --- TEMA ATARDECER (18:00 - 19:59): Crepúsculo natural, ámbar y pizarra cálido --- */
 .hero--sunset {
-  background-color: #1a1026;
+  background-color: #1a1224;
   color: #f8fafc;
 }
 .hero--sunset .hero__photo-layer.is-active {
-  opacity: 0.72;
-  filter: contrast(1.15) saturate(1.3);
+  opacity: 0.65;
+  filter: contrast(1.1) saturate(1.15);
 }
 .hero--sunset .hero__scrim {
   background: linear-gradient(
     90deg,
-    rgba(26, 16, 38, 0.95) 0%,
-    rgba(26, 16, 38, 0.82) 38%,
-    rgba(26, 16, 38, 0.42) 68%,
-    rgba(26, 16, 38, 0.10) 100%
+    rgba(26, 18, 36, 0.96) 0%,
+    rgba(26, 18, 36, 0.86) 42%,
+    rgba(26, 18, 36, 0.48) 72%,
+    rgba(26, 18, 36, 0.15) 100%
   );
 }
 .hero--sunset .hero__title {
   color: #ffffff;
 }
 .hero--sunset .hero__title-accent {
-  background: linear-gradient(135deg, #fbbf24 0%, #f97316 55%, #ec4899 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 14px rgba(249, 115, 22, 0.45));
+  color: #f59e0b;
 }
 .hero--sunset .hero__sub {
-  color: #fde68a;
-  opacity: 0.95;
+  color: #fed7aa;
 }
 .hero--sunset .hero__stat-card,
 .hero--sunset .hero__feature-card {
-  background: rgba(36, 21, 52, 0.85);
+  background: rgba(35, 24, 48, 0.82);
   backdrop-filter: blur(14px);
-  border: 1px solid rgba(251, 191, 36, 0.28);
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
 }
 .hero--sunset .hero__stat-card:hover,
-.hero--sunset .hero__stat-card:focus-within {
-  background: rgba(55, 30, 80, 0.95);
-  border-color: #fbbf24;
-  box-shadow: 0 12px 36px rgba(251, 191, 36, 0.35);
-}
+.hero--sunset .hero__stat-card:focus-within,
 .hero--sunset .hero__feature-card:hover,
 .hero--sunset .hero__feature-card:focus-within {
-  background: rgba(55, 30, 80, 0.95);
-  border-color: #fbbf24;
-  box-shadow: 0 12px 36px rgba(251, 191, 36, 0.35);
+  background: rgba(48, 32, 66, 0.95);
+  border-color: rgba(245, 158, 11, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
 }
 .hero--sunset .hero__stat-val {
-  color: #fbbf24;
+  color: #f59e0b;
 }
 .hero--sunset .hero__stat-lbl {
   color: #e2e8f0;
@@ -582,75 +581,65 @@ export default defineComponent({
   color: #cbd5e1;
 }
 .hero--sunset .hero__feature-icon--cyan {
-  background: rgba(8, 145, 178, 0.28);
-  color: #38bdf8;
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+  background: rgba(2, 132, 199, 0.18);
+  color: #7dd3fc;
 }
 .hero--sunset .hero__feature-icon--emerald {
-  background: rgba(16, 185, 129, 0.28);
-  color: #34d399;
-  box-shadow: 0 0 12px rgba(52, 211, 153, 0.25);
+  background: rgba(16, 185, 129, 0.18);
+  color: #6ee7b7;
 }
 .hero--sunset .hero__feature-icon--amber {
-  background: rgba(245, 158, 11, 0.28);
-  color: #fbbf24;
-  box-shadow: 0 0 12px rgba(251, 191, 36, 0.25);
+  background: rgba(245, 158, 11, 0.18);
+  color: #fcd34d;
 }
 .hero--sunset .hero__bg-bottom-fade {
-  background: linear-gradient(to bottom, transparent, rgba(26, 16, 38, 0.88) 60%, #ffffff 100%);
+  background: linear-gradient(to bottom, transparent, rgba(26, 18, 36, 0.9) 65%, #ffffff 100%);
 }
 
-/* --- TEMA NOCHE (20:00 - 05:59): Expreso nocturno cinematográfico, estelas de luz y neón --- */
+/* --- TEMA NOCHE (20:00 - 05:59): Azul noche profundo institucional, sobrio y elegante --- */
 .hero--night {
-  background-color: #060a14;
+  background-color: #070d1e;
   color: #f8fafc;
 }
 .hero--night .hero__photo-layer.is-active {
-  opacity: 0.74;
-  filter: contrast(1.18) saturate(1.35);
+  opacity: 0.68;
+  filter: contrast(1.12) saturate(1.2);
 }
 .hero--night .hero__scrim {
   background: linear-gradient(
     90deg,
-    rgba(6, 10, 20, 0.95) 0%,
-    rgba(6, 10, 20, 0.84) 40%,
-    rgba(6, 10, 20, 0.42) 70%,
-    rgba(6, 10, 20, 0.10) 100%
+    rgba(7, 13, 30, 0.96) 0%,
+    rgba(7, 13, 30, 0.88) 42%,
+    rgba(7, 13, 30, 0.50) 72%,
+    rgba(7, 13, 30, 0.15) 100%
   );
 }
 .hero--night .hero__title {
   color: #ffffff;
 }
 .hero--night .hero__title-accent {
-  background: linear-gradient(135deg, #38bdf8 0%, #60a5fa 50%, #818cf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 14px rgba(56, 189, 248, 0.45));
+  color: #38bdf8;
 }
 .hero--night .hero__sub {
   color: #cbd5e1;
 }
 .hero--night .hero__stat-card,
 .hero--night .hero__feature-card {
-  background: rgba(15, 23, 42, 0.84);
+  background: rgba(13, 21, 40, 0.80);
   backdrop-filter: blur(14px);
-  border: 1px solid rgba(56, 189, 248, 0.28);
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
 }
 .hero--night .hero__stat-card:hover,
-.hero--night .hero__stat-card:focus-within {
-  background: rgba(22, 34, 60, 0.96);
-  border-color: #38bdf8;
-  box-shadow: 0 12px 36px rgba(56, 189, 248, 0.35);
-}
+.hero--night .hero__stat-card:focus-within,
 .hero--night .hero__feature-card:hover,
 .hero--night .hero__feature-card:focus-within {
-  background: rgba(22, 34, 60, 0.96);
-  border-color: #38bdf8;
-  box-shadow: 0 12px 36px rgba(56, 189, 248, 0.35);
+  background: rgba(18, 29, 56, 0.95);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
 }
 .hero--night .hero__stat-val {
-  color: #38bdf8;
+  color: #ffffff;
 }
 .hero--night .hero__stat-lbl {
   color: #94a3b8;
@@ -662,25 +651,80 @@ export default defineComponent({
   color: #94a3b8;
 }
 .hero--night .hero__feature-icon--cyan {
-  background: rgba(8, 145, 178, 0.28);
-  color: #38bdf8;
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+  background: rgba(56, 189, 248, 0.12);
+  color: #7dd3fc;
 }
 .hero--night .hero__feature-icon--emerald {
-  background: rgba(16, 185, 129, 0.28);
+  background: rgba(16, 185, 129, 0.12);
   color: #34d399;
-  box-shadow: 0 0 12px rgba(52, 211, 153, 0.25);
 }
 .hero--night .hero__feature-icon--amber {
-  background: rgba(245, 158, 11, 0.28);
+  background: rgba(245, 158, 11, 0.12);
   color: #fbbf24;
-  box-shadow: 0 0 12px rgba(251, 191, 36, 0.25);
-}
-.hero--night .hero__aurora-orb--card-glow {
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.28) 0%, rgba(0, 87, 163, 0.20) 45%, transparent 75%);
 }
 .hero--night .hero__bg-bottom-fade {
-  background: linear-gradient(to bottom, transparent, rgba(6, 10, 20, 0.92) 60%, #ffffff 100%);
+  background: linear-gradient(to bottom, transparent, rgba(7, 13, 30, 0.95) 60%, #ffffff 100%);
+}
+
+/* Selector ambiental sobrio (Día / Tarde / Noche) */
+.hero__scene-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  margin-bottom: var(--space-4);
+}
+
+.hero--day .hero__scene-switch {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: #cbd5e1;
+}
+
+.hero__scene-btn {
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+  padding: 5px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hero--day .hero__scene-btn {
+  color: #64748b;
+}
+
+.hero__scene-btn:hover {
+  color: #ffffff;
+}
+
+.hero--day .hero__scene-btn:hover {
+  color: #0f172a;
+}
+
+.hero__scene-btn.is-active {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.hero--day .hero__scene-btn.is-active {
+  background: #ffffff;
+  color: #0038A8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.hero__scene-btn--auto {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.8;
 }
 
 /* Contenedor maestro de fondo multicapa */
@@ -711,8 +755,8 @@ export default defineComponent({
   object-fit: cover;
   object-position: center 36%;
   opacity: 0;
-  transform: scale(1.03);
-  transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(1.02);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
@@ -722,129 +766,7 @@ export default defineComponent({
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  transition: background 1.2s ease;
-}
-
-/* Malla ambiental viva estilo Aurora UI / Gov-Tech de última generación */
-.hero__aurora {
-  position: absolute;
-  inset: 0;
-  opacity: 0.9;
-  will-change: transform;
-}
-
-.hero__aurora-orb {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-/* Orbe azul imperial VenVías superior izquierdo */
-.hero__aurora-orb--primary {
-  top: -140px;
-  left: -100px;
-  width: 680px;
-  height: 680px;
-  background: radial-gradient(circle, rgba(0, 87, 163, 0.14) 0%, rgba(2, 132, 199, 0.08) 35%, transparent 68%);
-  filter: blur(40px);
-  animation: auroraFloatPrimary 18s ease-in-out infinite alternate;
-}
-
-/* Orbe celeste y cian dinámico */
-.hero__aurora-orb--cyan {
-  top: -40px;
-  right: 20%;
-  width: 580px;
-  height: 580px;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.16) 0%, rgba(14, 165, 233, 0.08) 35%, transparent 68%);
-  filter: blur(45px);
-  animation: auroraFloatCyan 22s ease-in-out infinite alternate-reverse;
-}
-
-/* Orbe cálido ámbar/dorado nacional */
-.hero__aurora-orb--amber {
-  top: 140px;
-  left: 22%;
-  width: 480px;
-  height: 480px;
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.07) 0%, rgba(251, 191, 36, 0.03) 35%, transparent 68%);
-  filter: blur(40px);
-  animation: auroraFloatAmber 20s ease-in-out infinite alternate;
-}
-
-/* Halo lumínico centrado detrás del Kiosco Digital */
-.hero__aurora-orb--card-glow {
-  top: 30px;
-  right: -80px;
-  width: 640px;
-  height: 640px;
-  background: radial-gradient(circle, rgba(0, 87, 163, 0.12) 0%, rgba(56, 189, 248, 0.09) 35%, rgba(245, 158, 11, 0.03) 50%, transparent 68%);
-  filter: blur(45px);
-  animation: auroraFloatCard 16s ease-in-out infinite alternate;
-}
-
-@keyframes auroraFloatPrimary {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(40px, 30px, 0) scale(1.08); }
-  100% { transform: translate3d(-25px, 45px, 0) scale(0.96); }
-}
-
-@keyframes auroraFloatCyan {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(-35px, -25px, 0) scale(1.1); }
-  100% { transform: translate3d(30px, 20px, 0) scale(0.94); }
-}
-
-@keyframes auroraFloatAmber {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(-30px, 35px, 0) scale(1.12); }
-  100% { transform: translate3d(25px, -20px, 0) scale(0.92); }
-}
-
-@keyframes auroraFloatCard {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(20px, -25px, 0) scale(1.06); }
-  100% { transform: translate3d(-20px, 20px, 0) scale(0.98); }
-}
-
-/* Cuadrícula arquitectónica de precisión (Linear/Vercel design system) */
-.hero__grid-pattern {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    linear-gradient(to right, rgba(0, 87, 163, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 87, 163, 0.035) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 75% 65% at 50% 35%, #000 25%, transparent 85%);
-  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 35%, #000 25%, transparent 85%);
-  opacity: 0.85;
-}
-
-/* Ondas vectoriales de flujo de autopista y telepeaje */
-.hero__highway-waves {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.55;
-  pointer-events: none;
-  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 75%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 75%, transparent 100%);
-}
-
-.hero__flow-path {
-  animation: flowPulse 20s linear infinite;
-}
-.hero__flow-path--1 {
-  animation-duration: 24s;
-}
-.hero__flow-path--2 {
-  animation-duration: 18s;
-  animation-direction: reverse;
-}
-@keyframes flowPulse {
-  from { stroke-dashoffset: 0; }
-  to { stroke-dashoffset: -200; }
+  transition: background 0.8s ease;
 }
 
 /* Desvanecimiento inferior ultra-suave */
@@ -854,7 +776,6 @@ export default defineComponent({
   left: 0;
   right: 0;
   height: 100px;
-  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9) 65%, #ffffff 100%);
   pointer-events: none;
 }
 
@@ -1066,34 +987,17 @@ export default defineComponent({
   margin-bottom: 14px;
   border-bottom: 1px solid #f1f5f9;
 }
-.hero__card-status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #0057a3;
-}
 .hero__card-status-text {
-  font-size: 12px;
-  font-weight: 600;
-  color: #475569;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--azul-700);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
 }
-.hero__card-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
+.hero__card-status-sub {
   font-size: 11px;
   font-weight: 600;
-  color: #0057a3;
-  background: #eff6ff;
-  padding: 3px 10px;
-  border-radius: 500px;
-  border: 1px solid #dbeafe;
-}
-.hero__badge-pulse--sm {
-  width: 6px;
-  height: 6px;
+  color: #64748b;
 }
 
 .hero__ocr-indicator {
