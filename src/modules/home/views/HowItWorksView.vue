@@ -26,11 +26,6 @@ interface TechnicalPhase {
   specs: { label: string; value: string }[]
 }
 
-interface FaqItem {
-  q: string
-  a: string
-}
-
 export default defineComponent({
   name: 'HowItWorksView',
   components: { AppIcon, HowItWorksInfographic, RouterLink },
@@ -40,7 +35,6 @@ export default defineComponent({
       balanceRoute: { name: ROUTE_NAMES.balance },
       debtRoute: { name: ROUTE_NAMES.debt },
       activeCategory: 'livianos',
-      activeFaq: null as number | null,
 
       technicalPhases: [
         {
@@ -155,35 +149,7 @@ export default defineComponent({
           advice: 'Verifica la alineación de tus ejes y mantén saldo suficiente para el cobro por eje según la ruta.',
         },
       ] as VehicleCategory[],
-
-      faqs: [
-        {
-          q: '¿A qué velocidad debo cruzar bajo el pórtico del peaje?',
-          a: 'Debes mantener la velocidad reglamentaria señalizada en la aproximación al peaje (habitualmente entre 30 km/h y 40 km/h en carriles canalizados). No es necesario frenar en seco; el sistema óptico ALPR captura la placa de forma instantánea en movimiento.',
-        },
-        {
-          q: '¿Qué sucede si llueve intensamente o la placa está cubierta de barro?',
-          a: 'Los pórticos disponen de iluminación infrarroja estroboscópica y algoritmos de mejora óptica multiespectral. Si una lectura resulta dudosa, el fotograma se envía a un centro de verificación técnica donde operadores asisten la lectura antes de generar cualquier cobro o deuda.',
-        },
-        {
-          q: '¿Puedo pagar el saldo deudor de un vehículo que no está registrado a mi nombre?',
-          a: 'Sí. El sistema VenVías es abierto y universal: cualquier persona puede consultar una placa, ver el monto adeudado y cancelarlo de inmediato mediante Pago Móvil, tarjeta de débito o BDV en Línea, quedando la placa liberada de deudas al instante.',
-        },
-        {
-          q: '¿El saldo recargado tiene fecha de vencimiento?',
-          a: 'No, el saldo a favor de tu placa nunca vence. Permanece seguro en el sistema y se va descontando progresivamente a medida que cruces por los peajes habilitados de cualquier autopista del país.',
-        },
-        {
-          q: '¿Qué diferencia hay entre usar solo la placa o tener instalado el TAG?',
-          a: 'Con solo tu placa registrada y con saldo puedes transitar libremente por cualquier carril VenVías. El dispositivo TAG adherido al parabrisas es una ventaja adicional recomendada para usuarios frecuentes y flotas comerciales, ya que agrega redundancia por radiofrecuencia (RFID).',
-        },
-      ] as FaqItem[],
     }
-  },
-  methods: {
-    toggleFaq(index: number): void {
-      this.activeFaq = this.activeFaq === index ? null : index
-    },
   },
 })
 </script>
@@ -218,10 +184,6 @@ export default defineComponent({
         <a href="#infografia" class="how-quicknav__item">
           <AppIcon name="peaje" :size="16" />
           <span>Diagrama oficial</span>
-        </a>
-        <a href="#faqs" class="how-quicknav__item">
-          <AppIcon name="info" :size="16" />
-          <span>Preguntas frecuentes</span>
         </a>
       </nav>
     </header>
@@ -386,40 +348,6 @@ export default defineComponent({
       <HowItWorksInfographic />
     </section>
 
-    <!-- SECCIÓN 5: Preguntas Frecuentes Técnicas de Autopista -->
-    <section id="faqs" class="how-section" aria-labelledby="faqs-title">
-      <div class="how-section__header">
-        <span class="how-section__eyebrow">DUDAS COMUNES</span>
-        <h2 id="faqs-title" class="how-section__title">Preguntas frecuentes sobre el paso por peaje</h2>
-        <p class="how-section__desc">
-          Respuestas claras a las situaciones operativas que pueden presentarse durante tu viaje.
-        </p>
-      </div>
-
-      <div class="faq-list">
-        <div
-          v-for="(faq, idx) in faqs"
-          :key="faq.q"
-          class="faq-item"
-          :class="{ 'is-open': activeFaq === idx }"
-        >
-          <button
-            type="button"
-            class="faq-btn"
-            :aria-expanded="activeFaq === idx"
-            @click="toggleFaq(idx)"
-          >
-            <span class="faq-btn__q">{{ faq.q }}</span>
-            <span class="faq-btn__icon" aria-hidden="true">
-              <AppIcon name="chevron" :size="20" />
-            </span>
-          </button>
-          <div v-show="activeFaq === idx" class="faq-answer">
-            <p>{{ faq.a }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- Bottom Call-To-Action Kiosk -->
     <section class="how-cta" aria-labelledby="cta-title">
@@ -914,74 +842,6 @@ export default defineComponent({
   margin: 0;
 }
 
-/* SECCIÓN 5: Acordeón de FAQs */
-.faq-list {
-  max-width: 760px;
-  margin: 0 auto;
-  display: grid;
-  gap: var(--space-3);
-  width: 100%;
-}
-
-.faq-item {
-  background: #ffffff;
-  border-radius: 14px;
-  border: 1px solid #e2e8f0;
-  overflow: hidden;
-  transition: border-color 0.2s ease;
-}
-
-.faq-item.is-open {
-  border-color: #0038A8;
-  box-shadow: 0 4px 16px -2px rgba(0, 56, 168, 0.08);
-}
-
-.faq-btn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  padding: 16px 20px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-}
-
-.faq-btn__q {
-  font-size: 15px;
-  font-weight: 600;
-  color: #122142;
-  line-height: 1.4;
-}
-
-.faq-btn__icon {
-  color: #64748b;
-  display: grid;
-  place-items: center;
-  transition: transform 0.25s ease;
-  flex-shrink: 0;
-}
-
-.faq-item.is-open .faq-btn__icon {
-  transform: rotate(180deg);
-  color: #0038A8;
-}
-
-.faq-answer {
-  padding: 0 20px 18px;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #475569;
-  border-top: 1px solid #f1f5f9;
-  margin-top: 4px;
-  padding-top: 14px;
-}
-
-.faq-answer p {
-  margin: 0;
-}
 
 /* Call to Action Footer */
 .how-cta__card {
