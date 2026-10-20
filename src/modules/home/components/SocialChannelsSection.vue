@@ -54,18 +54,57 @@ export default defineComponent({
 
       <!-- Bento Grid: Línea Telefónica Destacada + 3 Redes Sociales -->
       <div class="social-hub__bento">
-        <!-- Columna Izquierda: Tarjeta Hero de Asistencia Vial 0800-VENVIAS -->
+        <!-- Columna Izquierda: Tarjeta Hero de Asistencia Vial 0800-VENVIAS con Autopista en Movimiento -->
         <div class="social-hero-card">
-          <!-- Orbes de luz ambiental animados -->
-          <div class="social-hero-card__glow-mesh" aria-hidden="true">
-            <div class="social-hero-card__orb social-hero-card__orb--1"></div>
-            <div class="social-hero-card__orb social-hero-card__orb--2"></div>
-            <div class="social-hero-card__grid-pattern"></div>
+          <!-- Fondo Cinematográfico: Autopista Nocturna con Estelas de Tráfico en Movimiento -->
+          <div class="social-hero-card__highway-backdrop" aria-hidden="true">
+            <div class="social-hero-card__highway-img"></div>
+            <div class="social-hero-card__scrim"></div>
+            <svg class="social-hero-card__traffic-stream" viewBox="0 0 600 400" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="streamRed1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ef4444" stop-opacity="0" />
+                  <stop offset="50%" stop-color="#ef4444" stop-opacity="0.9" />
+                  <stop offset="100%" stop-color="#f87171" stop-opacity="0" />
+                </linearGradient>
+                <linearGradient id="streamRed2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#dc2626" stop-opacity="0" />
+                  <stop offset="60%" stop-color="#fb7185" stop-opacity="0.95" />
+                  <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+                </linearGradient>
+                <linearGradient id="streamCyan1" x1="100%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%" stop-color="#0284c7" stop-opacity="0" />
+                  <stop offset="50%" stop-color="#38bdf8" stop-opacity="0.95" />
+                  <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+                </linearGradient>
+                <linearGradient id="streamAmber1" x1="100%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%" stop-color="#d97706" stop-opacity="0" />
+                  <stop offset="50%" stop-color="#fbbf24" stop-opacity="0.95" />
+                  <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+                </linearGradient>
+                <filter id="streamGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3.5" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
+
+              <!-- Estelas rojas (tráfico hacia adelante) -->
+              <path class="stream-line stream-line--red-1" d="M -40 430 Q 220 320 560 90" />
+              <path class="stream-line stream-line--red-2" d="M -10 450 Q 250 330 580 110" />
+              <path class="stream-line stream-line--red-3" d="M 30 460 Q 280 340 600 130" />
+
+              <!-- Estelas blancas / cyan (luces delanteras) -->
+              <path class="stream-line stream-line--cyan-1" d="M 590 70 Q 320 230 -50 370" />
+              <path class="stream-line stream-line--cyan-2" d="M 620 90 Q 350 240 -20 390" />
+              <path class="stream-line stream-line--amber-1" d="M 640 105 Q 370 255 10 410" />
+            </svg>
+            <div class="social-hero-card__radar-beam"></div>
           </div>
 
           <div class="social-hero-card__content">
-            <!-- Kicker de Línea 24/7 -->
+            <!-- Kicker de Línea 24/7 con radar pulsante -->
             <div class="social-hero-card__kicker">
+              <span class="live-status-dot" aria-hidden="true"></span>
               <span>Línea Gratuita Nacional · Atención 24/7</span>
             </div>
 
@@ -353,73 +392,198 @@ export default defineComponent({
 
 .social-hero-card {
   position: relative;
-  background: linear-gradient(145deg, #071a3e 0%, #0a2558 50%, #0c306e 100%);
+  background: #071738;
   border-radius: 22px;
   padding: clamp(28px, 3vw, 36px);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: 0 16px 36px -8px rgba(7, 26, 62, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 16px 36px -8px rgba(7, 26, 62, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.3s ease;
 }
 
 .social-hero-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 28px 60px -12px rgba(7, 26, 62, 0.48);
-  border-color: rgba(56, 189, 248, 0.3);
+  box-shadow: 0 28px 60px -12px rgba(7, 26, 62, 0.55);
+  border-color: rgba(56, 189, 248, 0.4);
 }
 
-/* Malla ambiental con orbes flotantes y patrón de radar */
-.social-hero-card__glow-mesh {
+/* Fondo Dinámico: Autopista y Estelas de Tráfico en Movimiento */
+.social-hero-card__highway-backdrop {
   position: absolute;
   inset: 0;
   pointer-events: none;
   overflow: hidden;
+  border-radius: inherit;
+  z-index: 0;
 }
 
-.social-hero-card__orb {
+.social-hero-card__highway-img {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(55px);
-  opacity: 0.3;
+  inset: -18px;
+  background-image: url('@/assets/hero/highway-night.jpg');
+  background-size: cover;
+  background-position: center 62%;
+  opacity: 0.38;
+  filter: contrast(1.15) saturate(1.25);
+  animation: highwayCinematicFloat 18s ease-in-out infinite alternate;
 }
 
-.social-hero-card__orb--1 {
-  width: 280px;
-  height: 280px;
-  background: radial-gradient(circle, #059669 0%, transparent 70%);
-  top: -50px;
-  right: -50px;
-  animation: orbFloat1 8s ease-in-out infinite alternate;
+@keyframes highwayCinematicFloat {
+  0% {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: scale(1.12) translate3d(-14px, -7px, 0);
+  }
 }
 
-.social-hero-card__orb--2 {
-  width: 240px;
-  height: 240px;
-  background: radial-gradient(circle, #0284c7 0%, transparent 70%);
-  bottom: -40px;
-  left: -30px;
-  animation: orbFloat2 10s ease-in-out infinite alternate;
-}
-
-@keyframes orbFloat1 {
-  0%   { transform: translate(0, 0) scale(1); opacity: 0.25; }
-  100% { transform: translate(-30px, 30px) scale(1.15); opacity: 0.4; }
-}
-
-@keyframes orbFloat2 {
-  0%   { transform: translate(0, 0) scale(1); opacity: 0.2; }
-  100% { transform: translate(25px, -20px) scale(1.2); opacity: 0.35; }
-}
-
-.social-hero-card__grid-pattern {
+.social-hero-card__scrim {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  background-size: 20px 20px;
-  opacity: 0.4;
+  background: linear-gradient(
+    135deg,
+    rgba(6, 18, 44, 0.94) 0%,
+    rgba(7, 24, 58, 0.85) 50%,
+    rgba(9, 32, 76, 0.78) 100%
+  );
+}
+
+.social-hero-card__traffic-stream {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.88;
+}
+
+.stream-line {
+  fill: none;
+  stroke-linecap: round;
+  filter: url(#streamGlow);
+}
+
+.stream-line--red-1 {
+  stroke: url(#streamRed1);
+  stroke-width: 3.5;
+  stroke-dasharray: 85 260;
+  animation: trafficForward 3.6s linear infinite;
+}
+
+.stream-line--red-2 {
+  stroke: url(#streamRed2);
+  stroke-width: 2.5;
+  stroke-dasharray: 65 220;
+  animation: trafficForward 2.9s linear infinite 0.7s;
+}
+
+.stream-line--red-3 {
+  stroke: url(#streamRed1);
+  stroke-width: 2;
+  stroke-dasharray: 55 190;
+  animation: trafficForward 4.2s linear infinite 1.4s;
+}
+
+.stream-line--cyan-1 {
+  stroke: url(#streamCyan1);
+  stroke-width: 3.5;
+  stroke-dasharray: 95 240;
+  animation: trafficBackward 3.2s linear infinite;
+}
+
+.stream-line--cyan-2 {
+  stroke: url(#streamCyan1);
+  stroke-width: 2;
+  stroke-dasharray: 70 210;
+  animation: trafficBackward 3.8s linear infinite 0.9s;
+}
+
+.stream-line--amber-1 {
+  stroke: url(#streamAmber1);
+  stroke-width: 2.5;
+  stroke-dasharray: 75 230;
+  animation: trafficBackward 3.5s linear infinite 1.6s;
+}
+
+@keyframes trafficForward {
+  0% {
+    stroke-dashoffset: 350;
+  }
+  100% {
+    stroke-dashoffset: -350;
+  }
+}
+
+@keyframes trafficBackward {
+  0% {
+    stroke-dashoffset: -350;
+  }
+  100% {
+    stroke-dashoffset: 350;
+  }
+}
+
+.social-hero-card__radar-beam {
+  position: absolute;
+  top: -60%;
+  left: -70%;
+  width: 45%;
+  height: 220%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(56, 189, 248, 0.06) 45%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(56, 189, 248, 0.04) 55%,
+    transparent 100%
+  );
+  transform: rotate(26deg);
+  animation: radarBeamSweep 6.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes radarBeamSweep {
+  0% {
+    left: -70%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  35% {
+    left: 140%;
+    opacity: 0;
+  }
+  100% {
+    left: 140%;
+    opacity: 0;
+  }
+}
+
+.live-status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.8);
+  animation: liveStatusPulse 2s infinite;
+  margin-right: 7px;
+}
+
+@keyframes liveStatusPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.85);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
 }
 
 .social-hero-card__content {
@@ -907,7 +1071,10 @@ export default defineComponent({
 /* Accesibilidad */
 @media (prefers-reduced-motion: reduce) {
   .social-hub__tricolor-shine,
-  .social-hero-card__orb,
+  .social-hero-card__highway-img,
+  .stream-line,
+  .social-hero-card__radar-beam,
+  .live-status-dot,
   .radar-ring,
   .social-hero-card,
   .phone-shimmer,
