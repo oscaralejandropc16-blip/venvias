@@ -104,12 +104,13 @@ export default defineComponent({
           <span class="hero__title-accent">Rápido. Seguro. Sin registrarte.</span>
         </h1>
 
-        <p class="hero__sub">
+        <!-- Párrafo explicativo: solo en pantallas medianas y grandes para no saturar el móvil -->
+        <p class="hero__sub hidden md:block">
           Recarga saldo en Bolívares (Bs.) y transita libremente sin demoras por los peajes habilitados de Venezuela. Lectura digital instantánea de tu matrícula vehicular.
         </p>
 
-        <!-- Barra de métricas institucionales en vivo -->
-        <div class="hero__stats">
+        <!-- Barra de métricas institucionales en vivo (solo en desktop) -->
+        <div class="hero__stats hidden md:grid">
           <div class="hero__stat-card hero__stat-card--blue">
             <div class="hero__stat-val">10+</div>
             <div class="hero__stat-lbl">Peajes Activos</div>
@@ -124,8 +125,8 @@ export default defineComponent({
           </div>
         </div>
 
-        <!-- Fila de garantías y respaldo institucional (discreta, moderna, sin tarjetas repetitivas) -->
-        <div class="hero__guarantees">
+        <!-- Fila de garantías y respaldo institucional (solo en desktop) -->
+        <div class="hero__guarantees hidden md:flex">
           <div class="hero__guarantee-item">
             <AppIcon name="rayo" :size="15" class="hero__guarantee-icon text-sky-500" />
             <span>Paso continuo automatizado</span>
@@ -680,11 +681,29 @@ export default defineComponent({
   text-align: left;
 }
 @media (max-width: 959px) {
+  .hero {
+    padding-top: clamp(68px, 10vw, 84px);
+    padding-bottom: 24px;
+  }
+  .hero__grid {
+    gap: 16px;
+    padding-top: 8px;
+  }
   .hero__intro {
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 4px;
+  }
+  .hero__title {
+    font-size: clamp(24px, 6vw, 32px);
+    line-height: 1.16;
+  }
+  .hero__sub,
+  .hero__stats,
+  .hero__guarantees {
+    display: none !important;
   }
 }
 

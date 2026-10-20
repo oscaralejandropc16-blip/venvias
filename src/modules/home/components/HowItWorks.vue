@@ -157,7 +157,7 @@ export default defineComponent({
       <header class="how__head" :class="{ 'how__head--solo-nav': hideHeader }">
         <div v-if="!hideHeader" class="how__head-intro">
           <h2 id="how-title">Tu placa paga. Tú no te detienes.</h2>
-          <p>Así funciona el telepeaje por placa.</p>
+          <p>Así funciona el pago por placa.</p>
         </div>
 
         <div class="how__arrows">
@@ -380,18 +380,30 @@ export default defineComponent({
   color: #94a3b8;
 }
 
-/* Pista: deslizamiento nativo con scroll-snap */
+/* Pista: deslizamiento nativo con scroll-snap (100% ancho por diapositiva) */
 .how__track {
-  /* La pista desborda 8px por lado para no recortar anillos de foco ni el borde de las letras */
-  display: flex; margin: var(--space-8) -8px 0; overflow-x: auto; scroll-snap-type: x mandatory;
-  scrollbar-width: none; overscroll-behavior-x: contain; border-radius: var(--radius-md);
+  display: flex;
+  margin: var(--space-8) 0 0;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  border-radius: var(--radius-md);
+  width: 100%;
 }
 .how__track::-webkit-scrollbar { display: none; }
-/* Hueco final del asomo: el último paso también se alinea al inicio */
-.how__track::after { content: ''; flex: 0 0 12%; }
+.how__track::after { display: none !important; }
+
 .how__slide {
-  flex: 0 0 88%; scroll-snap-align: start; display: grid; gap: var(--space-6); align-content: start;
-  padding: 0 8px 8px;
+  flex: 0 0 100%;
+  width: 100%;
+  max-width: 100%;
+  scroll-snap-align: start;
+  display: grid;
+  gap: var(--space-6);
+  align-content: start;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .how__media { position: relative; margin: 0; aspect-ratio: 3 / 2; border-radius: var(--radius-md); overflow: hidden; background: #1c2d55; }
@@ -514,7 +526,8 @@ export default defineComponent({
 .how--plain .how__note svg { color: var(--azul-700); }
 .how--plain .how__step-kicker-tag {
   color: #0038A8;
-  background: rgba(0, 56, 168, 0.08);
+  background: none;
+  padding: 0;
 }
 .how--plain .how__step-kicker-name {
   color: #64748b;
