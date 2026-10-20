@@ -4,6 +4,7 @@ import AppIcon from '@/shared/icons/AppIcon.vue'
 import PlateImage from '@/modules/plates/components/PlateImage.vue'
 import { ROUTE_NAMES } from '@/core/constants/routing'
 import type { AccountVehicle } from '../types/AccountTypes'
+import tagImg from '@/assets/tag-venvias.webp'
 
 export default defineComponent({
   name: 'AccountVehiclesTable',
@@ -15,6 +16,11 @@ export default defineComponent({
   setup(props, { emit }) {
     const searchQuery = ref('')
     const activeFilter = ref<'all' | 'tags' | 'plates' | 'low_balance'>('all')
+    const showingPlateFor = ref<Record<string, boolean>>({})
+
+    const toggleVisual = (plate: string) => {
+      showingPlateFor.value[plate] = !showingPlateFor.value[plate]
+    }
 
     // Mapeo de telemetría y tipos para enriquecer cada tarjeta
     const vehicleTelemetry = (plate: string) => {
@@ -84,12 +90,15 @@ export default defineComponent({
     }
 
     return {
+      tagImg,
       searchQuery,
       activeFilter,
       filteredVehicles,
       counts,
       vehicleTelemetry,
       onQuickAssignBalance,
+      showingPlateFor,
+      toggleVisual,
     }
   },
   methods: {
@@ -202,33 +211,86 @@ export default defineComponent({
         class="v-card"
         :class="{ 'v-card--critical': v.balance <= 0 }"
       >
-        <!-- Cabecera de la tarjeta: Placa y Estatus Rectangular -->
+        <!-- Cabecera de la tarjeta: Dispositivo (TAG Verde Oficial o Placa Nacional) -->
         <div class="v-card__top">
-          <PlateImage :value="v.plate" class="v-card__plate-img" />
+          <!-- Si tiene TAG Activo y no está en modo placa: Dispositivo TAG Verde Oficial -->
+          <div
+            v-if="v.tagStatus === 'ACTIVE' && !showingPlateFor[v.plate]"
+            class="v-card__tag-device-wrap"
+            title="Dispositivo TAG RFID VenVías oficial adherido al parabrisas. Clic para ver matrícula."
+            @click="toggleVisual(v.plate)"
+          >
+            <img :src="tagImg" alt="Dispositivo TAG VenVías RFID" class="v-card__tag-device-img" />
+            <div class="v-card__tag-plate-stamp">
+              <span class="tag-plate-flag" aria-hidden="true">🇻🇪</span>
+              <span class="tag-plate-code">{{ v.plate }}</span>
+            </div>
+            <button
+              type="button"
+              class="v-card__tag-flip-btn"
+              title="Ver placa metálica"
+              aria-label="Ver placa metálica"
+              @click.stop="toggleVisual(v.plate)"
+            >
+              Placa ⇄
+            </button>
+          </div>
+
+          <!-- Si el usuario alternó a ver la placa o es un vehículo de cobro por Placa ALPR -->
+          <div
+            v-else
+            class="v-card__plate-wrap"
+            :class="{ 'is-clickable': v.tagStatus === 'ACTIVE' }"
+            @click="v.tagStatus === 'ACTIVE' ? toggleVisual(v.plate) : null"
+          >
+            <PlateImage :value="v.plate" class="v-card__plate-img" />
+            <button
+              v-if="v.tagStatus === 'ACTIVE'"
+              type="button"
+              class="v-card__tag-flip-btn v-card__tag-flip-btn--on-plate"
+              title="Ver dispositivo TAG verde"
+              aria-label="Ver dispositivo TAG verde"
+              @click.stop="toggleVisual(v.plate)"
+            >
+              TAG Verde ⇄
+            </button>
+          </div>
 
           <!-- Distintivo Rectangular de Estatus (Sin forma de píldora) -->
-          <div
-            class="v-status-badge"
-            :class="v.tagStatus === 'ACTIVE' ? 'v-status-badge--active' : 'v-status-badge--plate'"
-          >
-            <span
-              class="v-status-badge__dot"
-              :class="v.tagStatus === 'ACTIVE' ? 'bg-emerald-500' : 'bg-sky-500'"
-              aria-hidden="true"
-            ></span>
-            <span>{{ v.tagStatus === 'ACTIVE' ? 'TAG RFID Activo' : 'Lectura por Placa' }}</span>
+          <div class="v-card__status-col">
+            <div
+              class="v-status-badge"
+              :class="v.tagStatus === 'ACTIVE' ? 'v-status-badge--active' : 'v-status-badge--plate'"
+            >
+              <span
+                class="v-status-badge__dot"
+                :class="v.tagStatus === 'ACTIVE' ? 'bg-emerald-500' : 'bg-sky-500'"
+                aria-hidden="true"
+              ></span>
+              <span>{{ v.tagStatus === 'ACTIVE' ? 'TAG RFID Activo' : 'Lectura por Placa' }}</span>
+            </div>
+
+            <span v-if="v.tagId" class="v-card__serial-tag">
+              {{ v.tagId }}
+            </span>
+            <span v-else class="v-card__serial-tag v-card__serial-tag--alpr">
+              ALPR en Cabina
+            </span>
           </div>
         </div>
 
         <!-- Cuerpo: Alias, Categoría y Telemetría -->
         <div class="v-card__body">
-          <h4 class="v-card__alias">{{ v.alias }}</h4>
+          <div class="v-card__title-row">
+            <h4 class="v-card__alias">{{ v.alias }}</h4>
+            <span class="v-card__plate-badge">{{ v.plate }}</span>
+          </div>
 
           <div class="v-card__meta-strip">
             <span class="v-card__category">{{ vehicleTelemetry(v.plate).category }}</span>
             <span class="v-card__meta-sep">•</span>
             <span v-if="v.tagId" class="v-card__tag-id">
-              ID: <strong>{{ v.tagId }}</strong>
+              Antena <strong>915 MHz</strong>
             </span>
             <span v-else class="v-card__tag-id text-slate-500">
               Lectura Digital OCR
@@ -502,9 +564,130 @@ export default defineComponent({
   gap: 12px;
 }
 
+/* Dispositivo TAG Verde Oficial (Windshield Sticker) */
+.v-card__tag-device-wrap {
+  width: 164px;
+  height: 82px;
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.22), 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1.5px solid #86efac;
+  background: #2e8b57;
+  cursor: pointer;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.v-card__tag-device-wrap:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 22px rgba(16, 185, 129, 0.32);
+}
+
+.v-card__tag-device-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.v-card__tag-plate-stamp {
+  position: absolute;
+  bottom: 4px;
+  left: 6px;
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1.5px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  letter-spacing: 0.04em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+
+.tag-plate-flag {
+  font-size: 10px;
+}
+
+.v-card__tag-flip-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #065f46;
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 4px;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.15s ease;
+}
+
+.v-card__tag-flip-btn:hover {
+  background: #ffffff;
+  color: #047857;
+  transform: scale(1.04);
+}
+
+.v-card__tag-flip-btn--on-plate {
+  top: 4px;
+  right: 4px;
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #047857;
+}
+
+.v-card__plate-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.v-card__plate-wrap.is-clickable {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.v-card__plate-wrap.is-clickable:hover {
+  transform: translateY(-1px);
+}
+
 .v-card__plate-img {
   width: 164px;
   flex-shrink: 0;
+}
+
+/* Columna de Estatus */
+.v-card__status-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.v-card__serial-tag {
+  font-family: var(--font-mono, monospace);
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #047857;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 2px 6px;
+  border-radius: 5px;
+  letter-spacing: 0.02em;
+}
+
+.v-card__serial-tag--alpr {
+  color: #0284c7;
+  background: #f0f9ff;
+  border-color: #bae6fd;
 }
 
 /* Distintivos Rectangulares (Sin forma de píldora) */
@@ -544,9 +727,29 @@ export default defineComponent({
   gap: 6px;
 }
 
+.v-card__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.v-card__plate-badge {
+  font-family: var(--font-mono, monospace);
+  font-size: 11.5px;
+  font-weight: 700;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  padding: 1.5px 6px;
+  border-radius: 5px;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
 .v-card__alias {
   font-family: var(--font-display, 'Poppins', sans-serif);
-  font-size: 16px;
+  font-size: 15.5px;
   font-weight: 700;
   color: #0f172a;
   margin: 0;
