@@ -509,11 +509,7 @@ export default defineComponent({
   color: #ffffff;
   text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
 }
-.hero--day .hero__title-accent {
-  background: linear-gradient(135deg, #38bdf8 0%, #60a5fa 60%, #93c5fd 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+
 .hero--day .hero__sub {
   color: #cbd5e1;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
@@ -571,11 +567,7 @@ export default defineComponent({
 .hero--night .hero__title {
   color: #ffffff;
 }
-.hero--night .hero__title-accent {
-  background: linear-gradient(135deg, #38bdf8 0%, #60a5fa 60%, #93c5fd 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+
 .hero--night .hero__sub {
   color: #cbd5e1;
 }
@@ -734,11 +726,34 @@ export default defineComponent({
 }
 .hero__title-accent {
   display: block;
-  background: linear-gradient(135deg, #0057a3 0%, #0284c7 60%, #38bdf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   font-weight: 800;
   line-height: 1.18;
+  background-image: linear-gradient(
+    135deg,
+    #38bdf8 0%,
+    #2563eb 22%,
+    #818cf8 40%,
+    #f87171 62%,
+    #ef4444 82%,
+    #38bdf8 100%
+  );
+  background-size: 260% 260%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 14px rgba(0, 0, 0, 0.5));
+  animation: venviasColorFlow 7s ease-in-out infinite;
+}
+
+@keyframes venviasColorFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .hero__sub {
@@ -1879,6 +1894,7 @@ details[open] p {
   .hero__aurora-orb,
   .hero__flow-path,
   .hero__title,
+  .hero__title-accent,
   .hero__sub,
   .hero__stats,
   .hero__guarantees,
