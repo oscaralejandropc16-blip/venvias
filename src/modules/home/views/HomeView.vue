@@ -133,7 +133,7 @@ export default defineComponent({
           </div>
           <span class="hero__guarantee-dot" aria-hidden="true">·</span>
           <div class="hero__guarantee-item">
-            <AppIcon name="tarjeta" :size="15" class="hero__guarantee-icon text-emerald-500" />
+            <AppIcon name="tarjeta" :size="15" class="hero__guarantee-icon text-red-500" />
             <span>Conexión interbancaria oficial</span>
           </div>
           <span class="hero__guarantee-dot" aria-hidden="true">·</span>
