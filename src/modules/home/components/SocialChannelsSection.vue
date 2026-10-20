@@ -44,10 +44,6 @@ export default defineComponent({
 
       <!-- Cabecera Ejecutiva -->
       <div class="social-hub__header">
-        <div class="social-hub__eyebrow">
-          <AppIcon name="audifonos" :size="15" />
-          <span>Atención al Conductor y Canales Oficiales</span>
-        </div>
         <h2 id="social-hub-title" class="social-hub__title">
           Síguenos y viaja <span class="social-hub__title-accent">conectado</span>
         </h2>
@@ -68,20 +64,15 @@ export default defineComponent({
           </div>
 
           <div class="social-hero-card__content">
-            <!-- Indicador de Radar en Vivo -->
-            <div class="social-hero-card__status">
-              <div class="social-hero-card__radar" aria-hidden="true">
-                <span class="radar-dot"></span>
-                <span class="radar-ring radar-ring--1"></span>
-                <span class="radar-ring radar-ring--2"></span>
-              </div>
-              <span class="social-hero-card__status-text">Línea Gratuita Nacional · 24/7 Activa</span>
+            <!-- Kicker de Línea 24/7 -->
+            <div class="social-hero-card__kicker">
+              <span>Línea Gratuita Nacional · Atención 24/7</span>
             </div>
 
             <div class="social-hero-card__body">
               <h3 class="social-hero-card__title">Centro de Asistencia Vial</h3>
               <p class="social-hero-card__desc">
-                ¿Incidencias en vía, dudas de pago de peaje o requieres reporte inmediato? Comunícate directamente con nuestro equipo de atención.
+                ¿Incidencias en vía o dudas de peaje? Comunícate directamente con nuestro equipo de atención en cualquier momento.
               </p>
             </div>
 
@@ -439,63 +430,13 @@ export default defineComponent({
   height: 100%;
 }
 
-/* Radar Pulse Activo */
-.social-hero-card__status {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.social-hero-card__radar {
-  position: relative;
-  width: 14px;
-  height: 14px;
-  display: grid;
-  place-items: center;
-}
-
-.radar-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #34d399;
-  z-index: 2;
-  box-shadow: 0 0 10px #34d399;
-}
-
-.radar-ring {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  border: 1.5px solid #34d399;
-  animation: radarWave 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
-}
-
-.radar-ring--1 {
-  width: 18px;
-  height: 18px;
-}
-
-.radar-ring--2 {
-  width: 28px;
-  height: 28px;
-  animation-delay: 0.8s;
-}
-
-@keyframes radarWave {
-  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
-  100% { transform: translate(-50%, -50%) scale(1.8); opacity: 0; }
-}
-
-.social-hero-card__status-text {
-  font-size: 12px;
+.social-hero-card__kicker {
+  font-size: 11.5px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #34d399;
+  color: #38bdf8;
+  margin-bottom: 12px;
 }
 
 .social-hero-card__title {
@@ -875,6 +816,92 @@ export default defineComponent({
   border-color: #0f172a;
   background: #0f172a;
   transform: translate(3px, -3px);
+}
+
+/* ==========================================================================
+   OPTIMIZACIONES MÓVIL (PANTALLAS PEQUEÑAS)
+   ========================================================================== */
+@media (max-width: 640px) {
+  .social-hub {
+    padding: 24px 16px;
+    border-radius: 20px;
+  }
+  .social-hub__header {
+    margin-bottom: 22px;
+  }
+  .social-hub__title {
+    font-size: 26px;
+    margin-bottom: 8px;
+  }
+  .social-hub__subtitle {
+    font-size: 14.5px;
+  }
+  .social-hub__bento {
+    gap: 16px;
+  }
+  .social-hero-card {
+    padding: 20px 18px;
+    border-radius: 18px;
+  }
+  .social-hero-card__title {
+    font-size: 20px;
+  }
+  .social-hero-card__desc {
+    font-size: 13.5px;
+    margin-bottom: 16px;
+  }
+  .social-hero-card__phone-box {
+    padding: 14px 16px;
+    border-radius: 14px;
+    margin-bottom: 14px;
+    gap: 12px;
+  }
+  .social-hero-card__phone-val {
+    font-size: 22px;
+  }
+  .social-hero-card__phone-digits {
+    font-size: 12px;
+  }
+  .social-hero-card__actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .btn-call,
+  .btn-copy {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .social-hero-card__carriers {
+    font-size: 11.5px;
+    gap: 6px;
+  }
+  .social-channels-stack {
+    gap: 10px;
+  }
+  .social-network-card {
+    padding: 14px 16px;
+    border-radius: 16px;
+    gap: 14px;
+  }
+  .social-network-card__icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+  }
+  .social-network-card__name {
+    font-size: 15px;
+  }
+  .social-network-card__desc {
+    font-size: 12.5px;
+  }
+  .social-network-card__arrow {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 /* Accesibilidad */
