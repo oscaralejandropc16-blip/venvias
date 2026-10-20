@@ -186,12 +186,10 @@ export default defineComponent({
   position: sticky;
   top: 0;
   z-index: 50;
-  background-color: rgba(255, 255, 255, 0.82) !important;
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
-  box-shadow: 0 4px 20px -2px rgba(18, 33, 66, 0.05), 0 1px 3px 0 rgba(18, 33, 66, 0.02);
-  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px -2px rgba(18, 33, 66, 0.06);
+  transition: box-shadow 0.3s ease;
 }
 
 /* Barra Tricolor Superior Dinámica con Barrido Luminoso */
@@ -225,13 +223,13 @@ export default defineComponent({
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  height: 64px;
+  height: 68px;
 }
 
 @media (min-width: 1080px) {
   .nav__container {
-    height: 74px;
-    gap: 20px;
+    height: 72px;
+    gap: 24px;
   }
 }
 
@@ -249,14 +247,14 @@ export default defineComponent({
 }
 
 .nav-brand__logo {
-  height: 34px;
+  height: 38px;
   width: auto;
   transition: transform 0.2s ease;
 }
 
 @media (min-width: 1080px) {
   .nav-brand__logo {
-    height: 38px;
+    height: 42px;
   }
 }
 
@@ -264,11 +262,11 @@ export default defineComponent({
   transform: scale(1.02);
 }
 
-/* Enlaces de Navegación Centrales */
+/* Enlaces de Navegación Centrales: Tipografía limpia, sin fondos grises ni pastillas */
 .nav__links {
   display: none;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   margin-inline: auto;
 }
 
@@ -282,51 +280,59 @@ export default defineComponent({
   position: relative;
   display: inline-flex;
   align-items: center;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 14px;
+  padding: 10px 14px;
+  font-size: 14.5px;
   font-weight: 500;
-  color: #334155;
+  color: #475569;
   text-decoration: none;
   white-space: nowrap;
-  transition: color 0.15s ease, background-color 0.15s ease;
+  background: none !important;
+  border-radius: 0 !important;
+  transition: color 0.2s ease;
 }
 
 @media (min-width: 1240px) {
   .nav__link {
-    padding: 8px 14px;
-    font-size: 14.5px;
+    padding: 10px 16px;
+    font-size: 15px;
   }
 }
 
 .nav__link:hover {
   color: #0038A8;
-  background-color: rgba(0, 56, 168, 0.04);
+  text-decoration: none;
 }
 
+/* Indicador de pestaña activa: línea sutil debajo de la opción, sin cajitas */
 .nav__link::after {
   content: '';
   position: absolute;
-  bottom: -2px;
-  left: 12px;
-  right: 12px;
+  bottom: 0;
+  left: 14px;
+  right: 14px;
   height: 2.5px;
   background: #0038A8;
-  border-radius: 2px;
+  border-radius: 3px 3px 0 0;
   opacity: 0;
-  transform: scaleX(0.4);
-  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scaleX(0);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+
+@media (min-width: 1240px) {
+  .nav__link::after {
+    left: 16px;
+    right: 16px;
+  }
 }
 
 .nav__link:hover::after {
-  opacity: 0.35;
+  opacity: 0.4;
   transform: scaleX(0.7);
 }
 
 .nav__link.router-link-exact-active {
   color: #0038A8;
-  font-weight: 600;
-  background-color: rgba(0, 56, 168, 0.06);
+  font-weight: 700;
 }
 
 .nav__link.router-link-exact-active::after {
@@ -342,23 +348,23 @@ export default defineComponent({
   flex-shrink: 0;
 }
 
-/* Botón Ejecutivo de Mi Cuenta */
+/* Botón Ejecutivo de Mi Cuenta en Azul VenVías (Sin negro opaco) */
 .nav-btn-account {
   display: none;
   align-items: center;
   gap: 8px;
   height: 42px;
-  padding: 0 18px;
-  border-radius: 8px;
-  background: #070e1e;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0 20px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #0038A8 0%, #0057a3 100%);
+  border: none;
   color: #ffffff;
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
-  box-shadow: 0 2px 8px rgba(7, 14, 30, 0.15);
+  box-shadow: 0 4px 14px rgba(0, 56, 168, 0.28);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 @media (min-width: 1080px) {
@@ -368,10 +374,11 @@ export default defineComponent({
 }
 
 .nav-btn-account:hover {
-  background: #0038A8;
-  border-color: rgba(0, 56, 168, 0.4);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(0, 56, 168, 0.3);
+  background: linear-gradient(135deg, #002f8c 0%, #004b8d 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 56, 168, 0.38);
+  color: #ffffff;
+  text-decoration: none;
 }
 
 /* Botón Hamburguesa Móvil */
@@ -466,13 +473,13 @@ export default defineComponent({
   gap: 8px;
   min-height: 44px;
   padding: 0 12px;
-  border-radius: 8px;
-  background: #070e1e;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #0038A8 0%, #0057a3 100%);
   color: #ffffff;
   font-size: 13.5px;
   font-weight: 600;
   text-decoration: none;
-  box-shadow: 0 2px 6px rgba(7, 14, 30, 0.15);
+  box-shadow: 0 3px 10px rgba(0, 56, 168, 0.25);
 }
 
 .nav-sheet-call-btn {
