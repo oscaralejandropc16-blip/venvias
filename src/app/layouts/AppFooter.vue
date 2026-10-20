@@ -138,7 +138,33 @@ export default defineComponent({
       <div class="wrap ft__sub-inner">
         <span class="ft__copy">© {{ currentYear }} VenVías · Sistema Nacional de Peajes</span>
         <span class="ft__country">
-          <span class="ft__flag" aria-hidden="true"></span>
+          <svg class="ft__flag" viewBox="0 0 900 600" width="24" height="16" aria-hidden="true" focusable="false">
+            <defs>
+              <clipPath id="ft-vzla-clip">
+                <rect width="900" height="600" rx="36" ry="36" />
+              </clipPath>
+              <g id="ft-vzla-star">
+                <polygon fill="#ffffff" points="0,-22 5.3,-7.1 20.9,-6.8 8.3,2.8 12.9,17.8 0,8.8 -12.9,17.8 -8.3,2.8 -20.9,-6.8 -5.3,-7.1" />
+              </g>
+            </defs>
+            <g clip-path="url(#ft-vzla-clip)">
+              <!-- Franja 1: Amarillo (33.3%) -->
+              <rect width="900" height="200" fill="#F9D616" />
+              <!-- Franja 2: Azul (33.3%) con arco de 8 estrellas -->
+              <rect y="200" width="900" height="200" fill="#0038A8" />
+              <!-- Franja 3: Rojo (33.3%) -->
+              <rect y="400" width="900" height="200" fill="#CE1126" />
+              <!-- 8 Estrellas Blancas en Arco Convexo Oficial de Venezuela -->
+              <use href="#ft-vzla-star" transform="translate(325, 335)" />
+              <use href="#ft-vzla-star" transform="translate(355, 308)" />
+              <use href="#ft-vzla-star" transform="translate(390, 288)" />
+              <use href="#ft-vzla-star" transform="translate(430, 278)" />
+              <use href="#ft-vzla-star" transform="translate(470, 278)" />
+              <use href="#ft-vzla-star" transform="translate(510, 288)" />
+              <use href="#ft-vzla-star" transform="translate(545, 308)" />
+              <use href="#ft-vzla-star" transform="translate(575, 335)" />
+            </g>
+          </svg>
           República Bolivariana de Venezuela
         </span>
       </div>
@@ -635,12 +661,13 @@ export default defineComponent({
 }
 
 .ft__flag {
-  width: 15px;
-  height: 10px;
+  width: 24px;
+  height: 16px;
   border-radius: 2px;
-  background: linear-gradient(to bottom, #F9D616 33.3%, #0038A8 33.3% 66.6%, #CE1126 66.6%);
-  box-shadow: 0 0 3px rgba(0,0,0,0.3);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4);
   flex-shrink: 0;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 /* ═══ Accesibilidad ═══ */

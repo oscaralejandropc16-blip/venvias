@@ -79,11 +79,27 @@ export default defineComponent({
               <span class="canopy-letters-animated">VenVías</span>
               <span class="canopy-sub">PEAJES NACIONALES</span>
             </div>
-            <div class="canopy-flag">
-              <span class="canopy-flag-stripe bg-[#F9D616]"></span>
-              <span class="canopy-flag-stripe bg-[#0038A8]"></span>
-              <span class="canopy-flag-stripe bg-[#CE1126]"></span>
-            </div>
+            <svg class="canopy-flag" viewBox="0 0 900 600" width="18" height="12" aria-hidden="true" focusable="false">
+              <defs>
+                <clipPath id="canopy-vzla-clip">
+                  <rect width="900" height="600" rx="36" ry="36" />
+                </clipPath>
+                <path id="canopy-vzla-star" fill="#ffffff" d="M0,-14 3.3,-4.5 13.3,-4.3 5.3,1.7 8.3,11.3 0,5.6 -8.3,11.3 -5.3,1.7 -13.3,-4.3 -3.3,-4.5Z" />
+              </defs>
+              <g clip-path="url(#canopy-vzla-clip)">
+                <rect width="900" height="200" fill="#F9D616" />
+                <rect y="200" width="900" height="200" fill="#0038A8" />
+                <rect y="400" width="900" height="200" fill="#CE1126" />
+                <use href="#canopy-vzla-star" transform="translate(337, 340)" />
+                <use href="#canopy-vzla-star" transform="translate(364, 316)" />
+                <use href="#canopy-vzla-star" transform="translate(396, 299)" />
+                <use href="#canopy-vzla-star" transform="translate(432, 290)" />
+                <use href="#canopy-vzla-star" transform="translate(468, 290)" />
+                <use href="#canopy-vzla-star" transform="translate(504, 299)" />
+                <use href="#canopy-vzla-star" transform="translate(536, 316)" />
+                <use href="#canopy-vzla-star" transform="translate(563, 340)" />
+              </g>
+            </svg>
           </div>
         </div>
       </div>
@@ -1301,18 +1317,12 @@ export default defineComponent({
 }
 
 .canopy-flag {
-  display: flex;
-  flex-direction: column;
-  width: 9px;
-  height: 18px;
+  width: 18px;
+  height: 12px;
   border-radius: 2px;
   overflow: hidden;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
-}
-
-.canopy-flag-stripe {
-  flex: 1;
-  width: 100%;
+  flex-shrink: 0;
 }
 
 
