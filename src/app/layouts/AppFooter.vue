@@ -44,6 +44,7 @@ export default defineComponent({
             <li><RouterLink :to="{ name: routes.howItWorks }" class="ft__menu-link">Cómo funciona</RouterLink></li>
             <li><RouterLink :to="{ name: routes.tolls }" class="ft__menu-link">Peajes habilitados</RouterLink></li>
             <li><RouterLink :to="{ name: routes.account }" class="ft__menu-link">Mi cuenta</RouterLink></li>
+            <li><RouterLink :to="{ name: routes.debtConditions }" class="ft__menu-link">Términos y condiciones</RouterLink></li>
           </ul>
         </nav>
 
@@ -55,10 +56,14 @@ export default defineComponent({
       </div>
     </div>
 
-    <!-- Sub-footer Limpio con Derechos y Bandera Oficial de Venezuela -->
+    <!-- Sub-footer Limpio con Derechos, Términos y Bandera Oficial de Venezuela -->
     <div class="ft__sub">
       <div class="wrap ft__sub-inner">
-        <span class="ft__copy">© {{ currentYear }} VenVías · Todos los derechos reservados</span>
+        <div class="ft__sub-left">
+          <span class="ft__copy">© {{ currentYear }} VenVías · Todos los derechos reservados</span>
+          <span class="ft__sub-sep" aria-hidden="true">·</span>
+          <RouterLink :to="{ name: routes.debtConditions }" class="ft__legal-link">Términos y condiciones</RouterLink>
+        </div>
         <span class="ft__country">
           <svg class="ft__flag" viewBox="0 0 900 600" width="20" height="13.3" aria-hidden="true" focusable="false">
             <defs>
@@ -262,8 +267,30 @@ export default defineComponent({
   }
 }
 
+.ft__sub-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .ft__copy {
   color: #64748b;
+}
+
+.ft__sub-sep {
+  color: #cbd5e1;
+}
+
+.ft__legal-link {
+  color: #64748b;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.18s ease;
+}
+
+.ft__legal-link:hover {
+  color: #0038A8;
 }
 
 .ft__country {

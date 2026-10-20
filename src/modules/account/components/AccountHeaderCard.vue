@@ -11,7 +11,7 @@ export default defineComponent({
   props: {
     profile: { type: Object as PropType<AccountProfile>, required: true },
   },
-  emits: ['add-vehicle', 'configure-automation'],
+  emits: ['recharge', 'add-vehicle', 'configure-automation'],
   data() {
     return {
       text: ACCOUNT_TEXT,
@@ -60,10 +60,14 @@ export default defineComponent({
 
       <!-- Acciones de Cabecera (Botones Rectangulares Modernos - Sin Píldoras) -->
       <div class="acc-header__actions">
-        <RouterLink :to="rechargeRoute" class="btn-rect btn-rect--primary">
+        <button
+          type="button"
+          class="btn-rect btn-rect--primary"
+          @click="$emit('recharge')"
+        >
           <AppIcon name="rayo" :size="16" />
-          <span>Recargar Saldo de Flota</span>
-        </RouterLink>
+          <span>Recargar Saldo</span>
+        </button>
 
         <button
           type="button"
@@ -76,68 +80,93 @@ export default defineComponent({
       </div>
     </div>
 
-    <!-- Panel de Métricas Automatizadas y Telemetría Financiera -->
+    <!-- Panel de Métricas Automatizadas y Telemetría Financiera (High-End Fintech) -->
     <div class="acc-header__metrics">
-      <!-- Métrica 1: Saldo Consolidado -->
+      <!-- Métrica 1: Saldo Consolidado (Estilo Dark Sapphire Fintech) -->
       <div class="metric-card metric-card--balance">
         <div class="metric-card__header">
-          <span class="metric-card__label">Saldo Consolidado en Cuenta</span>
+          <div class="metric-header-title">
+            <span class="metric-card__label">Saldo Consolidado</span>
+            <span class="metric-card__sublabel">En cuenta matriz</span>
+          </div>
           <span class="metric-status-badge metric-status-badge--success">
-            ● Salud Óptima
+            <span class="metric-pulse-dot" aria-hidden="true"></span>
+            Salud Óptima
           </span>
         </div>
 
         <div class="metric-card__val-row">
-          <span class="metric-card__val">{{ profile.totalBalanceFormatted }}</span>
+          <span class="metric-card__val metric-card__val--balance">{{ profile.totalBalanceFormatted }}</span>
+          <button
+            type="button"
+            class="metric-card__quick-add"
+            title="Recargar saldo ahora"
+            @click="$emit('recharge')"
+          >
+            <AppIcon name="plus" :size="14" />
+            <span>Recargar</span>
+          </button>
         </div>
 
-        <!-- Barra de Salud Financiera -->
+        <!-- Barra de Salud Financiera Dinámica -->
         <div class="metric-card__progress-wrap">
           <div class="metric-card__progress-bar">
             <div class="metric-card__progress-fill" style="width: 85%;"></div>
           </div>
-          <span class="metric-card__hint">~28 tránsitos promedio de flota disponibles</span>
+          <div class="metric-card__hint-row">
+            <span class="metric-card__hint">~28 tránsitos promedio garantizados</span>
+            <span class="metric-card__badge-sub">Flota Activa</span>
+          </div>
         </div>
       </div>
 
       <!-- Métrica 2: Vehículos y TAGs Habilitados -->
-      <div class="metric-card">
+      <div class="metric-card metric-card--units">
         <div class="metric-card__header">
-          <span class="metric-card__label">Unidades en Operación</span>
+          <div class="metric-card__icon-wrap metric-card__icon-wrap--blue">
+            <AppIcon name="camion" :size="18" />
+          </div>
           <span class="metric-status-badge metric-status-badge--info">
             100% Autorizados
           </span>
         </div>
 
-        <div class="metric-card__val-row">
-          <span class="metric-card__val">{{ profile.vehiclesCount }}</span>
-          <span class="metric-card__unit">Vehículos</span>
+        <div>
+          <span class="metric-card__label-light">Unidades en Operación</span>
+          <div class="metric-card__val-row mt-1">
+            <span class="metric-card__val">{{ profile.vehiclesCount }}</span>
+            <span class="metric-card__unit">Vehículos</span>
+          </div>
         </div>
 
         <div class="metric-card__sub-detail">
-          <span class="text-emerald-700 font-semibold">{{ profile.activeTagsCount }} con TAG RFID</span>
-          <span class="text-slate-400">·</span>
-          <span class="text-slate-600">1 con Placa ALPR</span>
+          <span class="status-pill-sub status-pill-sub--tag">{{ profile.activeTagsCount }} TAG RFID</span>
+          <span class="status-pill-sub status-pill-sub--plate">1 Placa ALPR</span>
         </div>
       </div>
 
       <!-- Métrica 3: Estado de Automatización -->
-      <div class="metric-card">
+      <div class="metric-card metric-card--auto">
         <div class="metric-card__header">
-          <span class="metric-card__label">Regla de Recarga Automática</span>
+          <div class="metric-card__icon-wrap metric-card__icon-wrap--amber">
+            <AppIcon name="rayo" :size="18" />
+          </div>
           <span class="metric-status-badge metric-status-badge--emerald">
             <span class="metric-pulse-dot" aria-hidden="true"></span>
             Activa
           </span>
         </div>
 
-        <div class="metric-card__val-row">
-          <span class="metric-card__val text-emerald-700">Bs. 100,00</span>
-          <span class="metric-card__unit">Umbral mínimo</span>
+        <div>
+          <span class="metric-card__label-light">Recarga Automática</span>
+          <div class="metric-card__val-row mt-1">
+            <span class="metric-card__val text-emerald-700">Bs. 100,00</span>
+            <span class="metric-card__unit">Umbral</span>
+          </div>
         </div>
 
         <div class="metric-card__sub-detail">
-          <span class="text-slate-600">Débito automático interbancario ante saldo bajo</span>
+          <span class="text-slate-600 text-xs">Débito interbancario IPG vinculado</span>
         </div>
       </div>
     </div>
@@ -338,31 +367,90 @@ export default defineComponent({
 
 @media (min-width: 768px) {
   .acc-header__metrics {
-    grid-template-columns: 1.3fr 1fr 1fr;
+    grid-template-columns: 1.35fr 1fr 1fr;
   }
 }
 
 .metric-card {
-  background: #f8fafc;
+  background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 16px 18px;
+  border-radius: 16px;
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 8px;
-  transition: all 0.2s ease;
+  gap: 12px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(18, 33, 66, 0.03);
 }
 
-.metric-card:hover {
-  background: #ffffff;
-  border-color: #cbd5e1;
-  box-shadow: 0 6px 16px rgba(18, 33, 66, 0.05);
+.metric-card:hover:not(.metric-card--balance) {
+  transform: translateY(-2px);
+  border-color: #93c5fd;
+  box-shadow: 0 10px 24px -4px rgba(0, 56, 168, 0.1);
 }
 
+/* Tarjeta Saldo Consolidado: Sapphire Executive Fintech */
 .metric-card--balance {
-  background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%);
-  border-color: #bae6fd;
+  background: linear-gradient(135deg, #0b192c 0%, #1e3e62 60%, #0038a8 100%);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow: 0 12px 28px -6px rgba(11, 25, 44, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+.metric-card--balance:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px -6px rgba(0, 56, 168, 0.35);
+}
+
+.metric-header-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-card--balance .metric-card__label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #93c5fd;
+}
+
+.metric-card__sublabel {
+  font-size: 10.5px;
+  color: #94a3b8;
+}
+
+.metric-card__label-light {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  display: block;
+}
+
+.metric-card__icon-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.metric-card__icon-wrap--blue {
+  background: #eff6ff;
+  color: #0057a3;
+  border: 1px solid #bfdbfe;
+}
+
+.metric-card__icon-wrap--amber {
+  background: #fefce8;
+  color: #b45309;
+  border: 1px solid #fef08a;
 }
 
 .metric-card__header {
@@ -372,29 +460,21 @@ export default defineComponent({
   gap: 8px;
 }
 
-.metric-card__label {
-  font-size: 11.5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #64748b;
-}
-
-/* Badges de estatus rectangulares estándar (Sin forma de píldora) */
+/* Badges de estatus rectangulares estándar */
 .metric-status-badge {
   font-size: 11px;
   font-weight: 700;
-  padding: 2px 7px;
+  padding: 3px 8px;
   border-radius: 5px;
   display: inline-flex;
   align-items: center;
   gap: 5px;
 }
 
-.metric-status-badge--success {
-  background: #ecfdf5;
-  color: #065f46;
-  border: 1px solid #a7f3d0;
+.metric-card--balance .metric-status-badge--success {
+  background: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.4);
 }
 
 .metric-status-badge--info {
@@ -414,7 +494,7 @@ export default defineComponent({
   height: 6px;
   border-radius: 50%;
   background: #10b981;
-  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.4);
   animation: pulseMini 2s infinite ease-in-out;
 }
 
@@ -425,7 +505,8 @@ export default defineComponent({
 
 .metric-card__val-row {
   display: flex;
-  align-items: baseline;
+  align-items: center;
+  justify-content: space-between;
   gap: 8px;
 }
 
@@ -437,6 +518,34 @@ export default defineComponent({
   letter-spacing: -0.02em;
 }
 
+.metric-card__val--balance {
+  color: #ffffff !important;
+  font-size: 26px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.metric-card__quick-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.metric-card__quick-add:hover {
+  background: #0284c7;
+  border-color: #38bdf8;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
+}
+
 .metric-card__unit {
   font-size: 13px;
   font-weight: 600;
@@ -446,27 +555,43 @@ export default defineComponent({
 .metric-card__progress-wrap {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
   margin-top: 2px;
 }
 
 .metric-card__progress-bar {
   width: 100%;
   height: 6px;
-  background: #e2e8f0;
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 3px;
   overflow: hidden;
 }
 
 .metric-card__progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(90deg, #10b981 0%, #38bdf8 100%);
   border-radius: 3px;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+}
+
+.metric-card__hint-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
 }
 
 .metric-card__hint {
-  font-size: 11.5px;
-  color: #64748b;
+  font-size: 11px;
+  color: #cbd5e1;
+}
+
+.metric-card__badge-sub {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #38bdf8;
+  letter-spacing: 0.05em;
 }
 
 .metric-card__sub-detail {
@@ -474,5 +599,25 @@ export default defineComponent({
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-wrap: wrap;
+}
+
+.status-pill-sub {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.status-pill-sub--tag {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.status-pill-sub--plate {
+  background: #f0f9ff;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
 }
 </style>

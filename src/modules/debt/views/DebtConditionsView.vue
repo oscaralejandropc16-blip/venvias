@@ -10,7 +10,9 @@ export default defineComponent({
   data() {
     return {
       conditions: DEBT_CONDITIONS,
+      homeRoute: { name: ROUTE_NAMES.home },
       debtRoute: { name: ROUTE_NAMES.debt },
+      rechargeRoute: { name: ROUTE_NAMES.recharge },
     }
   },
 })
@@ -19,9 +21,9 @@ export default defineComponent({
 <template>
   <main class="conditions-view section wrap" aria-labelledby="conditions-title">
     <div class="conditions-nav">
-      <RouterLink :to="debtRoute" class="conditions-back">
+      <RouterLink :to="homeRoute" class="conditions-back">
         <AppIcon name="arrow" :size="16" class="rotate-180" />
-        Volver a la consulta de deudas
+        Volver al inicio
       </RouterLink>
     </div>
 
@@ -46,9 +48,11 @@ export default defineComponent({
     </div>
 
     <footer class="conditions-foot">
-      <RouterLink :to="debtRoute" class="btn btn--primario">
-        <AppIcon name="arrow" :size="18" />
-        Consultar estado de una placa
+      <RouterLink :to="rechargeRoute" class="btn btn--primario">
+        Recargar saldo de placa
+      </RouterLink>
+      <RouterLink :to="homeRoute" class="btn btn--secundario">
+        Ir al inicio
       </RouterLink>
     </footer>
   </main>
@@ -157,6 +161,9 @@ export default defineComponent({
 .conditions-foot {
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
   padding-top: var(--space-4);
   border-top: 1px solid var(--borde);
 }

@@ -6,6 +6,7 @@ import AccountHeaderCard from '../components/AccountHeaderCard.vue'
 import AccountVehiclesTable from '../components/AccountVehiclesTable.vue'
 import AccountTransitsTable from '../components/AccountTransitsTable.vue'
 import AccountAddVehicleModal from '../components/AccountAddVehicleModal.vue'
+import AccountRechargeModal from '../components/AccountRechargeModal.vue'
 import { useAccountPortal, type AccountTabKey } from '../composables/useAccountPortal'
 import { ACCOUNT_TEXT } from '../constants/account'
 
@@ -17,6 +18,7 @@ export default defineComponent({
     AccountVehiclesTable,
     AccountTransitsTable,
     AccountAddVehicleModal,
+    AccountRechargeModal,
   },
   setup() {
     return { ...useAccountPortal() }
@@ -25,6 +27,7 @@ export default defineComponent({
     return {
       text: ACCOUNT_TEXT,
       showAddModal: false,
+      showRechargeModal: false,
       rechargeRoute: { name: ROUTE_NAMES.recharge },
       toastMessage: '',
       autoRechargeThreshold: '100',
@@ -44,6 +47,21 @@ export default defineComponent({
     },
     closeAddModal(): void {
       this.showAddModal = false
+    },
+    openRechargeModal(): void {
+      this.showRechargeModal = true
+    },
+    closeRechargeModal(): void {
+      this.showRechargeModal = false
+    },
+    onRechargeSuccess(payload: { amount: number; receipt: string; method: string }): void {
+      if (this.profile) {
+        this.profile.totalBalance += payload.amount
+        this.profile.totalBalanceFormatted = `Bs. ${this.profile.totalBalance.toFixed(2)}`
+      }
+      this.notify(
+        `¡Recarga exitosa! Se acreditaron Bs. ${payload.amount.toFixed(2)} a tu saldo consolidado vía ${payload.method}. Ref: ${payload.receipt}`,
+      )
     },
     async onSaveVehicle(payload: { plate: string; alias: string }): Promise<void> {
       const ok = await this.registerVehicle(payload.plate, payload.alias)
@@ -114,6 +132,7 @@ export default defineComponent({
       <!-- 1. Tarjeta de Comando Ejecutivo de Cabecera -->
       <AccountHeaderCard
         :profile="profile"
+        @recharge="openRechargeModal"
         @add-vehicle="openAddModal"
         @configure-automation="setTab('alerts')"
       />
@@ -211,21 +230,31 @@ export default defineComponent({
                   <AppIcon name="recibo" :size="20" />
                 </div>
                 <div>
-                  <h4 class="statement-title">Factura Digital {{ t.receiptNumber }}</h4>
-                  <p class="statement-meta">
-                    {{ t.passedAtFormatted }} · {{ t.tollName }} · Placa: <strong>{{ t.plateFormatted }}</strong>
-                  </p>
+                  <div class="statement-title-wrap">
+                    <h4 class="statement-title">Factura Digital {{ t.receiptNumber }}</h4>
+                    <span class="statement-badge-seniat">SENIAT Válido</span>
+                  </div>
+                  <div class="statement-meta">
+                    <span>{{ t.passedAtFormatted }}</span>
+                    <span class="meta-dot">·</span>
+                    <span class="statement-toll">{{ t.tollName }}</span>
+                    <span class="meta-dot">·</span>
+                    <span class="statement-plate-badge">{{ t.plateFormatted }}</span>
+                  </div>
                 </div>
               </div>
               <div class="statement-item__right">
-                <span class="statement-amount">{{ t.amountFormatted }}</span>
+                <div class="statement-amount-box">
+                  <span class="statement-amount">{{ t.amountFormatted }}</span>
+                  <span class="statement-amount-desc">Solvencia Fiscal</span>
+                </div>
                 <button
                   type="button"
                   class="btn-download-rect"
                   @click="onDownloadReceipt(t.receiptNumber)"
-                  title="Descargar PDF"
+                  title="Descargar Comprobante Fiscal en PDF"
                 >
-                  <AppIcon name="arrow" :size="14" />
+                  <AppIcon name="recibo" :size="14" />
                   <span>PDF</span>
                 </button>
               </div>
@@ -328,6 +357,14 @@ export default defineComponent({
       v-if="showAddModal"
       @close="closeAddModal"
       @save="onSaveVehicle"
+    />
+
+    <!-- Modal para recargar saldo directo de la cuenta -->
+    <AccountRechargeModal
+      v-if="showRechargeModal && profile"
+      :current-balance="profile.totalBalance"
+      @close="closeRechargeModal"
+      @success="onRechargeSuccess"
     />
 
     <!-- Aviso institucional en el pie -->
@@ -445,7 +482,7 @@ export default defineComponent({
 }
 
 /* ==========================================================================
-   NAVEGACIÓN POR PESTAÑAS (SEGMENTED CONTROL - SIN PÍLDORAS)
+   NAVEGACIÓN POR PESTAÑAS (SEGMENTED CONTROL FLOTANTE CON GLOW)
    ========================================================================== */
 
 .account-tabs {
@@ -454,7 +491,7 @@ export default defineComponent({
   padding: 6px;
   border-radius: 14px;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 2px 8px rgba(18, 33, 66, 0.04);
+  box-shadow: 0 4px 16px rgba(18, 33, 66, 0.05);
   gap: 6px;
   overflow-x: auto;
 }
@@ -472,18 +509,20 @@ export default defineComponent({
   border: 1px solid transparent;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s ease;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .tab-btn:hover:not(.is-active) {
-  color: #0f172a;
-  background: #f8fafc;
+  color: #0057a3;
+  background: #f0f7ff;
+  border-color: #e0f2fe;
 }
 
 .tab-btn.is-active {
-  background: #0057a3;
+  background: linear-gradient(135deg, #004b8d 0%, #0057a3 100%);
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 87, 163, 0.25);
+  box-shadow: 0 4px 14px rgba(0, 87, 163, 0.35);
+  transform: translateY(-1px);
 }
 
 .tab-badge {
@@ -562,93 +601,152 @@ export default defineComponent({
   background: #10b981;
 }
 
-/* Lista de Comprobantes */
+/* Lista de Comprobantes - Diseño High-End */
 .statements-list {
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
 
 .statement-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 18px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
   gap: 16px;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(18, 33, 66, 0.03);
 }
 
 .statement-item:hover {
-  background: #ffffff;
-  border-color: #cbd5e1;
-  box-shadow: 0 4px 12px rgba(18, 33, 66, 0.05);
+  border-color: #93c5fd;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -4px rgba(0, 87, 163, 0.12);
 }
 
 .statement-item__left {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 }
 
 .statement-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  background: #f0f9ff;
-  color: #0284c7;
-  border: 1px solid #bae6fd;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
+  color: #0057a3;
+  border: 1px solid #bfdbfe;
   display: grid;
   place-items: center;
   flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0, 87, 163, 0.12);
+}
+
+.statement-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .statement-title {
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 700;
   color: #0f172a;
   margin: 0;
 }
 
+.statement-badge-seniat {
+  font-size: 10px;
+  font-weight: 700;
+  color: #047857;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 1px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.03em;
+}
+
 .statement-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 12.5px;
   color: #64748b;
-  margin-top: 2px;
+  margin-top: 3px;
+  flex-wrap: wrap;
+}
+
+.meta-dot {
+  color: #cbd5e1;
+}
+
+.statement-toll {
+  font-weight: 600;
+  color: #334155;
+}
+
+.statement-plate-badge {
+  font-family: var(--font-mono, monospace);
+  font-size: 11.5px;
+  font-weight: 700;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: #0f172a;
 }
 
 .statement-item__right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
+}
+
+.statement-amount-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .statement-amount {
   font-family: var(--font-mono, monospace);
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 800;
   color: #0f172a;
+  letter-spacing: -0.01em;
+}
+
+.statement-amount-desc {
+  font-size: 10.5px;
+  color: #10b981;
+  font-weight: 600;
 }
 
 .btn-download-rect {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
-  font-size: 12px;
+  padding: 8px 14px;
+  font-size: 12.5px;
   font-weight: 700;
-  border-radius: 8px;
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  background: #f0f7ff;
+  border: 1.5px solid #bae6fd;
   color: #0057a3;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-download-rect:hover {
-  background: #0057a3;
+  background: linear-gradient(135deg, #0057a3 0%, #0a6cc4 100%);
   color: #ffffff;
   border-color: #0057a3;
+  box-shadow: 0 4px 14px rgba(0, 87, 163, 0.3);
+  transform: translateY(-1px);
 }
 
 /* Panel de Automatizaciones */
