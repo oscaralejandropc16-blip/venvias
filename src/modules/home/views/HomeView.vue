@@ -690,23 +690,51 @@ export default defineComponent({
 }
 @media (max-width: 959px) {
   .hero {
-    padding-top: clamp(68px, 10vw, 84px);
+    padding-top: clamp(68px, 9vw, 80px);
     padding-bottom: 24px;
   }
+  .hero--day .hero__scrim {
+    background: linear-gradient(
+      180deg,
+      rgba(4, 12, 28, 0.97) 0%,
+      rgba(5, 14, 34, 0.92) 35%,
+      rgba(6, 16, 36, 0.76) 65%,
+      rgba(6, 16, 36, 0.90) 100%
+    );
+  }
+  .hero--night .hero__scrim {
+    background: linear-gradient(
+      180deg,
+      rgba(4, 9, 22, 0.98) 0%,
+      rgba(5, 11, 26, 0.94) 35%,
+      rgba(6, 13, 28, 0.80) 65%,
+      rgba(7, 13, 30, 0.94) 100%
+    );
+  }
   .hero__grid {
-    gap: 16px;
-    padding-top: 8px;
+    gap: 14px;
+    padding-top: 4px;
   }
   .hero__intro {
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    padding-inline: 4px;
   }
   .hero__title {
-    font-size: clamp(24px, 6vw, 32px);
-    line-height: 1.16;
+    font-size: clamp(22px, 5.6vw, 28px);
+    line-height: 1.22;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.75);
+  }
+  .hero__title-accent {
+    margin-top: 8px;
+    font-size: clamp(15px, 4.2vw, 19px);
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8));
   }
   .hero__sub,
   .hero__stats,
@@ -747,10 +775,10 @@ export default defineComponent({
   background-image: linear-gradient(
     135deg,
     #38bdf8 0%,
-    #2563eb 22%,
-    #818cf8 40%,
-    #f87171 62%,
-    #ef4444 82%,
+    #60a5fa 22%,
+    #a5b4fc 40%,
+    #fb7185 62%,
+    #f87171 82%,
     #38bdf8 100%
   );
   background-size: 260% 260%;
