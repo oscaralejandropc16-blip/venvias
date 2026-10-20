@@ -10,7 +10,8 @@ import { ACCOUNT_PERKS } from '@/modules/account/constants/account'
 import { ROUTE_NAMES } from '@/core/constants/routing'
 import HowItWorks from '../components/HowItWorks.vue'
 import SocialChannelsSection from '../components/SocialChannelsSection.vue'
-import { FAQS, SAFETY_ITEMS } from '../constants/home.content'
+import FaqSection from '../components/FaqSection.vue'
+import { SAFETY_ITEMS } from '../constants/home.content'
 import tagImg from '@/assets/tag-venvias.webp'
 import plateImg from '@/assets/plate-venezuela.svg'
 
@@ -18,7 +19,7 @@ import { useHeroTimeOfDay } from '../composables/useHeroTimeOfDay'
 
 export default defineComponent({
   name: 'HomeView',
-  components: { AppIcon, PlateForm, TollsSummaryCard, HowItWorks, SocialChannelsSection },
+  components: { AppIcon, PlateForm, TollsSummaryCard, HowItWorks, SocialChannelsSection, FaqSection },
   setup() {
     return {
       ...useRechargeAmounts(),
@@ -30,7 +31,6 @@ export default defineComponent({
       tagImg,
       plateImg,
       safety: SAFETY_ITEMS,
-      faqs: FAQS,
       accountPerks: ACCOUNT_PERKS,
       tollsText: TOLLS_TEXT,
       accountRoute: { name: ROUTE_NAMES.account },
@@ -453,28 +453,8 @@ export default defineComponent({
     </div>
   </section>
 
-  <!-- Sección FAQ: tarjeta blanca flotante con soft shadow -->
-  <section class="section wrap pt-0 gap-6" aria-labelledby="faq-title">
-    <div class="split items-start min-[900px]:grid-cols-[1fr_2fr] bg-white rounded-2xl p-8 md:p-12 shadow-lg shadow-slate-200/50 border border-slate-100">
-      <div>
-        <div class="mb-3 text-xs font-bold uppercase tracking-wider text-blue-700">
-          Centro de Ayuda
-        </div>
-        <h2 id="faq-title" class="text-slate-900 font-bold text-3xl">Preguntas frecuentes</h2>
-        <p class="text-slate-600 mt-2 text-sm leading-relaxed">
-          Respuestas a las dudas más comunes sobre el uso y pago de peajes en Venezuela.
-        </p>
-      </div>
-      <div class="divided">
-        <details v-for="f in faqs" :key="f.q">
-          <summary class="row-title flex items-center justify-between gap-4 py-4 cursor-pointer list-none text-slate-900 font-medium hover:text-blue-700 transition-colors">
-            {{ f.q }}<AppIcon name="chevron" :size="22" class="icon-accent" />
-          </summary>
-          <p class="pb-4 max-w-[65ch] text-slate-600 leading-relaxed text-[15px]">{{ f.a }}</p>
-        </details>
-      </div>
-    </div>
-  </section>
+  <!-- Sección Preguntas Frecuentes y Asistencia al Conductor -->
+  <FaqSection />
 
   <!-- Sección Síguenos en nuestras Redes Sociales y Asistencia Ciudadana Oficial -->
   <SocialChannelsSection />
