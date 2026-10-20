@@ -690,8 +690,8 @@ export default defineComponent({
 }
 @media (max-width: 959px) {
   .hero {
-    padding-top: clamp(68px, 9vw, 80px);
-    padding-bottom: 24px;
+    padding-top: calc(67px + clamp(24px, 5.5vw, 36px));
+    padding-bottom: 28px;
   }
   .hero--day .hero__scrim {
     background: linear-gradient(
