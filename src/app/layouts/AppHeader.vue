@@ -23,6 +23,19 @@ export default defineComponent({
     }
   },
   watch: {
+    open(isOpen: boolean) {
+      if (typeof document !== 'undefined') {
+        if (isOpen) {
+          document.body.style.overflow = 'hidden'
+          document.documentElement.style.overflow = 'hidden'
+          document.body.style.touchAction = 'none'
+        } else {
+          document.body.style.overflow = ''
+          document.documentElement.style.overflow = ''
+          document.body.style.touchAction = ''
+        }
+      }
+    },
     '$route.fullPath'() {
       this.open = false
     },
@@ -38,6 +51,11 @@ export default defineComponent({
     if (this.scrollHandler) {
       window.removeEventListener('scroll', this.scrollHandler)
     }
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = ''
+      document.documentElement.style.overflow = ''
+      document.body.style.touchAction = ''
+    }
   },
   methods: {
     exactActiveClass(link: NavLink): string {
@@ -47,11 +65,10 @@ export default defineComponent({
     getLinkIcon(label: string): IconName {
       const map: Record<string, IconName> = {
         'Inicio': 'carro',
-        'Recargar placa': 'rayo',
-        'Consultar saldo': 'placa',
-        'Pagar deuda': 'alert',
-        'Peajes habilitados': 'peaje',
+        'Recargar una placa': 'rayo',
+        'Pagar saldo deudor': 'alert',
         'Cómo funciona': 'info',
+        'Peajes habilitados': 'peaje',
       }
       return map[label] ?? 'arrow'
     },
@@ -110,6 +127,7 @@ export default defineComponent({
           type="button"
           :aria-expanded="open"
           aria-controls="menu-movil"
+          aria-label="Abrir menú de navegación"
           @click="open = !open"
         >
           <AppIcon :name="open ? 'close' : 'menu'" :size="19" />
@@ -118,66 +136,100 @@ export default defineComponent({
       </div>
     </div>
 
-    <!-- Fondo Oscurecido para Menú Móvil -->
-    <div
-      v-if="open"
-      class="nav__backdrop"
-      @click="open = false"
-      aria-hidden="true"
-    ></div>
+    <!-- Menú Móvil Fullscreen / Drawer en Teleport a body -->
+    <Teleport to="body">
+      <div
+        v-if="open"
+        id="menu-movil"
+        class="nav-mobile-root"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menú de navegación móvil"
+      >
+        <!-- Backdrop con Desenfoque Suave y Cierre al Tocar -->
+        <div
+          class="nav-mobile-backdrop"
+          aria-hidden="true"
+          @click="open = false"
+        ></div>
 
-    <!-- Menú Desplegable Móvil -->
-    <div
-      id="menu-movil"
-      class="nav__sheet"
-      :hidden="!open"
-    >
-      <div class="wrap nav__sheet-container">
-        <!-- Acciones Rápidas en Móvil -->
-        <div class="nav__sheet-quick-actions">
-          <RouterLink
-            :to="accountLink.to"
-            class="nav-sheet-account-btn"
-          >
-            <AppIcon name="carro" :size="17" />
-            <span>Portal Mi Cuenta</span>
-          </RouterLink>
+        <!-- Panel del Menú Móvil con scroll independiente -->
+        <div class="nav-mobile-drawer">
+          <!-- Cabecera del Menú Móvil con Logo y Botón Cerrar -->
+          <div class="nav-mobile-header">
+            <RouterLink
+              :to="homeRoute"
+              class="nav-mobile-brand"
+              aria-label="VenVías - Inicio"
+              @click="open = false"
+            >
+              <img
+                :src="logo"
+                alt="VenVías"
+                width="992"
+                height="380"
+                class="nav-mobile-logo"
+              />
+            </RouterLink>
 
-          <a
-            href="tel:08008368427"
-            class="nav-sheet-call-btn"
-          >
-            <AppIcon name="audifonos" :size="17" />
-            <span>0800-VENVIAS</span>
-          </a>
-        </div>
+            <button
+              type="button"
+              class="nav-mobile-close-btn"
+              aria-label="Cerrar menú"
+              @click="open = false"
+            >
+              <AppIcon name="close" :size="20" />
+            </button>
+          </div>
 
-        <!-- Lista de Enlaces Móviles -->
-        <nav aria-label="Navegación principal móvil" class="nav__sheet-links">
-          <RouterLink
-            v-for="l in mobileLinks"
-            :key="l.label"
-            :to="l.to"
-            class="nav__sheet-link"
-            :exact-active-class="exactActiveClass(l)"
-          >
-            <div class="nav__sheet-link-left">
-              <span class="nav__sheet-link-icon-box">
-                <AppIcon :name="getLinkIcon(l.label)" :size="17" />
-              </span>
-              <span class="nav__sheet-link-label">{{ l.label }}</span>
+          <!-- Línea Tricolor decorativa institucional -->
+          <div class="nav-mobile-tricolor" aria-hidden="true"></div>
+
+          <!-- Contenido del Menú con Scroll Independiente -->
+          <div class="nav-mobile-content">
+            <!-- Lista de Enlaces Principales -->
+            <nav aria-label="Navegación principal móvil" class="nav-mobile-nav">
+              <RouterLink
+                v-for="l in mobileLinks"
+                :key="l.label"
+                :to="l.to"
+                class="nav-mobile-link"
+                :exact-active-class="exactActiveClass(l)"
+                @click="open = false"
+              >
+                <div class="nav-mobile-link-left">
+                  <span class="nav-mobile-icon-box" aria-hidden="true">
+                    <AppIcon :name="getLinkIcon(l.label)" :size="18" />
+                  </span>
+                  <span class="nav-mobile-link-title">{{ l.label }}</span>
+                </div>
+                <AppIcon name="arrow" :size="16" class="nav-mobile-link-arrow" aria-hidden="true" />
+              </RouterLink>
+            </nav>
+
+            <!-- Acciones al pie del menú móvil -->
+            <div class="nav-mobile-footer">
+              <RouterLink
+                :to="accountLink.to"
+                class="nav-mobile-account-btn"
+                @click="open = false"
+              >
+                <AppIcon name="carro" :size="18" />
+                <span>Acceder a Mi cuenta</span>
+              </RouterLink>
+
+              <a
+                href="tel:08008368427"
+                class="nav-mobile-call-btn"
+              >
+                <AppIcon name="audifonos" :size="17" />
+                <span>Línea de Asistencia: 0800-VENVIAS</span>
+              </a>
             </div>
-            <AppIcon name="arrow" :size="16" class="nav__sheet-link-arrow" />
-          </RouterLink>
-        </nav>
-
-        <!-- Estatus Operativo al Fondo del Menú Móvil -->
-        <div class="nav__sheet-status">
-          <span class="nav__sheet-status-dot" aria-hidden="true"></span>
-          <span>Red Nacional Operativa 24/7 · Peajes Interoperables ALPR & RFID</span>
+          </div>
         </div>
       </div>
-    </div>
+    </Teleport>
   </header>
 </template>
 
@@ -411,183 +463,261 @@ export default defineComponent({
   box-shadow: 0 4px 10px rgba(18, 33, 66, 0.08);
 }
 
-/* Menú Desplegable Móvil */
-.nav__backdrop {
+/* ==========================================================================
+   MENÚ MÓVIL FULLSCREEN / DRAWER CON TELEPORT
+   ========================================================================== */
+.nav-mobile-root {
   position: fixed;
   inset: 0;
-  top: 67px;
-  background: rgba(7, 14, 30, 0.4);
-  backdrop-filter: blur(4px);
-  z-index: 40;
-}
-
-.nav__sheet {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: #ffffff;
-  border-top: 1px solid #e2e8f0;
-  border-bottom: 1px solid #cbd5e1;
-  box-shadow: 0 20px 30px -10px rgba(18, 33, 66, 0.15);
-  animation: navSheetIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
-  z-index: 50;
-}
-
-@keyframes navSheetIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  z-index: 99999;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: auto;
 }
 
 @media (min-width: 1080px) {
-  .nav__backdrop,
-  .nav__sheet {
+  .nav-mobile-root {
     display: none !important;
   }
 }
 
-.nav__sheet-container {
-  padding-block: 18px 22px;
+/* Backdrop */
+.nav-mobile-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: mobileBackdropFade 0.25s ease both;
 }
 
-/* Botones Rápidos en Móvil */
-.nav__sheet-quick-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #f1f5f9;
+@keyframes mobileBackdropFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.nav-sheet-account-btn {
+/* Drawer del Menú Móvil */
+.nav-mobile-drawer {
+  position: relative;
+  z-index: 100000;
+  width: 100%;
+  max-width: 100%;
+  height: 100dvh;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.25);
+  animation: mobileDrawerSlide 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (min-width: 600px) {
+  .nav-mobile-drawer {
+    max-width: 380px;
+  }
+}
+
+@keyframes mobileDrawerSlide {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Cabecera del Drawer */
+.nav-mobile-header {
+  height: 64px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0 12px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #0038A8 0%, #0057a3 100%);
-  color: #ffffff;
-  font-size: 13.5px;
-  font-weight: 600;
+  justify-content: space-between;
+  padding: 0 16px 0 20px;
+  background: #ffffff;
+  flex-shrink: 0;
+}
+
+.nav-mobile-brand {
+  display: flex;
+  align-items: center;
   text-decoration: none;
-  box-shadow: 0 3px 10px rgba(0, 56, 168, 0.25);
 }
 
-.nav-sheet-call-btn {
+.nav-mobile-logo {
+  height: 36px;
+  width: auto;
+}
+
+.nav-mobile-close-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-mobile-close-btn:hover {
+  background: #e2e8f0;
+  color: #0038A8;
+}
+
+.nav-mobile-close-btn:active {
+  transform: scale(0.94);
+}
+
+/* Línea tricolor en la parte superior del drawer */
+.nav-mobile-tricolor {
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(90deg, #F9D616 0%, #0038A8 50%, #CE1126 100%);
+  flex-shrink: 0;
+}
+
+/* Contenido del Drawer con scroll interno independiente */
+.nav-mobile-content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 18px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Lista de navegación */
+.nav-mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nav-mobile-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #1e293b;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.nav-mobile-link:hover {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  transform: translateX(2px);
+}
+
+.nav-mobile-link.router-link-exact-active {
+  background: rgba(0, 56, 168, 0.06);
+  border-color: rgba(0, 56, 168, 0.15);
+  color: #0038A8;
+}
+
+.nav-mobile-link-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.nav-mobile-icon-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #f1f5f9;
+  color: #0038A8;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.nav-mobile-link:hover .nav-mobile-icon-box,
+.nav-mobile-link.router-link-exact-active .nav-mobile-icon-box {
+  background: #0038A8;
+  color: #ffffff;
+}
+
+.nav-mobile-link-title {
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.nav-mobile-link-arrow {
+  color: #94a3b8;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.nav-mobile-link:hover .nav-mobile-link-arrow,
+.nav-mobile-link.router-link-exact-active .nav-mobile-link-arrow {
+  color: #0038A8;
+  transform: translateX(3px);
+}
+
+/* Pie del menú móvil */
+.nav-mobile-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.nav-mobile-account-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  border-radius: 12px;
+  background: #0038A8;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(0, 56, 168, 0.3);
+  transition: all 0.2s ease;
+}
+
+.nav-mobile-account-btn:hover {
+  background: #0284c7;
+  transform: translateY(-1px);
+}
+
+.nav-mobile-call-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 44px;
-  padding: 0 12px;
-  border-radius: 8px;
+  height: 44px;
+  border-radius: 10px;
   background: #f8fafc;
   border: 1px solid #cbd5e1;
   color: #0f172a;
   font-size: 13.5px;
   font-weight: 600;
   text-decoration: none;
+  transition: all 0.2s ease;
 }
 
-/* Lista de Enlaces en Móvil */
-.nav__sheet-links {
-  display: flex;
-  flex-direction: column;
-}
-
-.nav__sheet-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 10px;
-  border-radius: 8px;
-  color: #1e293b;
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 500;
-  transition: all 0.15s ease;
-}
-
-.nav__sheet-link:hover,
-.nav__sheet-link.router-link-exact-active {
-  background: rgba(0, 56, 168, 0.05);
+.nav-mobile-call-btn:hover {
+  background: #eff6ff;
+  border-color: #0038A8;
   color: #0038A8;
-}
-
-.nav__sheet-link.router-link-exact-active {
-  font-weight: 600;
-}
-
-.nav__sheet-link-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.nav__sheet-link-icon-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  background: #f1f5f9;
-  color: #0038A8;
-}
-
-.nav__sheet-link.router-link-exact-active .nav__sheet-link-icon-box {
-  background: #0038A8;
-  color: #ffffff;
-}
-
-.nav__sheet-link-arrow {
-  color: #94a3b8;
-  transition: transform 0.15s ease;
-}
-
-.nav__sheet-link:hover .nav__sheet-link-arrow {
-  transform: translateX(3px);
-  color: #0038A8;
-}
-
-/* Estado Operativo Móvil */
-.nav__sheet-status {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 16px;
-  padding: 10px 14px;
-  border-radius: 6px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  font-size: 11.5px;
-  font-weight: 600;
-  color: #475569;
-  text-align: center;
-}
-
-.nav__sheet-status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 1px;
-  background: #10b981;
-  box-shadow: 0 0 6px rgba(16, 185, 129, 0.7);
-  flex-shrink: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .nav__tricolor::after,
-  .nav__sheet,
+  .nav-mobile-backdrop,
+  .nav-mobile-drawer,
   .nav__menu-btn {
     animation: none !important;
     transition: none !important;
