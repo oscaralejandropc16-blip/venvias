@@ -115,7 +115,7 @@ export default defineComponent({
             <div class="hero__stat-val">10+</div>
             <div class="hero__stat-lbl">Peajes Activos</div>
           </div>
-          <div class="hero__stat-card hero__stat-card--emerald">
+          <div class="hero__stat-card hero__stat-card--red">
             <div class="hero__stat-val">0 seg</div>
             <div class="hero__stat-lbl">Espera en Cabina</div>
           </div>
@@ -529,13 +529,13 @@ export default defineComponent({
   border-color: rgba(255, 255, 255, 0.3);
 }
 .hero--day .hero__stat-card--blue .hero__stat-val { color: #38bdf8; }
-.hero--day .hero__stat-card--emerald .hero__stat-val { color: #34d399; }
+.hero--day .hero__stat-card--red .hero__stat-val { color: #f87171; }
 .hero--day .hero__stat-card--amber .hero__stat-val { color: #fbbf24; }
 .hero--day .hero__stat-card--blue:hover {
   box-shadow: 0 12px 28px -2px rgba(56, 189, 248, 0.25);
 }
-.hero--day .hero__stat-card--emerald:hover {
-  box-shadow: 0 12px 28px -2px rgba(52, 211, 153, 0.25);
+.hero--day .hero__stat-card--red:hover {
+  box-shadow: 0 12px 28px -2px rgba(239, 68, 68, 0.28);
 }
 .hero--day .hero__stat-card--amber:hover {
   box-shadow: 0 12px 28px -2px rgba(251, 191, 36, 0.25);
@@ -590,13 +590,13 @@ export default defineComponent({
   border-color: rgba(255, 255, 255, 0.25);
 }
 .hero--night .hero__stat-card--blue .hero__stat-val { color: #38bdf8; }
-.hero--night .hero__stat-card--emerald .hero__stat-val { color: #34d399; }
+.hero--night .hero__stat-card--red .hero__stat-val { color: #f87171; }
 .hero--night .hero__stat-card--amber .hero__stat-val { color: #fbbf24; }
 .hero--night .hero__stat-card--blue:hover {
   box-shadow: 0 12px 28px -2px rgba(56, 189, 248, 0.25);
 }
-.hero--night .hero__stat-card--emerald:hover {
-  box-shadow: 0 12px 28px -2px rgba(52, 211, 153, 0.25);
+.hero--night .hero__stat-card--red:hover {
+  box-shadow: 0 12px 28px -2px rgba(239, 68, 68, 0.28);
 }
 .hero--night .hero__stat-card--amber:hover {
   box-shadow: 0 12px 28px -2px rgba(251, 191, 36, 0.25);
@@ -794,7 +794,7 @@ export default defineComponent({
   border-radius: 3px 3px 0 0;
 }
 .hero__stat-card--blue::before { background: linear-gradient(90deg, #0057a3, #38bdf8); }
-.hero__stat-card--emerald::before { background: linear-gradient(90deg, #059669, #34d399); }
+.hero__stat-card--red::before { background: linear-gradient(90deg, #CE1126, #f87171); }
 .hero__stat-card--amber::before { background: linear-gradient(90deg, #d97706, #fbbf24); }
 
 .hero__stat-card:hover {

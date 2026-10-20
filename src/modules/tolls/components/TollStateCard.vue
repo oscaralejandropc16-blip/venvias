@@ -4,10 +4,6 @@ import AppIcon from '@/shared/icons/AppIcon.vue'
 import { TOLLS_TEXT, tollsInStateLabel } from '../constants/tolls'
 import type { TollStateGroup } from '../types/Toll'
 
-/**
- * Tarjeta desplegable de un estado con sus peajes. Solo presenta: la vista decide
- * qué tarjeta está abierta y qué peaje está seleccionado.
- */
 export default defineComponent({
   name: 'TollStateCard',
   components: { AppIcon },
@@ -45,11 +41,27 @@ export default defineComponent({
         :aria-controls="`estado-${slug}-peajes`"
         @click="$emit('toggle')"
       >
-        <span class="state-card__name">{{ group.state }}</span>
-        <span class="state-card__count">{{ countLabel }}</span>
-        <AppIcon name="chevron" :size="22" class="state-card__chevron" />
+        <div class="state-card__identity">
+          <div class="state-card__icon-box" aria-hidden="true">
+            <AppIcon name="peaje" :size="20" class="state-card__icon" />
+          </div>
+          <div class="state-card__text">
+            <span class="state-card__name">{{ group.state }}</span>
+            <span class="state-card__count">{{ countLabel }}</span>
+          </div>
+        </div>
+
+        <div class="state-card__action">
+          <span class="state-card__action-text">{{ expanded ? 'Ocultar' : 'Ver peajes' }}</span>
+          <div class="state-card__chevron-btn" :class="{ 'state-card__chevron-btn--open': expanded }" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </div>
+        </div>
       </button>
     </h3>
+
     <div
       :id="`estado-${slug}-peajes`"
       class="state-card__panel"
@@ -58,17 +70,43 @@ export default defineComponent({
       :inert="!expanded"
     >
       <div class="state-card__clip">
-        <ul class="plain-list divided state-card__rows">
+        <ul class="plain-list state-card__rows">
           <li v-for="t in group.tolls" :key="t.id">
             <button
               :id="`toll-${t.id}`"
               type="button"
               class="toll-row"
+              :class="{ 'toll-row--selected': t.id === selectedId }"
               :aria-pressed="t.id === selectedId"
               @click="$emit('select', t.id)"
             >
-              <span class="toll-row__name">{{ t.name }}</span>
-              <span class="toll-row__road">{{ t.road || text.roadPending }}</span>
+              <div class="toll-row__main">
+                <div class="toll-row__marker" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                    <circle cx="12" cy="9" r="2.5" />
+                  </svg>
+                </div>
+                <div class="toll-row__details">
+                  <span class="toll-row__name">{{ t.name }}</span>
+                  <span class="toll-row__road">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="toll-row__road-icon" aria-hidden="true">
+                      <path d="M4 19L8 5M16 5l4 14M12 5v14" />
+                    </svg>
+                    {{ t.road || text.roadPending }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="toll-row__action">
+                <span class="toll-row__locate-btn">
+                  <span>Ubicar en mapa</span>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </span>
+              </div>
             </button>
           </li>
         </ul>
@@ -80,68 +118,318 @@ export default defineComponent({
 <style scoped>
 .state-card {
   background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  border-radius: 1.25rem;
-  box-shadow: 0 4px 16px -2px rgba(18, 33, 66, 0.04);
-  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), border-color 0.25s var(--ease-out);
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  overflow: hidden;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 .state-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px -4px rgba(18, 33, 66, 0.08);
-  border-color: #93c5fd;
+  box-shadow: 0 8px 24px -4px rgba(0, 56, 168, 0.08);
+  border-color: #cbd5e1;
 }
+
 .state-card--open {
-  border-color: rgba(0, 87, 163, 0.4);
-  box-shadow: 0 16px 32px -4px rgba(0, 87, 163, 0.1);
+  border-color: #0038A8;
+  box-shadow: 0 10px 28px -4px rgba(0, 56, 168, 0.12);
 }
-.state-card__heading { margin: 0; font: inherit; }
+
+.state-card__heading {
+  margin: 0;
+  font: inherit;
+}
+
 .state-card__toggle {
-  width: 100%; display: flex; align-items: center; gap: var(--space-3);
-  padding: var(--space-4) var(--space-6); min-height: 72px;
-  background: none; border: 0; border-radius: 1.25rem; cursor: pointer; text-align: left;
-}
-.state-card__toggle:focus-visible { outline-offset: -3px; }
-.state-card__name { font: 600 20px/28px var(--font-display); color: #122142; }
-.state-card__count { font: 400 14px/20px var(--font-body); color: var(--texto-suave); }
-.state-card__chevron {
-  margin-left: auto; flex: none; color: var(--azul-700);
-  transition: transform 0.3s var(--ease-out);
-}
-.state-card--open .state-card__chevron { transform: rotate(180deg); }
-
-/* Despliegue: la fila de la grilla crece de 0fr a 1fr, sin medir alturas. */
-.state-card__panel {
-  display: grid; grid-template-rows: 0fr;
-  transition: grid-template-rows 0.35s var(--ease-out);
-}
-.state-card--open .state-card__panel { grid-template-rows: 1fr; }
-.state-card__clip { overflow: hidden; min-height: 0; }
-.state-card__rows { margin: 0 var(--space-3) var(--space-3); }
-.state-card__rows > li { padding-block: var(--space-1); }
-.state-card__rows > li:last-child { border-bottom: 0; }
-
-.toll-row {
-  width: 100%; display: grid; gap: 2px; text-align: left; cursor: pointer;
-  padding: var(--space-3); border: 0; border-radius: var(--radius-sm);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
   background: transparent;
-  transition: background-color 0.2s var(--ease-out), padding-left 0.2s var(--ease-out);
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s ease;
 }
+
+.state-card__toggle:hover {
+  background: #f8fafc;
+}
+
+.state-card--open .state-card__toggle {
+  background: #f8fafc;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.state-card__toggle:focus-visible {
+  outline: 2px solid #0038A8;
+  outline-offset: -2px;
+}
+
+.state-card__identity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.state-card__icon-box {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  background: rgba(0, 56, 168, 0.06);
+  border: 1px solid rgba(0, 56, 168, 0.12);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.state-card__toggle:hover .state-card__icon-box,
+.state-card--open .state-card__icon-box {
+  background: #0038A8;
+  border-color: #0038A8;
+}
+
+.state-card__icon {
+  color: #0038A8;
+  transition: color 0.2s ease;
+}
+
+.state-card__toggle:hover .state-card__icon,
+.state-card--open .state-card__icon {
+  color: #ffffff;
+}
+
+.state-card__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.state-card__name {
+  font-family: var(--font-display, Poppins, sans-serif);
+  font-size: 17.5px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.25;
+}
+
+.state-card__count {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.state-card__action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.state-card__action-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0038A8;
+  transition: opacity 0.2s;
+}
+
+.state-card__chevron-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  display: grid;
+  place-items: center;
+  color: #0038A8;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.state-card__toggle:hover .state-card__chevron-btn {
+  background: #0038A8;
+  border-color: #0038A8;
+  color: #ffffff;
+}
+
+.state-card__chevron-btn--open {
+  transform: rotate(180deg);
+  background: rgba(0, 56, 168, 0.08);
+  border-color: rgba(0, 56, 168, 0.2);
+  color: #0038A8;
+}
+
+/* ── Panel Desplegable (Accordion) ── */
+.state-card__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.state-card--open .state-card__panel {
+  grid-template-rows: 1fr;
+}
+
+.state-card__clip {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.state-card__rows {
+  margin: 0;
+  padding: 14px 18px 18px;
+  background: #f8fafc;
+  display: grid;
+  gap: 8px;
+}
+
+.state-card__rows > li {
+  list-style: none;
+}
+
+/* ── Fila de Peaje Re-diseñada ── */
+.toll-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 18px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 .toll-row:hover {
-  background: var(--fondo-frio);
-  padding-left: calc(var(--space-3) + 4px);
+  border-color: #0038A8;
+  box-shadow: 0 4px 14px rgba(0, 56, 168, 0.08);
+  transform: translateX(3px);
 }
+
+.toll-row--selected,
 .toll-row[aria-pressed='true'] {
-  background: var(--azul-100);
-  border-left: 3px solid var(--azul-700);
+  background: #eff6ff;
+  border-color: #0038A8;
+  box-shadow: 0 4px 16px rgba(0, 56, 168, 0.12);
 }
-.toll-row:focus-visible { outline-offset: 0; }
-.toll-row__name { font: 500 18px/26px var(--font-display); color: var(--marino-900); }
-.toll-row__road { font: 400 14px/20px var(--font-body); color: var(--texto-suave); }
-.toll-row[aria-pressed='true'] .toll-row__road { color: var(--texto); }
+
+.toll-row:focus-visible {
+  outline: 2px solid #0038A8;
+  outline-offset: 1px;
+}
+
+.toll-row__main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.toll-row__marker {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(0, 56, 168, 0.06);
+  color: #0038A8;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.toll-row:hover .toll-row__marker,
+.toll-row--selected .toll-row__marker {
+  background: #0038A8;
+  color: #ffffff;
+}
+
+.toll-row__details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.toll-row__name {
+  font-family: var(--font-display, Poppins, sans-serif);
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.toll-row__road {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  color: #64748b;
+}
+
+.toll-row__road-icon {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.toll-row__action {
+  flex-shrink: 0;
+}
+
+.toll-row__locate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #0038A8;
+  background: #f1f5f9;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.toll-row:hover .toll-row__locate-btn,
+.toll-row--selected .toll-row__locate-btn {
+  background: #0038A8;
+  color: #ffffff;
+}
+
+@media (max-width: 640px) {
+  .state-card__toggle {
+    padding: 14px 16px;
+  }
+  .state-card__action-text {
+    display: none;
+  }
+  .state-card__rows {
+    padding: 10px 12px 14px;
+  }
+  .toll-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+  .toll-row__action {
+    width: 100%;
+  }
+  .toll-row__locate-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .state-card,
-  .state-card__chevron,
+  .state-card__chevron-btn,
   .state-card__panel,
   .toll-row {
     animation: none !important;
