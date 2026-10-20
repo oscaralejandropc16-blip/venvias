@@ -333,7 +333,7 @@ export default defineComponent({
                       <AppIcon name="check" :size="16" />
                     </div>
                     <div>
-                      <strong>Débito oficial: 350,00 Bs</strong>
+                      <strong>Débito: 350,00 Bs</strong>
                       <span>Conciliado en tiempo real</span>
                     </div>
                   </div>
@@ -350,8 +350,8 @@ export default defineComponent({
                       <AppIcon name="info" :size="16" />
                     </div>
                     <div>
-                      <strong>Tránsito registrado (350,00 Bs)</strong>
-                      <span>Págala en 72h sin recargo de grúa</span>
+                      <strong>Saldo deudor: 350,00 Bs</strong>
+                      <span>Págala en 72h sin recargo</span>
                     </div>
                   </div>
                 </div>
@@ -427,7 +427,7 @@ export default defineComponent({
                     </div>
                     <div class="sim-stat-box">
                       <span class="sim-stat-box__label">Tarifa</span>
-                      <span class="sim-stat-box__val">Oficial MPPT (350 Bs)</span>
+                      <span class="sim-stat-box__val">Oficial VenVías (350 Bs)</span>
                     </div>
                   </div>
                 </div>
@@ -448,7 +448,7 @@ export default defineComponent({
                     </div>
                     <div class="sim-stat-box">
                       <span class="sim-stat-box__label">Medios de pago</span>
-                      <span class="sim-stat-box__val">Pago Móvil / BDV</span>
+                      <span class="sim-stat-box__val">Pago Móvil · BDV</span>
                     </div>
                     <div class="sim-stat-box">
                       <span class="sim-stat-box__label">Recargo</span>
@@ -630,7 +630,7 @@ export default defineComponent({
               <div class="law-highlight-box__icon">
                 <AppIcon name="recibo" :size="18" />
               </div>
-              <span>Tarifas oficiales reguladas y publicadas en Gaceta Oficial del MPPT.</span>
+              <span>Tarifas oficiales reguladas y publicadas en Gaceta Oficial.</span>
             </div>
           </article>
         </div>
@@ -1089,7 +1089,8 @@ export default defineComponent({
 /* VIEWPORT VISUAL */
 .sim-viewport {
   position: relative;
-  min-height: 340px;
+  width: 100%;
+  max-width: 100%;
   aspect-ratio: 16 / 10;
   background: #040812;
   overflow: hidden;
@@ -1294,6 +1295,8 @@ export default defineComponent({
   justify-content: space-between;
   padding: 24px;
   pointer-events: none;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .hud-signal-light {
@@ -1308,6 +1311,8 @@ export default defineComponent({
   border: 1px solid rgba(16, 185, 129, 0.4);
   box-shadow: 0 0 24px rgba(16, 185, 129, 0.25);
   animation: badgeSlideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .hud-signal-light--amber {
@@ -1365,6 +1370,8 @@ export default defineComponent({
   border-radius: 12px;
   box-shadow: 0 12px 32px rgba(16, 185, 129, 0.45);
   animation: badgeSlideUp 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .hud-ticket-card strong {
@@ -1943,6 +1950,184 @@ export default defineComponent({
 .infographic-section:hover {
   border-color: rgba(56, 189, 248, 0.3);
   box-shadow: 0 26px 70px -15px rgba(0, 56, 168, 0.3);
+}
+
+/* ==========================================================================
+   OPTIMIZACIONES MÓVIL (PANTALLAS PEQUEÑAS / SMARTPHONES)
+   ========================================================================== */
+@media (max-width: 640px) {
+  .how-content {
+    gap: 36px;
+  }
+  .hero-tech {
+    padding-top: var(--space-4);
+  }
+  .hero-tech__title {
+    font-size: 30px;
+    margin-bottom: var(--space-4);
+  }
+  .hero-tech__sub {
+    font-size: 14px;
+    margin-bottom: var(--space-6);
+  }
+  .hero-stats-grid {
+    gap: 8px;
+  }
+  .hero-stat-card {
+    padding: 12px 14px;
+    border-radius: 12px;
+  }
+  .hero-stat-card__val {
+    font-size: 22px;
+  }
+
+  /* Sección Simulador */
+  .sim-section {
+    padding: 16px 12px;
+    border-radius: 20px;
+  }
+  .sim-header {
+    margin-bottom: 16px;
+  }
+  .sim-header__title {
+    font-size: 20px;
+  }
+  .sim-pipeline {
+    margin-bottom: 16px;
+  }
+  .sim-node {
+    padding: 8px 12px;
+    border-radius: 12px;
+    gap: 10px;
+  }
+  .sim-node__circle {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+  .sim-node__title {
+    font-size: 12.5px;
+  }
+  .sim-node__sub {
+    font-size: 11px;
+  }
+  .sim-stage {
+    border-radius: 16px;
+    gap: 0;
+  }
+  .sim-viewport {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 4 / 3;
+    min-height: auto;
+  }
+  .hud-green-gate,
+  .hud-debt-gate {
+    padding: 12px;
+  }
+  .hud-signal-light {
+    padding: 5px 10px;
+    gap: 6px;
+    border-radius: 6px;
+  }
+  .hud-signal-text {
+    font-size: 10px;
+    letter-spacing: 0.05em;
+  }
+  .hud-ticket-card {
+    padding: 8px 12px;
+    gap: 8px;
+    border-radius: 10px;
+    max-width: 100%;
+  }
+  .hud-ticket-card strong {
+    font-size: 12px;
+    line-height: 1.2;
+  }
+  .hud-ticket-card span {
+    font-size: 10.5px;
+    line-height: 1.2;
+  }
+  .hud-ticket-card__icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+  }
+  .hud-plate-preview {
+    right: 10px;
+    top: 10px;
+    padding: 6px 10px;
+    gap: 8px;
+    border-radius: 10px;
+  }
+  .hud-plate-preview img {
+    width: 32px;
+    height: 32px;
+  }
+  .hud-plate-preview__code {
+    font-size: 12.5px;
+  }
+  .hud-plate-preview__status {
+    font-size: 9px;
+  }
+
+  /* Inspector Móvil */
+  .sim-inspector {
+    padding: 18px 14px;
+    gap: 16px;
+  }
+  .sim-body__title {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  .sim-body__desc {
+    font-size: 13.5px;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .sim-stats-grid {
+    gap: 8px;
+  }
+  .sim-stat-box {
+    padding: 8px 10px;
+    border-radius: 10px;
+  }
+  .sim-stat-box__label {
+    font-size: 10px;
+  }
+  .sim-stat-box__val {
+    font-size: 12.5px;
+  }
+  .sim-actions {
+    padding-top: 14px;
+    gap: 10px;
+  }
+  .sim-cta-btn {
+    padding: 11px 16px;
+    font-size: 13.5px;
+  }
+  .sim-cta-link {
+    font-size: 12.5px;
+  }
+
+  /* Bento Grid en Móvil */
+  .bento-section {
+    padding: 0;
+  }
+  .bento-header__title {
+    font-size: 22px;
+  }
+  .bento-card {
+    padding: 18px 14px;
+    border-radius: 18px;
+  }
+  .bento-card__title {
+    font-size: 17px;
+  }
+  .bento-card__text {
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
 }
 
 /* ==========================================================================
