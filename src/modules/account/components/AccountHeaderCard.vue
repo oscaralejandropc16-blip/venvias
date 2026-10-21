@@ -114,7 +114,7 @@ export default defineComponent({
             <div class="metric-card__progress-fill" style="width: 85%;"></div>
           </div>
           <div class="metric-card__hint-row">
-            <span class="metric-card__hint">~28 tránsitos promedio garantizados</span>
+            <span class="metric-card__hint">~{{ Math.max(1, Math.floor(profile.totalBalance / 350)) }} {{ Math.floor(profile.totalBalance / 350) === 1 ? 'tránsito garantizado' : 'tránsitos garantizados' }}</span>
             <span class="metric-card__badge-sub">Flota Activa</span>
           </div>
         </div>

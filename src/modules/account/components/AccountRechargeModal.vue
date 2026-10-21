@@ -10,8 +10,9 @@ export default defineComponent({
   },
   emits: ['close', 'success'],
   setup(props, { emit }) {
-    const presetAmounts = [100, 200, 500, 1000]
-    const selectedAmount = ref<number>(200)
+    const TOLL_FEE = 350
+    const presetAmounts = [350, 700, 1400, 3500]
+    const selectedAmount = ref<number>(350)
     const customAmount = ref<string>('')
     const isCustom = ref(false)
 
@@ -39,11 +40,11 @@ export default defineComponent({
     })
 
     const estimatedPasses = computed(() => {
-      return Math.max(1, Math.floor(effectiveAmount.value / 16.5))
+      return Math.max(1, Math.floor(effectiveAmount.value / TOLL_FEE))
     })
 
     const totalAvailablePasses = computed(() => {
-      return Math.max(1, Math.floor(newEstimatedBalance.value / 16.5))
+      return Math.max(1, Math.floor(newEstimatedBalance.value / TOLL_FEE))
     })
 
     const selectPreset = (amt: number) => {
@@ -75,7 +76,7 @@ export default defineComponent({
     }
 
     const canSubmit = computed(() => {
-      if (effectiveAmount.value < 10) return false
+      if (effectiveAmount.value < 350) return false
       if (paymentMethod.value === 'pagomovil' && mobileReference.value.trim().length < 4) {
         return false
       }
@@ -191,7 +192,7 @@ export default defineComponent({
             >
               <span class="amount-card__curr">Bs.</span>
               <strong class="amount-card__val">{{ amt }}</strong>
-              <span class="amount-card__tag">~{{ Math.floor(amt / 16.5) }} tránsitos</span>
+              <span class="amount-card__tag">~{{ Math.floor(amt / 350) }} {{ Math.floor(amt / 350) === 1 ? 'tránsito' : 'tránsitos' }}</span>
             </button>
           </div>
 
@@ -202,8 +203,8 @@ export default defineComponent({
               <span class="custom-bar__prefix">Bs.</span>
               <input
                 type="number"
-                min="10"
-                step="10"
+                min="350"
+                step="50"
                 placeholder="Escribe el monto"
                 class="custom-bar__input"
                 :value="customAmount"
@@ -214,7 +215,7 @@ export default defineComponent({
                 type="button"
                 class="custom-bar__clear"
                 title="Restablecer"
-                @click="selectPreset(200)"
+                @click="selectPreset(350)"
               >
                 ✕
               </button>
@@ -343,7 +344,7 @@ export default defineComponent({
 
           <div class="balance-strip__note">
             <span class="live-dot" aria-hidden="true"></span>
-            <span>Disponibilidad estimada: <strong>~{{ totalAvailablePasses }} tránsitos</strong> en peajes nacionales</span>
+            <span>Disponibilidad estimada: <strong>~{{ totalAvailablePasses }} {{ totalAvailablePasses === 1 ? 'tránsito' : 'tránsitos' }}</strong> en peajes nacionales</span>
           </div>
         </div>
 
