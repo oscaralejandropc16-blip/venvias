@@ -78,17 +78,17 @@ describe('recharge · mappers', () => {
 describe('recharge · service (mock)', () => {
   it('sirve montos, métodos y límites del mock adyacente', async () => {
     const [amounts, methods, limits] = await Promise.all([getRechargeAmountOptions(), getPaymentMethods(), getRechargeLimits()])
-    expect(amounts.map((o) => o.amount)).toEqual([250, 500, 750, 1000, null])
+    expect(amounts.map((o) => o.amount)).toEqual([350, 500, 750, 1000, null])
     expect(amounts.at(-1)?.custom).toBe(true)
     expect(methods.map((m) => m.id)).toEqual(['ipg', 'mobile', 'transfer'])
-    expect(limits).toMatchObject({ min: 250, max: 10_000_000, step: 250, currency: 'Bs.', fee: 0 })
+    expect(limits).toMatchObject({ min: 350, max: 10_000_000, step: 50, currency: 'Bs.', fee: 0 })
   })
 
   it('createRecharge arma el comprobante y suma el monto al saldo de la placa', async () => {
-    const receipt = await createRecharge({ plate: 'AB123CD', amount: 250, paymentMethod: 'ipg' })
+    const receipt = await createRecharge({ plate: 'AB123CD', amount: 350, paymentMethod: 'ipg' })
     expect(receipt.reference).toMatch(/^VV-[A-Z0-9]+$/)
     expect(receipt.securityCode).toMatch(/^\d{6}$/)
-    expect(receipt).toMatchObject({ plate: 'AB123CD', amount: 'Bs. 250,00', fee: 'Bs. 0,00', balanceAfter: 'Bs. 262,50' })
+    expect(receipt).toMatchObject({ plate: 'AB123CD', amount: 'Bs. 350,00', fee: 'Bs. 0,00', balanceAfter: 'Bs. 362,50' })
   })
 
   it('useRechargeAmounts sigue cargando las opciones del inicio', async () => {
@@ -127,8 +127,8 @@ describe('useRechargeFlow', () => {
     expect(flow.amountError.value).toBe(RECHARGE_AMOUNT_MESSAGES.required)
 
     const cases: [string, string][] = [
-      ['100', RECHARGE_AMOUNT_MESSAGES.min('Bs. 250,00')],
-      ['260', RECHARGE_AMOUNT_MESSAGES.step('Bs. 250,00')],
+      ['100', RECHARGE_AMOUNT_MESSAGES.min('Bs. 350,00')],
+      ['365', RECHARGE_AMOUNT_MESSAGES.step('Bs. 50,00')],
       ['20.000.000', RECHARGE_AMOUNT_MESSAGES.max('Bs. 10.000.000,00')],
     ]
     for (const [typed, message] of cases) {

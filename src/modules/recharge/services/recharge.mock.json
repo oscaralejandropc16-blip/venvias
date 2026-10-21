@@ -1,7 +1,7 @@
 {
   "amountOptions": {
     "items": [
-      { "id": "monto-1", "label": "Bs. 250", "amount": 250, "currency": "Bs." },
+      { "id": "monto-1", "label": "Bs. 350", "amount": 350, "currency": "Bs." },
       { "id": "monto-2", "label": "Bs. 500", "amount": 500, "currency": "Bs." },
       { "id": "monto-3", "label": "Bs. 750", "amount": 750, "currency": "Bs." },
       { "id": "monto-4", "label": "Bs. 1.000", "amount": 1000, "currency": "Bs." },
@@ -15,6 +15,6 @@
       { "id": "transfer", "name": "Transferencia", "description": "Validación al confirmar" }
     ]
   },
-  "limits": { "min": 250, "max": 10000000, "step": 250, "currency": "Bs.", "fee": 0 },
+  "limits": { "min": 350, "max": 10000000, "step": 50, "currency": "Bs.", "fee": 0 },
   "settleFailReferenceOnce": "000000000"
 }
