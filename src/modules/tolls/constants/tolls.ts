@@ -33,12 +33,12 @@ export function tollsInStateLabel(count: number): string {
 /** Teselas de OpenStreetMap. Solo para el prototipo: producción necesita su propio proveedor. */
 export const TOLLS_MAP = {
   tileUrl: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  maxZoom: 18,
-  focusZoom: 11,
-  fitPadding: 20,
-  /** Distancia en px bajo la cual dos pines se tapan y se agrupan. */
-  clusterRadius: 40,
+  subdomains: 'abc',
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  maxZoom: 19,
+  focusZoom: 12,
+  fitPadding: 30,
+  clusterRadius: 36,
 }
 
 /** Nombre accesible del disco que agrupa peajes cercanos. */

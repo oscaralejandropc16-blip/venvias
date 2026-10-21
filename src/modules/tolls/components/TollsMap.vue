@@ -71,8 +71,11 @@ export default defineComponent({
         zoomOutTitle: TOLLS_TEXT.zoomOut,
       })
       .addTo(map)
-    L.control.attribution({ position: 'bottomright', prefix: false }).addTo(map)
-    L.tileLayer(TOLLS_MAP.tileUrl, { attribution: TOLLS_MAP.attribution, maxZoom: TOLLS_MAP.maxZoom }).addTo(map)
+    L.tileLayer(TOLLS_MAP.tileUrl, {
+      attribution: TOLLS_MAP.attribution,
+      maxZoom: TOLLS_MAP.maxZoom,
+      subdomains: TOLLS_MAP.subdomains,
+    }).addTo(map)
     // La rueda solo hace zoom después de que la persona elige el mapa: así no secuestra el scroll de la página.
     map.on('click focus', () => map.scrollWheelZoom.enable())
     map.on('mouseout blur', () => map.scrollWheelZoom.disable())
@@ -192,16 +195,19 @@ export default defineComponent({
       box.append(name, road, close)
       return box
     },
-    fitAll(): void {
+    fitAll(animate = false): void {
       const { map } = this.handles
       if (!map || this.tolls.length === 0) return
       const bounds = L.latLngBounds(this.tolls.map((t) => [t.lat, t.lng] as L.LatLngTuple))
-      // Arriba se deja el alto del pin: el punto es su base, la gota se dibuja por encima.
-      map.fitBounds(bounds, {
-        paddingTopLeft: [TOLLS_MAP.fitPadding, TOLLS_MAP.fitPadding + TOLL_PIN_SIZE.height],
-        paddingBottomRight: [TOLLS_MAP.fitPadding, TOLLS_MAP.fitPadding],
-        animate: false,
-      })
+      const paddingOptions = {
+        paddingTopLeft: [TOLLS_MAP.fitPadding, TOLLS_MAP.fitPadding + TOLL_PIN_SIZE.height] as [number, number],
+        paddingBottomRight: [TOLLS_MAP.fitPadding, TOLLS_MAP.fitPadding] as [number, number],
+      }
+      if (animate && !reducedMotion()) {
+        map.flyToBounds(bounds, { ...paddingOptions, duration: 0.85 })
+      } else {
+        map.fitBounds(bounds, { ...paddingOptions, animate: false })
+      }
     },
     styleMarker(id: string, selected: boolean): void {
       const marker = this.handles.markers.get(id)
@@ -257,7 +263,10 @@ export default defineComponent({
 /* Leaflet dibuja fuera de la plantilla: sus piezas se alcanzan con :deep. */
 /* Leaflet suma teselas con plus-lighter: a 3x, dos bordes sobre la misma fila de píxeles dan una
    línea sobreexpuesta. En modo normal no aparece. */
-.tolls-map__canvas :deep(.leaflet-tile) { mix-blend-mode: normal; }
+.tolls-map__canvas :deep(.leaflet-tile) {
+  mix-blend-mode: normal;
+  filter: contrast(1.03) saturate(0.9);
+}
 
 .tolls-map__canvas :deep(.toll-pin) { background: none; border: 0; cursor: pointer; }
 .tolls-map__canvas :deep(.toll-pin__svg) {

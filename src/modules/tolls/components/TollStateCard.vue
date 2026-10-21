@@ -46,13 +46,19 @@ export default defineComponent({
             <AppIcon name="peaje" :size="20" class="state-card__icon" />
           </div>
           <div class="state-card__text">
-            <span class="state-card__name">{{ group.state }}</span>
-            <span class="state-card__count">{{ countLabel }}</span>
+            <div class="state-card__name-row">
+              <span class="state-card__name">{{ group.state }}</span>
+              <span class="state-card__live-pill">
+                <span class="state-card__live-dot" aria-hidden="true"></span>
+                Operativo
+              </span>
+            </div>
+            <span class="state-card__count">{{ countLabel }} · Red Nacional</span>
           </div>
         </div>
 
         <div class="state-card__action">
-          <span class="state-card__action-text">{{ expanded ? 'Ocultar' : 'Ver peajes' }}</span>
+          <span class="state-card__action-text">{{ expanded ? 'Ocultar estaciones' : 'Ver estaciones' }}</span>
           <div class="state-card__chevron-btn" :class="{ 'state-card__chevron-btn--open': expanded }" aria-hidden="true">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9" />
@@ -70,46 +76,50 @@ export default defineComponent({
       :inert="!expanded"
     >
       <div class="state-card__clip">
-        <ul class="plain-list state-card__rows">
-          <li v-for="t in group.tolls" :key="t.id">
-            <button
-              :id="`toll-${t.id}`"
-              type="button"
-              class="toll-row"
-              :class="{ 'toll-row--selected': t.id === selectedId }"
-              :aria-pressed="t.id === selectedId"
-              @click="$emit('select', t.id)"
-            >
-              <div class="toll-row__main">
-                <div class="toll-row__marker" aria-hidden="true">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-                    <circle cx="12" cy="9" r="2.5" />
-                  </svg>
-                </div>
-                <div class="toll-row__details">
-                  <span class="toll-row__name">{{ t.name }}</span>
-                  <span class="toll-row__road">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="toll-row__road-icon" aria-hidden="true">
-                      <path d="M4 19L8 5M16 5l4 14M12 5v14" />
-                    </svg>
-                    {{ t.road || text.roadPending }}
-                  </span>
-                </div>
+        <div class="state-card__grid">
+          <div
+            v-for="t in group.tolls"
+            :key="t.id"
+            class="toll-tile"
+            :class="{ 'toll-tile--selected': t.id === selectedId }"
+          >
+            <div class="toll-tile__top">
+              <div class="toll-tile__badge" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                  <circle cx="12" cy="9" r="2.5" />
+                </svg>
               </div>
+              <div class="toll-tile__info">
+                <h4 class="toll-tile__name">{{ t.name }}</h4>
+                <p class="toll-tile__road">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="toll-tile__road-icon" aria-hidden="true">
+                    <path d="M4 19L8 5M16 5l4 14M12 5v14" />
+                  </svg>
+                  <span>{{ t.road || text.roadPending }}</span>
+                </p>
+              </div>
+            </div>
 
-              <div class="toll-row__action">
-                <span class="toll-row__locate-btn">
-                  <span>Ubicar en mapa</span>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="12 5 19 12 12 19" />
-                  </svg>
-                </span>
-              </div>
-            </button>
-          </li>
-        </ul>
+            <div class="toll-tile__bottom">
+              <span class="toll-tile__tech-tag">Cobro por placa</span>
+              <button
+                :id="`toll-${t.id}`"
+                type="button"
+                class="toll-tile__btn"
+                :class="{ 'is-selected': t.id === selectedId }"
+                :aria-pressed="t.id === selectedId"
+                @click="$emit('select', t.id)"
+              >
+                <span>{{ t.id === selectedId ? 'En el mapa' : 'Ubicar en mapa' }}</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </article>
@@ -119,8 +129,8 @@ export default defineComponent({
 .state-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  border-radius: 18px;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
   overflow: hidden;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
@@ -128,14 +138,13 @@ export default defineComponent({
 }
 
 .state-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px -4px rgba(0, 56, 168, 0.08);
+  box-shadow: 0 10px 30px -4px rgba(0, 56, 168, 0.08);
   border-color: #cbd5e1;
 }
 
 .state-card--open {
-  border-color: #0038A8;
-  box-shadow: 0 10px 28px -4px rgba(0, 56, 168, 0.12);
+  border-color: rgba(0, 56, 168, 0.35);
+  box-shadow: 0 12px 35px -6px rgba(0, 56, 168, 0.1);
 }
 
 .state-card__heading {
@@ -163,7 +172,7 @@ export default defineComponent({
 
 .state-card--open .state-card__toggle {
   background: #f8fafc;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid #edf2f7;
 }
 
 .state-card__toggle:focus-visible {
@@ -174,31 +183,32 @@ export default defineComponent({
 .state-card__identity {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   min-width: 0;
 }
 
 .state-card__icon-box {
-  width: 42px;
-  height: 42px;
-  border-radius: 11px;
-  background: rgba(0, 56, 168, 0.06);
-  border: 1px solid rgba(0, 56, 168, 0.12);
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(0, 56, 168, 0.08), rgba(56, 189, 248, 0.12));
+  border: 1px solid rgba(0, 56, 168, 0.14);
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 
 .state-card__toggle:hover .state-card__icon-box,
 .state-card--open .state-card__icon-box {
   background: #0038A8;
   border-color: #0038A8;
+  box-shadow: 0 4px 14px rgba(0, 56, 168, 0.25);
 }
 
 .state-card__icon {
   color: #0038A8;
-  transition: color 0.2s ease;
+  transition: color 0.25s ease;
 }
 
 .state-card__toggle:hover .state-card__icon,
@@ -209,15 +219,41 @@ export default defineComponent({
 .state-card__text {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
+}
+
+.state-card__name-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .state-card__name {
   font-family: var(--font-display, Poppins, sans-serif);
-  font-size: 17.5px;
+  font-size: 18px;
   font-weight: 700;
   color: #0f172a;
   line-height: 1.25;
+}
+
+.state-card__live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.state-card__live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
 }
 
 .state-card__count {
@@ -229,15 +265,15 @@ export default defineComponent({
 .state-card__action {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex-shrink: 0;
 }
 
 .state-card__action-text {
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
   color: #0038A8;
-  transition: opacity 0.2s;
+  transition: color 0.2s;
 }
 
 .state-card__chevron-btn {
@@ -248,24 +284,23 @@ export default defineComponent({
   border: 1px solid #e2e8f0;
   display: grid;
   place-items: center;
-  color: #0038A8;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #64748b;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .state-card__toggle:hover .state-card__chevron-btn {
-  background: #0038A8;
   border-color: #0038A8;
-  color: #ffffff;
+  color: #0038A8;
 }
 
 .state-card__chevron-btn--open {
   transform: rotate(180deg);
-  background: rgba(0, 56, 168, 0.08);
-  border-color: rgba(0, 56, 168, 0.2);
-  color: #0038A8;
+  background: #0038A8;
+  border-color: #0038A8;
+  color: #ffffff !important;
 }
 
-/* ── Panel Desplegable (Accordion) ── */
+/* Panel Desplegable */
 .state-card__panel {
   display: grid;
   grid-template-rows: 0fr;
@@ -278,127 +313,142 @@ export default defineComponent({
 
 .state-card__clip {
   overflow: hidden;
-  min-height: 0;
 }
 
-.state-card__rows {
-  margin: 0;
-  padding: 14px 18px 18px;
-  background: #f8fafc;
+.state-card__grid {
   display: grid;
-  gap: 8px;
-}
-
-.state-card__rows > li {
-  list-style: none;
-}
-
-/* ── Fila de Peaje Re-diseñada ── */
-.toll-row {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 13px 18px;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  background: #ffffff;
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.toll-row:hover {
-  border-color: #0038A8;
-  box-shadow: 0 4px 14px rgba(0, 56, 168, 0.08);
-  transform: translateX(3px);
-}
-
-.toll-row--selected,
-.toll-row[aria-pressed='true'] {
-  background: #eff6ff;
-  border-color: #0038A8;
-  box-shadow: 0 4px 16px rgba(0, 56, 168, 0.12);
-}
-
-.toll-row:focus-visible {
-  outline: 2px solid #0038A8;
-  outline-offset: 1px;
-}
-
-.toll-row__main {
-  display: flex;
-  align-items: center;
+  grid-template-columns: 1fr;
   gap: 12px;
-  min-width: 0;
+  padding: 16px 20px 22px;
+  background: #fbfcfe;
 }
 
-.toll-row__marker {
+@media (min-width: 640px) {
+  .state-card__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Ficha / Tarjeta de Peaje Individual */
+.toll-tile {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toll-tile:hover {
+  transform: translateY(-2px);
+  border-color: #93c5fd;
+  box-shadow: 0 8px 20px -4px rgba(0, 56, 168, 0.1);
+}
+
+.toll-tile--selected {
+  border-color: #0038A8;
+  background: #f0f7ff;
+  box-shadow: 0 0 0 2px rgba(0, 56, 168, 0.2), 0 8px 24px -4px rgba(0, 56, 168, 0.15);
+}
+
+.toll-tile__top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.toll-tile__badge {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
-  background: rgba(0, 56, 168, 0.06);
+  border-radius: 9px;
+  background: rgba(0, 56, 168, 0.08);
   color: #0038A8;
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  transition: all 0.2s ease;
+  margin-top: 2px;
 }
 
-.toll-row:hover .toll-row__marker,
-.toll-row--selected .toll-row__marker {
+.toll-tile--selected .toll-tile__badge {
   background: #0038A8;
   color: #ffffff;
 }
 
-.toll-row__details {
+.toll-tile__info {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   min-width: 0;
 }
 
-.toll-row__name {
+.toll-tile__name {
   font-family: var(--font-display, Poppins, sans-serif);
-  font-size: 15px;
+  font-size: 15.5px;
   font-weight: 700;
   color: #0f172a;
+  margin: 0;
+  line-height: 1.25;
 }
 
-.toll-row__road {
+.toll-tile__road {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 12.5px;
+  font-size: 13px;
+  color: #475569;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.toll-tile__road-icon {
   color: #64748b;
-}
-
-.toll-row__road-icon {
-  color: #94a3b8;
   flex-shrink: 0;
 }
 
-.toll-row__action {
-  flex-shrink: 0;
+.toll-tile__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
 }
 
-.toll-row__locate-btn {
+.toll-tile__tech-tag {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #0284c7;
+  letter-spacing: 0.02em;
+}
+
+.toll-tile__btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: #0038A8;
-  background: #f1f5f9;
   padding: 6px 12px;
   border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #0038A8;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.toll-row:hover .toll-row__locate-btn,
-.toll-row--selected .toll-row__locate-btn {
+.toll-tile__btn:hover {
   background: #0038A8;
+  border-color: #0038A8;
+  color: #ffffff;
+}
+
+.toll-tile__btn.is-selected {
+  background: #0038A8;
+  border-color: #0038A8;
   color: #ffffff;
 }
 
@@ -409,31 +459,11 @@ export default defineComponent({
   .state-card__action-text {
     display: none;
   }
-  .state-card__rows {
-    padding: 10px 12px 14px;
+  .state-card__name {
+    font-size: 16px;
   }
-  .toll-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+  .toll-tile {
     padding: 12px 14px;
-  }
-  .toll-row__action {
-    width: 100%;
-  }
-  .toll-row__locate-btn {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .state-card,
-  .state-card__chevron-btn,
-  .state-card__panel,
-  .toll-row {
-    animation: none !important;
-    transition: none !important;
   }
 }
 </style>
