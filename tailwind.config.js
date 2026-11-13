@@ -19,15 +19,19 @@ export default {
         marino: {
           900: 'var(--marino-900)',
         },
+        celeste: 'var(--celeste)',
         'rojo-sistema': 'var(--rojo-sistema)',
         'amarillo-carretera': 'var(--amarillo-carretera)',
         fondo: 'var(--fondo)',
         'fondo-frio': 'var(--fondo-frio)',
+        'fondo-alt': 'var(--fondo-alt)',
         superficie: 'var(--superficie)',
         texto: 'var(--texto)',
         'texto-suave': 'var(--texto-suave)',
         borde: 'var(--borde)',
+        'borde-fuerte': 'var(--borde-fuerte)',
         accion: 'var(--accion)',
+        'accion-hover': 'var(--accion-hover)',
         alerta: 'var(--alerta)',
         exito: 'var(--exito)',
       },
@@ -47,6 +51,7 @@ export default {
       boxShadow: {
         'elev-1': 'var(--elev-1)',
         'elev-2': 'var(--elev-2)',
+        'elev-card': 'var(--elev-card)',
       },
       transitionTimingFunction: {
         out: 'var(--ease-out)',

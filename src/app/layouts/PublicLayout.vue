@@ -2,12 +2,11 @@
 import { defineComponent } from 'vue'
 import AppHeader from '@/app/layouts/AppHeader.vue'
 import AppFooter from '@/app/layouts/AppFooter.vue'
-import AppBackToTop from '@/app/layouts/AppBackToTop.vue'
 
 /** Layout del sitio público: nav fija, contenido y pie. Ninguna ruta pide cuenta. */
 export default defineComponent({
   name: 'PublicLayout',
-  components: { AppHeader, AppFooter, AppBackToTop },
+  components: { AppHeader, AppFooter },
 })
 </script>
 
@@ -18,5 +17,4 @@ export default defineComponent({
     <RouterView />
   </main>
   <AppFooter />
-  <AppBackToTop />
 </template>

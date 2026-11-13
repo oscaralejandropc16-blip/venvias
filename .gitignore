@@ -10,5 +10,4 @@ coverage/
 !.env.example
 .idea/
 .DS_Store
-*.zip
 .agent/

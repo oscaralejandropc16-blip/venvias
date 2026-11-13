@@ -12,6 +12,17 @@ export interface FaqItem {
   a: string
 }
 
+export interface HomeActionCardItem {
+  id: string
+  title: string
+  description: string
+  icon: IconName
+  badge?: string
+  buttonText: string
+  route: RouteLocationRaw
+  primary?: boolean
+}
+
 export interface HowItWorksLink {
   to: RouteLocationRaw
   label: string
@@ -20,7 +31,6 @@ export interface HowItWorksLink {
 export interface HowItWorksSlide {
   title: string
   stop: string
-  subtitle?: string
   text: string
   points?: string[]
   stat?: { value: string; label: string }

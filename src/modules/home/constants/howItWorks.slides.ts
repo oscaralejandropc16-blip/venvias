@@ -15,7 +15,6 @@ export const HOW_IT_WORKS_SLIDES: HowItWorksSlide[] = [
   {
     title: 'Recarga tu placa.',
     stop: 'Recarga',
-    subtitle: 'Acredita tu saldo',
     text: 'Antes de salir de viaje, recarga saldo a la placa de tu vehículo.',
     points: [
       'Desde la web o la app móvil.',
@@ -29,7 +28,6 @@ export const HOW_IT_WORKS_SLIDES: HowItWorksSlide[] = [
   {
     title: 'La cámara lee tu placa.',
     stop: 'Lectura',
-    subtitle: 'Cámara ALPR óptica',
     text: 'Al pasar por el peaje, una cámara ALPR captura tu placa. No tienes que detenerte: sigue a la velocidad máxima autorizada dentro del peaje.',
     img: camara,
     imgSm: camaraSm,
@@ -39,7 +37,6 @@ export const HOW_IT_WORKS_SLIDES: HowItWorksSlide[] = [
   {
     title: 'Pasa sin detenerte.',
     stop: 'Pasa',
-    subtitle: 'Tránsito continuo',
     text: 'No paras en la cabina de cobro: el peaje se debita automáticamente del saldo de tu placa.',
     points: [
       'Carril VenVías: barrera arriba y luz verde.',
@@ -53,12 +50,11 @@ export const HOW_IT_WORKS_SLIDES: HowItWorksSlide[] = [
   {
     title: '¿Sin saldo o sin TAG?',
     stop: 'Sin saldo',
-    subtitle: 'Gestión de cobro',
     text:
         'Si pasas por un carril Expreso sin un método de pago válido (TAG o Placa con saldo), el tránsito queda como deuda. ',
     points: [
       'La deuda es la tarifa del peaje más cargos administrativos.',
-      'Queda asociada a la placa hasta que sea cancelada.',
+      'Queda asociada a la placa hasta que sea cancela.',
     ],
     note: {
       strong: 'La obligación de pago del peaje nace con la utilización efectiva de la infraestructura vial ' +

@@ -9,7 +9,7 @@ export const debtRoutes: RouteRecordRaw[] = [
     meta: { title: 'Pagar saldo deudor', public: true },
   },
   {
-    path: ROUTE_NAMES.debtConditions,
+    path: ROUTE_NAMES.debt,
     name: ROUTE_NAMES.debtConditions,
     component: () => import('@/modules/debt/views/DebtConditionsView.vue'),
     meta: { title: 'Condiciones de la deuda', public: true },

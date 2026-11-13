@@ -32,7 +32,7 @@ export default defineComponent({
   border: 2px solid var(--marino-900); border-radius: var(--radius-placa);
 }
 .pp--sm { width: 168px; }
-.pp--md { width: min(100%, 340px); border-width: 3px; }
+.pp--md { width: 100%; max-width: 420px; border-width: 3px; }
 .pp__country { font: 500 clamp(9px, 4.4cqi, 14px)/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--azul-700); }
 .pp__bolt { position: absolute; width: 4.5cqi; height: 4.5cqi; border-radius: 50%; background: var(--fondo-frio); border: 1.5px solid #9aa6c2; }
 .pp__bolt:nth-of-type(1) { left: 4.5%; top: 9%; } .pp__bolt:nth-of-type(2) { right: 4.5%; top: 9%; }

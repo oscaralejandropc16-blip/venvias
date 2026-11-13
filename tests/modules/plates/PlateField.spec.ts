@@ -37,4 +37,21 @@ describe('PlateField', () => {
     await w.find('.plate').trigger('animationend')
     expect(w.emitted('swing-end')).toHaveLength(1)
   })
+
+  it('renderiza exactamente 7 slots respetando el formato venezolano', () => {
+    const w = mount(PlateField, { props: baseProps })
+    const slots = w.findAll('.plate__slot')
+    expect(slots).toHaveLength(7)
+    // Los slots 1 y 4 marcan el fin de grupo (letras y números)
+    expect(slots[1].classes()).toContain('is-group-end')
+    expect(slots[4].classes()).toContain('is-group-end')
+  })
+
+  it('al enfocar activa el halo de foco y muestra el cursor parpadeante en el slot activo', async () => {
+    const w = mount(PlateField, { props: baseProps })
+    const input = w.find('input')
+    await input.trigger('focus')
+    expect(w.find('.plate').classes()).toContain('is-focused')
+    expect(w.find('.plate__caret').exists()).toBe(true)
+  })
 })

@@ -1,27 +1,24 @@
 <script lang="ts">
 import { defineComponent, markRaw } from 'vue'
 import AppIcon from '@/shared/icons/AppIcon.vue'
-import RoadRibbon from '@/shared/ui/RoadRibbon.vue'
 import { HOW_IT_WORKS_ANCHOR } from '@/core/constants/routing'
 import { HOW_IT_WORKS_SLIDES } from '../constants/howItWorks.slides'
 
 export default defineComponent({
   name: 'HowItWorks',
-  components: { AppIcon, RoadRibbon },
+  components: { AppIcon },
   props: {
     plain: { type: Boolean, default: false },
-    hideHeader: { type: Boolean, default: false },
   },
   data() {
     return {
       anchorId: HOW_IT_WORKS_ANCHOR,
       slides: HOW_IT_WORKS_SLIDES,
       active: 0,
+      // Mientras la pista viaja, las paradas intermedias no deben robarse el paso activo.
       steering: null as number | null,
       settle: undefined as ReturnType<typeof setTimeout> | undefined,
       observer: null as IntersectionObserver | null,
-      autoplayTimer: null as ReturnType<typeof setInterval> | null,
-      isPaused: false,
     }
   },
   mounted() {
@@ -43,24 +40,20 @@ export default defineComponent({
       ),
     )
     Array.from(track.children).forEach((el) => this.observer?.observe(el))
-
-    // Avance automático suave
-    this.startAutoplay()
   },
 
   beforeUnmount() {
     this.observer?.disconnect()
     clearTimeout(this.settle)
-    this.stopAutoplay()
   },
 
   methods: {
     track(): HTMLElement | undefined {
       return this.$refs.track as HTMLElement | undefined
     },
+    // Posición real de cada paso dentro de la pista (los anchos pueden ser fraccionarios).
     offsetOf(n: number): number {
       const kids = (this.track() as HTMLElement).children as HTMLCollectionOf<HTMLElement>
-      if (!kids || !kids[n] || !kids[0]) return 0
       return kids[n].offsetLeft - kids[0].offsetLeft
     },
 
@@ -72,49 +65,19 @@ export default defineComponent({
       this.steering = n
       this.active = n
       t.scrollTo({ left: this.offsetOf(n), behavior: reduce ? 'auto' : 'smooth' })
+      // Respaldo para navegadores sin el evento scrollend
       if (!('onscrollend' in window)) {
         clearTimeout(this.settle)
         this.settle = setTimeout(this.onScrollEnd, 900)
       }
     },
-    next(userInitiated = true): void {
-      const nextIndex = (this.active + 1) % this.slides.length
-      this.go(nextIndex)
-      if (userInitiated) {
-        this.startAutoplay()
-      }
-    },
-    prev(userInitiated = true): void {
-      const prevIndex = this.active === 0 ? this.slides.length - 1 : this.active - 1
-      this.go(prevIndex)
-      if (userInitiated) {
-        this.startAutoplay()
-      }
-    },
-    startAutoplay(): void {
-      this.stopAutoplay()
-      this.autoplayTimer = setInterval(() => {
-        if (this.isPaused) return
-        this.next(false)
-      }, 5000)
-    },
-    stopAutoplay(): void {
-      if (this.autoplayTimer) {
-        clearInterval(this.autoplayTimer)
-        this.autoplayTimer = null
-      }
-    },
-    pause(): void {
-      this.isPaused = true
-    },
-    resume(): void {
-      this.isPaused = false
-    },
+    // Al detenerse la pista: alinea al paso exacto (nunca durante el viaje: rompe el snap).
     onScrollEnd(): void {
       const t = this.track()
       if (!t) return
       this.steering = null
       clearTimeout(this.settle)
+      // Con el asomo en móvil el último paso no llega al inicio: se elige el más cercano a la posición real.
       const n = this.slides.reduce(
         (best, _, i) =>
           Math.abs(this.offsetOf(i) - t.scrollLeft) < Math.abs(this.offsetOf(best) - t.scrollLeft) ? i : best,
@@ -132,11 +95,11 @@ export default defineComponent({
     onKey(e: KeyboardEvent): void {
       if (e.key === 'ArrowRight') {
         e.preventDefault()
-        this.next(true)
+        this.go(this.active + 1)
       }
       if (e.key === 'ArrowLeft') {
         e.preventDefault()
-        this.prev(true)
+        this.go(this.active - 1)
       }
     },
   },
@@ -144,38 +107,19 @@ export default defineComponent({
 </script>
 
 <template>
-  <section
-    :id="anchorId"
-    class="how"
-    :class="{ 'how--plain': plain, 'how--no-head': hideHeader }"
-    aria-labelledby="how-title"
-    @mouseenter="pause"
-    @mouseleave="resume"
-  >
+  <section :id="anchorId" class="how" :class="{ 'how--plain': plain }" aria-labelledby="how-title">
     <div class="wrap how__panel">
-      <!-- Encabezado Limpio con Controles -->
-      <header class="how__head" :class="{ 'how__head--solo-nav': hideHeader }">
-        <div v-if="!hideHeader" class="how__head-intro">
+      <header class="how__head">
+        <div>
           <h2 id="how-title">Tu placa paga. Tú no te detienes.</h2>
           <p>Así funciona el pago por placa.</p>
         </div>
-
         <div class="how__arrows">
-          <button
-            type="button"
-            class="how__arrow"
-            aria-label="Paso anterior"
-            @click="prev(true)"
-          >
-            <AppIcon name="arrow" :size="20" class="how__flip" />
+          <button type="button" class="how__arrow" :disabled="active === 0" aria-label="Paso anterior" @click="go(active - 1)">
+            <AppIcon name="arrow" :size="22" class="how__flip" />
           </button>
-          <button
-            type="button"
-            class="how__arrow"
-            aria-label="Paso siguiente"
-            @click="next(true)"
-          >
-            <AppIcon name="arrow" :size="20" />
+          <button type="button" class="how__arrow" :disabled="active === slides.length - 1" aria-label="Paso siguiente" @click="go(active + 1)">
+            <AppIcon name="arrow" :size="22" />
           </button>
         </div>
       </header>
@@ -232,10 +176,6 @@ export default defineComponent({
           </figure>
 
           <div class="how__text">
-            <div class="how__step-kicker">
-              <span class="how__step-kicker-tag">ETAPA {{ String(i + 1).padStart(2, '0') }}</span>
-              <span class="how__step-kicker-name">{{ s.stop }}</span>
-            </div>
             <h3>{{ s.title }}</h3>
             <p v-if="s.text" class="how__lead">{{ s.text }}</p>
             <ul v-if="s.points" class="how__points">
@@ -262,7 +202,7 @@ export default defineComponent({
       </div>
 
       <nav class="how__route" aria-label="Pasos">
-        <div class="how__road"><RoadRibbon /></div>
+        <div class="how__road" aria-hidden="true"><span class="how__road-rail"></span></div>
         <ol class="how__pins">
           <li v-for="(s, i) in slides" :key="s.title">
             <button
@@ -283,127 +223,38 @@ export default defineComponent({
 
 <style scoped>
 .how { padding-block: 0 var(--space-14); }
-.how--plain { padding-block: clamp(48px, 6vw, 84px) clamp(64px, 7.5vw, 100px); overflow-x: clip; }
+.how--plain { overflow-x: clip; }
 .how__panel {
   background: var(--marino-900); color: #fff; border-radius: var(--radius-xl);
   padding: clamp(28px, 5vw, 64px) clamp(16px, 5vw, 64px) clamp(20px, 3vw, 40px); overflow: hidden;
-  box-shadow: 0 20px 45px -10px rgba(18, 33, 66, 0.25), 0 10px 20px -5px rgba(18, 33, 66, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .how__panel :focus-visible { outline-color: var(--azul-300); }
 
-.how__head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: var(--space-4);
-  margin-bottom: var(--space-4);
-}
-
-@media (max-width: 640px) {
-  .how__head {
-    align-items: center;
-    gap: var(--space-3);
-  }
-}
-
-.how__head-intro h2 {
-  color: #fff;
-  font-size: clamp(24px, 2.5vw, 36px);
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.how__head-intro p {
-  margin-top: var(--space-1);
-  color: #c9d4ea;
-  font-size: clamp(14px, 1.4vw, 16px);
-}
-
-.how__arrows {
-  display: flex;
-  gap: 8px;
-  flex: none;
-}
-
+.how__head { display: flex; justify-content: space-between; align-items: end; gap: var(--space-6); }
+.how__head h2 { color: #fff; max-width: 18ch; }
+.how__head p { margin-top: var(--space-2); color: #c9d4ea; }
+.how__arrows { display: flex; gap: var(--space-2); flex: none; }
 .how__arrow {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
+  background: transparent; color: #fff; border: 1px solid rgba(255, 255, 255, .28);
+  transition: background-color .2s var(--ease-out), border-color .2s var(--ease-out), opacity .2s;
 }
+.how__arrow:hover:not(:disabled) { background: rgba(255, 255, 255, .08); border-color: #fff; }
+.how__arrow:disabled { opacity: .3; cursor: default; }
+.how__flip { transform: scaleX(-1); }
 
-.how__arrow:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.18);
-  border-color: #ffffff;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-}
-
-.how__arrow:disabled {
-  opacity: 0.3;
-  cursor: default;
-  transform: none;
-}
-
-.how__flip {
-  transform: scaleX(-1);
-}
-
-.how__step-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: var(--space-2);
-}
-
-.how__step-kicker-tag {
-  font-family: var(--font-mono, monospace);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: #f59e0b;
-}
-
-.how__step-kicker-name {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #94a3b8;
-}
-
-/* Pista: deslizamiento nativo con scroll-snap (100% ancho por diapositiva) */
+/* Pista: deslizamiento nativo con scroll-snap */
 .how__track {
-  display: flex;
-  margin: var(--space-8) 0 0;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  overscroll-behavior-x: contain;
-  border-radius: var(--radius-md);
-  width: 100%;
+  /* La pista desborda 8px por lado para no recortar anillos de foco ni el borde de las letras */
+  display: flex; margin: var(--space-8) -8px 0; overflow-x: auto; scroll-snap-type: x mandatory;
+  scrollbar-width: none; overscroll-behavior-x: contain; border-radius: var(--radius-md);
 }
 .how__track::-webkit-scrollbar { display: none; }
-.how__track::after { display: none !important; }
-
+/* Hueco final del asomo: el último paso también se alinea al inicio */
+.how__track::after { content: ''; flex: 0 0 12%; }
 .how__slide {
-  flex: 0 0 100%;
-  width: 100%;
-  max-width: 100%;
-  scroll-snap-align: start;
-  display: grid;
-  gap: var(--space-6);
-  align-content: start;
-  padding: 0;
-  box-sizing: border-box;
+  flex: 0 0 88%; scroll-snap-align: start; display: grid; gap: var(--space-6); align-content: start;
+  padding: 0 8px 8px;
 }
 
 .how__media { position: relative; margin: 0; aspect-ratio: 3 / 2; border-radius: var(--radius-md); overflow: hidden; background: #1c2d55; }
@@ -450,13 +301,13 @@ export default defineComponent({
 .how__text p { margin-top: var(--space-3); color: #c9d4ea; max-width: 44ch; font-size: 17px; line-height: 26px; }
 .how__points { list-style: none; margin: var(--space-4) 0 0; padding: 0; display: grid; gap: var(--space-2); max-width: 44ch; }
 .how__points li { display: flex; gap: 10px; align-items: start; color: #fff; font-size: 16px; line-height: 24px; }
-.how__points svg { flex: none; margin-top: 3px; color: var(--amarillo-carretera); }
+.how__points svg { flex: none; margin-top: 3px; color: var(--celeste); }
 /* Cifra destacada: número grande y su alcance al lado */
 .how__text .how__stat {
   display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; margin-top: var(--space-6);
   padding-top: var(--space-4); border-top: 1px solid rgba(255, 255, 255, .16);
 }
-.how__stat strong { font: 600 clamp(30px, 1.6vw + 20px, 40px)/1.1 var(--font-display); color: var(--amarillo-carretera); white-space: nowrap; }
+.how__stat strong { font: 600 clamp(30px, 1.6vw + 20px, 40px)/1.1 var(--font-display); color: var(--celeste); white-space: nowrap; }
 .how__stat span { flex: 1 1 18ch; color: #fff; font-size: 15px; line-height: 22px; }
 /* Salvedad legal: letra menor y filete a la izquierda, se lee como letra chica sin esconderse */
 .how__text .how__note {
@@ -469,14 +320,9 @@ export default defineComponent({
 .how__more { color: #fff; font-weight: 500; text-underline-offset: 4px; }
 
 /* La carretera como barra de avance */
-.how__route {
-  position: relative;
-  margin-top: clamp(40px, 5vw, 64px);
-  margin-bottom: clamp(48px, 6vw, 76px);
-  margin-inline: calc(-1 * clamp(16px, 5vw, 64px));
-  height: 104px;
-}
-.how__road { position: absolute; inset: 0 0 32px; }
+.how__route { position: relative; margin: var(--space-8) calc(-1 * clamp(16px, 5vw, 64px)) 0; height: 104px; }
+.how__road { position: absolute; inset: 0 0 32px; display: flex; align-items: center; padding-inline: clamp(16px, 5vw, 64px); }
+.how__road-rail { width: 100%; height: 3px; background: rgba(255, 255, 255, 0.2); border-radius: 2px; }
 .how__pins li { position: relative; display: grid; justify-items: center; }
 /* Nombre de cada parada bajo la carretera: los cuatro pasos se leen de un vistazo */
 .how__stop {
@@ -497,21 +343,14 @@ export default defineComponent({
   transition: border-color .3s var(--ease-out), color .3s var(--ease-out), box-shadow .3s var(--ease-out), transform .3s var(--ease-out);
 }
 .how__pin:hover { transform: scale(1.08); border-color: #c9d4ea; }
-/* Recorrido hecho: parada en amarillo de carretera. Parada actual: anillo blanco extra. */
-.how__pin.is-done, .how__pin.is-active { border-color: var(--amarillo-carretera); color: var(--amarillo-carretera); }
+/* Recorrido hecho: parada en celeste corporativo. Parada actual: anillo blanco extra. */
+.how__pin.is-done, .how__pin.is-active { border-color: var(--celeste); color: var(--celeste); }
 .how__pin.is-active { transform: scale(1.2); box-shadow: 0 0 0 3px #fff; }
 .how__pin:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
 
 /* Variante plain: sin panel, a todo el ancho; colores de texto sobre fondo claro */
-.how--plain .how__panel {
-  background: none;
-  color: var(--texto);
-  border-radius: 0;
-  padding: 0;
-  overflow: visible;
-  box-shadow: none;
-  border: none;
-}
+.how--plain .how__road-rail { background: var(--borde); }
+.how--plain .how__panel { background: none; color: var(--texto); border-radius: 0; padding-inline: 0; overflow: visible; }
 .how--plain .how__panel :focus-visible { outline-color: var(--azul-700); }
 .how--plain .how__head h2, .how--plain .how__text h3 { color: var(--marino-900); }
 .how--plain .how__head p, .how--plain .how__text p { color: var(--texto-suave); }
@@ -524,40 +363,15 @@ export default defineComponent({
 .how--plain .how__text .how__stat { border-top-color: var(--borde); }
 .how--plain .how__text .how__note { border-left-color: var(--borde); }
 .how--plain .how__note svg { color: var(--azul-700); }
-.how--plain .how__step-kicker-tag {
-  color: #0038A8;
-  background: none;
-  padding: 0;
-}
-.how--plain .how__step-kicker-name {
-  color: #64748b;
-}
-.how--plain .how__route {
-  margin-inline: calc(-1 * var(--page-pad));
-  margin-top: clamp(40px, 5vw, 64px);
-  margin-bottom: clamp(48px, 6vw, 76px);
-  overflow: hidden;
-}
+.how--plain .how__route { margin-inline: calc(50% - 50vw); }
 .how--plain .how__pins { width: min(100% - 2 * var(--page-pad), var(--page-max)); margin-inline: auto; padding-inline: 0; }
 .how--plain .how__stop { color: var(--texto-suave); }
 .how--plain .how__stop.is-active { color: var(--marino-900); }
 /* Próxima: disco blanco · hecha: anillo marino · actual: disco marino lleno */
-.how--plain .how__pin.is-active {
-  background: var(--marino-900);
-  border-color: var(--marino-900);
-  color: #fff;
-  transform: scale(1.18);
-  box-shadow: 0 0 0 3px #fff, 0 0 0 7px rgba(18, 33, 66, 0.22);
-  animation: plainPinPulse 2s ease-in-out infinite;
-}
-@keyframes plainPinPulse {
-  0%, 100% {
-    box-shadow: 0 0 0 3px #fff, 0 0 0 6px rgba(18, 33, 66, 0.25);
-  }
-  50% {
-    box-shadow: 0 0 0 3px #fff, 0 0 0 12px rgba(18, 33, 66, 0.04);
-  }
-}
+.how--plain .how__pin { background: #fff; color: var(--texto-suave); border-color: var(--texto-suave); }
+.how--plain .how__pin:hover { border-color: var(--marino-900); }
+.how--plain .how__pin.is-done { border-color: var(--marino-900); color: var(--marino-900); }
+.how--plain .how__pin.is-active { background: var(--marino-900); border-color: var(--marino-900); color: #fff; box-shadow: 0 0 0 3px #fff; }
 .how--plain .how__pin:focus-visible { outline-color: var(--azul-700); }
 
 /* Factura compacta en móvil: la foto sigue a la vista */

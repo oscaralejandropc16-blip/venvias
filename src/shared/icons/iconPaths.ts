@@ -20,6 +20,8 @@ export const ICON_PATHS = {
   camion: 'M2 6h12v10H2zM14 9h4l4 4v3h-8M6 18.5a1.5 1.5 0 100-.01M17 18.5a1.5 1.5 0 100-.01',
   tarjeta: 'M3 6h18v12H3zM3 10h18M7 15h4',
   audifonos: 'M4 15v-3a8 8 0 0116 0v3M4 15h3v5H5a1 1 0 01-1-1v-4zM20 15h-3v5h2a1 1 0 001-1v-4z',
+  buscar: 'M11 19a8 8 0 100-16 8 8 0 000 16zM21 21l-4.35-4.35',
+  billetera: 'M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2zM16 13h4M2 11h20',
 } as const
 
 export type IconName = keyof typeof ICON_PATHS
