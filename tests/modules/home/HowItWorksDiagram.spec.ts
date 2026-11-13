@@ -26,19 +26,22 @@ describe('HowItWorksDiagram', () => {
     expect(w.text()).toContain('La obligación de pago del peaje nace con la utilización efectiva')
   })
 
-  it('renderiza las ilustraciones SVG nativas para los 6 pasos', () => {
+  it('renderiza las ilustraciones de alta fidelidad para los 6 pasos y el hero banner', () => {
     const w = mount(HowItWorksDiagram)
 
-    const svgs = w.findAll('svg.diagram-svg')
-    expect(svgs).toHaveLength(6)
+    const heroImg = w.find('img.diagram-hero-banner__img')
+    expect(heroImg.exists()).toBe(true)
 
-    // Verifica que los SVGs tienen descripciones accesibles
-    expect(svgs[0].attributes('aria-label')).toContain('Free Flow')
-    expect(svgs[1].attributes('aria-label')).toContain('ALPR')
-    expect(svgs[2].attributes('aria-label')).toContain('tarifa')
-    expect(svgs[3].attributes('aria-label')).toContain('pago')
-    expect(svgs[4].attributes('aria-label')).toContain('deuda')
-    expect(svgs[5].attributes('aria-label')).toContain('Cancelación')
+    const images = w.findAll('img.diagram-img')
+    expect(images).toHaveLength(6)
+
+    // Verifica que las imágenes tienen atributos alt descriptivos
+    expect(images[0].attributes('alt')).toContain('Free Flow')
+    expect(images[1].attributes('alt')).toContain('ALPR')
+    expect(images[2].attributes('alt')).toContain('tasa de peaje')
+    expect(images[3].attributes('alt')).toContain('pago')
+    expect(images[4].attributes('alt')).toContain('obligación pendiente')
+    expect(images[5].attributes('alt')).toContain('cancelación')
   })
 
   it('permite accionar la impresión de la ficha técnica', async () => {
