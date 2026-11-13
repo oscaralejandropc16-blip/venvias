@@ -196,57 +196,92 @@ export default defineComponent({
             <circle cx="191" cy="77" r="3" fill="#CF142B" />
 
             <!-- Haz de captura ALPR en abanico hacia la placa -->
-            <polygon points="196,65 490,90 490,230 196,80" fill="url(#alprBeamGrad)" opacity="0.4" />
+            <polygon points="186,66 498,34 498,198 186,76" fill="url(#alprBeamGrad)" />
 
-            <!-- Enfoque y Placa Venezolana escaneada -->
-            <g transform="translate(240, 110)">
-              <!-- Caja de encuadre ALPR / Bounding Box de OCR -->
-              <rect x="0" y="0" width="260" height="120" rx="6" fill="#FFFFFF" stroke="#0057A3" stroke-width="2" />
+            <!-- Retícula / Brackets de encuadre biométrico ALPR -->
+            <path d="M222,54 L222,36 L240,36" stroke="#0057A3" stroke-width="2.5" stroke-linecap="round" fill="none" />
+            <path d="M478,36 L496,36 L496,54" stroke="#0057A3" stroke-width="2.5" stroke-linecap="round" fill="none" />
+            <path d="M222,164 L222,182 L240,182" stroke="#0057A3" stroke-width="2.5" stroke-linecap="round" fill="none" />
+            <path d="M478,182 L496,182 L496,164" stroke="#0057A3" stroke-width="2.5" stroke-linecap="round" fill="none" />
 
-              <!-- Esquinas / Retícula de captura biométrica ALPR -->
-              <path d="M-6 10 L-6 -6 L10 -6" stroke="#5FA8E8" stroke-width="3" fill="none" />
-              <path d="M266 10 L266 -6 L250 -6" stroke="#5FA8E8" stroke-width="3" fill="none" />
-              <path d="M-6 110 L-6 126 L10 126" stroke="#5FA8E8" stroke-width="3" fill="none" />
-              <path d="M266 110 L266 126 L250 126" stroke="#5FA8E8" stroke-width="3" fill="none" />
+            <!-- Placa Oficial Venezolana (Vector institucional idéntico a plate-venezuela.svg) -->
+            <g transform="translate(230, 44) scale(0.64)">
+              <!-- Sombra de placa metálica -->
+              <rect x="0" y="0" width="404" height="204" rx="16" fill="rgba(18, 33, 66, 0.15)" />
 
-              <!-- Encabezado de la placa (Venezuela) -->
-              <rect x="14" y="10" width="232" height="16" fill="#122142" rx="2" />
-              <text x="130" y="22" fill="#FFFFFF" font-family="'Inter', sans-serif" font-size="10" font-weight="600" text-anchor="middle" letter-spacing="3">VENEZUELA</text>
+              <!-- Marco exterior metálico oscuro -->
+              <rect x="2" y="2" width="400" height="200" rx="16" fill="#0D0F14" stroke="#4A5568" stroke-width="1.5" />
 
-              <!-- Las 7 casillas del formato oficial venezolano (AB 123 CD) -->
-              <g transform="translate(18, 36)">
-                <!-- Letras 1 y 2 -->
-                <rect x="0" y="0" width="28" height="42" rx="3" fill="#F2F6FA" stroke="#0057A3" stroke-width="1.5" />
-                <text x="14" y="28" fill="#122142" font-family="'IBM Plex Mono', monospace" font-size="22" font-weight="700" text-anchor="middle">A</text>
-                <rect x="32" y="0" width="28" height="42" rx="3" fill="#F2F6FA" stroke="#0057A3" stroke-width="1.5" />
-                <text x="46" y="28" fill="#122142" font-family="'IBM Plex Mono', monospace" font-size="22" font-weight="700" text-anchor="middle">B</text>
+              <!-- Cara interior reflectiva blanca -->
+              <rect x="7" y="7" width="390" height="190" rx="12" fill="#FFFFFF" />
 
-                <!-- Números 3, 4 y 5 -->
-                <rect x="70" y="0" width="28" height="42" rx="3" fill="#F2F6FA" stroke="#0057A3" stroke-width="1.5" />
-                <text x="84" y="28" fill="#122142" font-family="'IBM Plex Mono', monospace" font-size="22" font-weight="700" text-anchor="middle">1</text>
-                <rect x="102" y="0" width="28" height="42" rx="3" fill="#F2F6FA" stroke="#0057A3" stroke-width="1.5" />
-                <text x="116" y="28" fill="#122142" font-family="'IBM Plex Mono', monospace" font-size="22" font-weight="700" text-anchor="middle">2</text>
-                <rect x="134" y="0" width="28" height="42" rx="3" fill="#F2F6FA" stroke="#0057A3" stroke-width="1.5" />
-                <text x="148" y="28" fill="#122142" font-family="'IBM Plex Mono', monospace" font-size="22" font-weight="700" text-anchor="middle">3</text>
+              <!-- Ondas tricolor nacional y 8 estrellas -->
+              <g clip-path="url(#vv-alpr-face)">
+                <!-- Franja Amarilla -->
+                <path fill="#F6CE1C" d="M7,86 C 90,70 150,102 200,86 C 260,68 330,102 397,84 L397,197 L7,197 Z" />
+                <!-- Franja Azul Oficial -->
+                <path fill="#98A0E4" d="M7,118 C 90,102 150,134 200,118 C 260,100 330,134 397,116 L397,197 L7,197 Z" />
+                <!-- Franja Roja -->
+                <path fill="#E0401C" d="M7,150 C 90,136 150,166 200,150 C 260,134 330,166 397,148 L397,197 L7,197 Z" />
 
-                <!-- Letras 6 y 7 -->
-                <rect x="172" y="0" width="28" height="42" rx="3" fill="#F2F6FA" stroke="#0057A3" stroke-width="1.5" />
-                <text x="186" y="28" fill="#122142" font-family="'IBM Plex Mono', monospace" font-size="22" font-weight="700" text-anchor="middle">C</text>
-                <rect x="204" y="0" width="28" height="42" rx="3" fill="#F2F6FA" stroke="#0057A3" stroke-width="1.5" />
-                <text x="218" y="28" fill="#122142" font-family="'IBM Plex Mono', monospace" font-size="22" font-weight="700" text-anchor="middle">D</text>
+                <!-- 8 estrellas blancas en arco oficial -->
+                <g fill="#FFFFFF">
+                  <use href="#vv-alpr-star" transform="translate(122,133) scale(.55)" />
+                  <use href="#vv-alpr-star" transform="translate(154,128) scale(.55)" />
+                  <use href="#vv-alpr-star" transform="translate(186,132) scale(.55)" />
+                  <use href="#vv-alpr-star" transform="translate(218,127) scale(.55)" />
+                  <use href="#vv-alpr-star" transform="translate(250,132) scale(.55)" />
+                  <use href="#vv-alpr-star" transform="translate(282,128) scale(.55)" />
+                  <use href="#vv-alpr-star" transform="translate(90,138) scale(.55)" />
+                  <use href="#vv-alpr-star" transform="translate(314,134) scale(.55)" />
+                </g>
               </g>
 
-              <!-- Barra de validación OCR y telemetría de confianza -->
-              <rect x="14" y="88" width="232" height="22" rx="2" fill="#E1E8F0" />
-              <text x="24" y="103" fill="#122142" font-family="'IBM Plex Mono', monospace" font-size="10" font-weight="600">OCR VERIFICADO · COINCIDENCIA: 99.8%</text>
-              <circle cx="236" cy="99" r="4" fill="#00B140" />
+              <!-- Orificios de montaje de la placa -->
+              <g fill="#CBD5E1" stroke="#94A3B8" stroke-width="1">
+                <rect x="150" y="9" width="30" height="12" rx="4" />
+                <rect x="224" y="9" width="30" height="12" rx="4" />
+                <rect x="55" y="183" width="30" height="12" rx="4" />
+                <rect x="319" y="183" width="30" height="12" rx="4" />
+              </g>
+
+              <!-- Encabezado oficial de la placa -->
+              <text x="202" y="60" text-anchor="middle" font-family="'Arial Narrow', Arial, sans-serif" font-weight="700" font-size="21" fill="#2431BE" textLength="360" lengthAdjust="spacingAndGlyphs">REPÚBLICA BOLIVARIANA DE VENEZUELA</text>
+
+              <!-- Pie oficial de la placa -->
+              <text x="202" y="192" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="17" fill="#15205C" letter-spacing="3">CARACAS</text>
+
+              <!-- Caracteres troquelados en relieve de la matrícula vehicular venezolana (AB123CD) -->
+              <text x="204" y="132" text-anchor="middle" font-family="'IBM Plex Mono', 'Arial Black', sans-serif" font-weight="900" font-size="64" fill="#94A3B8" letter-spacing="10">AB123CD</text>
+              <text x="202" y="130" text-anchor="middle" font-family="'IBM Plex Mono', 'Arial Black', sans-serif" font-weight="900" font-size="64" fill="#0D131F" letter-spacing="10">AB123CD</text>
+            </g>
+
+            <!-- Línea de escaneo láser ALPR sobre la matrícula -->
+            <line x1="224" y1="127" x2="494" y2="127" stroke="#00D26A" stroke-width="1.8" stroke-dasharray="6 3" opacity="0.9" />
+            <circle cx="360" cy="127" r="3" fill="#00D26A" />
+
+            <!-- Barra de telemetría de verificación y validación OCR -->
+            <g transform="translate(230, 196)">
+              <rect x="0" y="0" width="258" height="34" rx="4" fill="#122142" />
+              <circle cx="16" cy="17" r="4.5" fill="#00D26A" />
+              <text x="28" y="15" fill="#FFFFFF" font-family="'IBM Plex Mono', monospace" font-size="10" font-weight="700">OCR: AB123CD · FORMATO OFICIAL</text>
+              <text x="28" y="27" fill="#5FA8E8" font-family="'IBM Plex Mono', monospace" font-size="8.5">7 CARACTERES · COINCIDENCIA 99.8%</text>
+              <rect x="204" y="8" width="46" height="18" rx="2" fill="#0057A3" />
+              <text x="227" y="20.5" fill="#FFFFFF" font-family="'IBM Plex Mono', monospace" font-size="8" font-weight="700" text-anchor="middle">VÁLIDA</text>
             </g>
 
             <defs>
+              <clipPath id="vv-alpr-face">
+                <rect x="7" y="7" width="390" height="190" rx="12" />
+              </clipPath>
+              <path
+                id="vv-alpr-star"
+                d="M0,-9 2.12,-2.91 8.56,-2.78 3.42,1.11 5.29,7.28 0,3.6 -5.29,7.28 -3.42,1.11 -8.56,-2.78 -2.12,-2.91Z"
+              />
               <linearGradient id="alprBeamGrad" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#0057A3" stop-opacity="0.9" />
-                <stop offset="60%" stop-color="#5FA8E8" stop-opacity="0.3" />
-                <stop offset="100%" stop-color="#5FA8E8" stop-opacity="0.05" />
+                <stop offset="0%" stop-color="#0057A3" stop-opacity="0.8" />
+                <stop offset="60%" stop-color="#5FA8E8" stop-opacity="0.25" />
+                <stop offset="100%" stop-color="#5FA8E8" stop-opacity="0.04" />
               </linearGradient>
             </defs>
           </svg>
