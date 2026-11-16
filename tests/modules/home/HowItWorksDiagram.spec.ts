@@ -55,4 +55,14 @@ describe('HowItWorksDiagram', () => {
     expect(printSpy).toHaveBeenCalled()
     printSpy.mockRestore()
   })
+
+  it('permite descargar la infografía oficial original en alta resolución', () => {
+    const w = mount(HowItWorksDiagram)
+
+    const downloadLink = w.find('a.how-diagram__download-btn')
+    expect(downloadLink.exists()).toBe(true)
+    expect(downloadLink.text()).toContain('Descargar infografía original')
+    expect(downloadLink.attributes('href')).toContain('cobro-por-placa.png')
+    expect(downloadLink.attributes('download')).toBe('infografia-oficial-cobro-por-placa.png')
+  })
 })

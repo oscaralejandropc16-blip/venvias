@@ -32,6 +32,14 @@ export default defineComponent({
       } as Record<string, string>,
     }
   },
+  computed: {
+    downloadUrl(): string {
+      const base = import.meta.env.BASE_URL ?? '/'
+      const cleanBase = base.endsWith('/') ? base : `${base}/`
+      const cleanPath = this.diagram.printActions.downloadUrl.replace(/^\//, '')
+      return `${cleanBase}${cleanPath}`
+    },
+  },
   methods: {
     printDocument(): void {
       if (typeof window !== 'undefined') {
@@ -66,14 +74,27 @@ export default defineComponent({
         <AppIcon name="info" :size="20" class="text-azul-700 flex-none" />
         <span>{{ diagram.printActions.printNote }}</span>
       </div>
-      <button
-        type="button"
-        class="btn btn--primario how-diagram__print-btn"
-        @click="printDocument"
-      >
-        <AppIcon name="recibo" :size="18" />
-        <span>{{ diagram.printActions.printButton }}</span>
-      </button>
+      <div class="how-diagram__buttons">
+        <a
+          :href="downloadUrl"
+          :download="diagram.printActions.downloadFilename"
+          class="btn btn--primario how-diagram__download-btn"
+          role="button"
+          data-testid="diagram-download-btn"
+        >
+          <AppIcon name="download" :size="18" />
+          <span>{{ diagram.printActions.downloadButton }}</span>
+        </a>
+        <button
+          type="button"
+          class="btn btn--secundario how-diagram__print-btn"
+          data-testid="diagram-print-btn"
+          @click="printDocument"
+        >
+          <AppIcon name="impresora" :size="18" />
+          <span>{{ diagram.printActions.printButton }}</span>
+        </button>
+      </div>
     </div>
 
     <!-- Gran Banner Ilustrado: Pórtico y Autopista Free Flow (Arte oficial de la infografía) -->
@@ -413,12 +434,26 @@ export default defineComponent({
   gap: var(--space-3);
   font-size: 14px;
   color: var(--texto-suave);
-  max-width: 58ch;
+  max-width: 52ch;
 }
 
+.how-diagram__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.how-diagram__download-btn,
 .how-diagram__print-btn {
   flex-shrink: 0;
   min-height: 44px;
+  padding: 11px 22px;
+  font-size: 14px;
+}
+
+.how-diagram__download-btn {
+  text-decoration: none;
 }
 
 /* Gran Banner Ilustrado de la Autopista */

@@ -33,6 +33,9 @@ export interface HowItWorksDiagramConfig {
     version: string
   }
   printActions: {
+    downloadButton: string
+    downloadUrl: string
+    downloadFilename: string
     printButton: string
     printNote: string
   }
@@ -51,8 +54,11 @@ export const HOW_IT_WORKS_DIAGRAM: HowItWorksDiagramConfig = {
     version: 'Versión Oficial 2026 — República Bolivariana de Venezuela',
   },
   printActions: {
-    printButton: 'Imprimir ficha operativa / Guardar en PDF',
-    printNote: 'Formato optimizado para archivo y consulta técnica en hoja estándar A4 / Carta.',
+    downloadButton: 'Descargar infografía original',
+    downloadUrl: '/cobro-por-placa.png',
+    downloadFilename: 'infografia-oficial-cobro-por-placa.png',
+    printButton: 'Imprimir ficha técnica / PDF',
+    printNote: 'Descarga la infografía oficial en alta resolución o imprime la ficha técnica en formato estándar.',
   },
   steps: [
     {
