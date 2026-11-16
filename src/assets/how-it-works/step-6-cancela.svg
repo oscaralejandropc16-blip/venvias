@@ -118,11 +118,31 @@
     <!-- Parachoques -->
     <path d="M16 56 Q55 58 94 56 L91 68 Q55 70 19 68 Z" fill="#1e293b" />
 
-    <!-- Placa trasera oficial -->
-    <g transform="translate(39, 52)">
-      <rect x="0" y="0" width="32" height="14" rx="2" fill="#ffffff" stroke="#0057a3" stroke-width="0.8" />
-      <rect x="1" y="1" width="30" height="3" fill="#0057a3" />
-      <text x="16" y="11" font-family="'Courier New', monospace" font-size="6.5" font-weight="900" fill="#122142" text-anchor="middle" letter-spacing="1">ABC 123</text>
+    <!-- Placa trasera oficial venezolana (formato oficial de 7 caracteres) -->
+    <g transform="translate(37, 51)">
+      <!-- Marco negro -->
+      <rect x="-1" y="-1" width="38" height="18" rx="2" fill="#0d0f14" />
+      <!-- Base blanca -->
+      <rect x="0" y="0" width="36" height="16" rx="1.5" fill="#ffffff" />
+
+      <!-- Ondas tricolor Venezuela en la mitad inferior -->
+      <path fill="#F6CE1C" d="M1,8 C 8,6.5 15,9.5 19,8 C 24,6.5 30,9.5 35,7.5 L35,15 L1,15 Z" />
+      <path fill="#98A0E4" d="M1,10.5 C 8,9 15,12 19,10.5 C 24,9 30,12 35,10 L35,15 L1,15 Z" />
+      <path fill="#E0401C" d="M1,13 C 8,11.5 15,14.5 19,13 C 24,11.5 30,14.5 35,12.5 L35,15 L1,15 Z" />
+
+      <!-- Estrellas simplificadas en la franja azul -->
+      <circle cx="15" cy="11.2" r="0.35" fill="#ffffff" />
+      <circle cx="18" cy="10.8" r="0.35" fill="#ffffff" />
+      <circle cx="21" cy="11.2" r="0.35" fill="#ffffff" />
+
+      <!-- Leyenda superior oficial -->
+      <text x="18" y="3.2" font-family="'Arial Narrow', Arial, sans-serif" font-size="1.9" font-weight="700" fill="#2431be" text-anchor="middle" letter-spacing="0.2">REPÚBLICA BOLIVARIANA DE VENEZUELA</text>
+
+      <!-- Matrícula oficial de 7 caracteres -->
+      <text x="18" y="9.5" font-family="'Courier New', monospace" font-size="5.8" font-weight="900" fill="#122142" text-anchor="middle" letter-spacing="0.6">AB 123 CD</text>
+
+      <!-- Leyenda inferior -->
+      <text x="18" y="15" font-family="Arial, sans-serif" font-size="1.4" font-weight="700" fill="#15205c" text-anchor="middle" letter-spacing="0.2">CARACAS</text>
     </g>
   </g>
 

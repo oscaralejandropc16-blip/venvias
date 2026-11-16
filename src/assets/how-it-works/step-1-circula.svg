@@ -155,17 +155,32 @@
     <rect x="115" y="166" width="10" height="3" rx="1.5" fill="#64748b" />
     <rect x="195" y="166" width="10" height="3" rx="1.5" fill="#64748b" />
 
-    <!-- Placa de matrícula trasera venezolana oficial -->
-    <g id="license-plate" transform="translate(141, 142)">
-      <!-- Marco portaplacas -->
-      <rect x="-1" y="-1" width="40" height="18" rx="2.5" fill="#0f172a" />
-      <!-- Placa blanca reflectante -->
-      <rect x="0" y="0" width="38" height="16" rx="2" fill="#ffffff" stroke="#0057a3" stroke-width="0.8" />
-      <!-- Franja superior azul Venezuela -->
-      <rect x="1" y="1" width="36" height="3.5" rx="1" fill="#0057a3" />
-      <text x="19" y="3.8" font-family="'Segoe UI', Inter, sans-serif" font-size="2.6" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">VENEZUELA</text>
-      <!-- Matrícula -->
-      <text x="19" y="12.5" font-family="'Courier New', monospace" font-size="7.5" font-weight="900" fill="#122142" text-anchor="middle" letter-spacing="1.2">ABC 123</text>
+    <!-- Placa de matrícula trasera venezolana oficial (formato oficial de 7 caracteres) -->
+    <g id="license-plate" transform="translate(139, 141)">
+      <!-- Marco portaplacas negro -->
+      <rect x="-1" y="-1" width="44" height="20" rx="2.5" fill="#0d0f14" />
+      <!-- Placa blanca base -->
+      <rect x="0" y="0" width="42" height="18" rx="2" fill="#ffffff" />
+
+      <!-- Ondas tricolor Venezuela en la mitad inferior -->
+      <path fill="#F6CE1C" d="M1,9 C 10,7.5 17,10.5 22,9 C 28,7.5 35,10.5 41,8.5 L41,17 L1,17 Z" />
+      <path fill="#98A0E4" d="M1,12 C 10,10.5 17,13.5 22,12 C 28,10.5 35,13.5 41,11.5 L41,17 L1,17 Z" />
+      <path fill="#E0401C" d="M1,15 C 10,13.5 17,16.5 22,15 C 28,13.5 35,16.5 41,14.5 L41,17 L1,17 Z" />
+
+      <!-- Estrellas simplificadas en la franja azul -->
+      <circle cx="16" cy="13.2" r="0.4" fill="#ffffff" />
+      <circle cx="19" cy="12.8" r="0.4" fill="#ffffff" />
+      <circle cx="22" cy="13.2" r="0.4" fill="#ffffff" />
+      <circle cx="25" cy="12.8" r="0.4" fill="#ffffff" />
+
+      <!-- Leyenda superior oficial -->
+      <text x="21" y="3.6" font-family="'Arial Narrow', Arial, sans-serif" font-size="2.2" font-weight="700" fill="#2431be" text-anchor="middle" letter-spacing="0.2">REPÚBLICA BOLIVARIANA DE VENEZUELA</text>
+
+      <!-- Matrícula oficial de 7 caracteres -->
+      <text x="21" y="10.8" font-family="'Courier New', monospace" font-size="6.8" font-weight="900" fill="#122142" text-anchor="middle" letter-spacing="0.8">AB 123 CD</text>
+
+      <!-- Leyenda inferior -->
+      <text x="21" y="17.2" font-family="Arial, sans-serif" font-size="1.6" font-weight="700" fill="#15205c" text-anchor="middle" letter-spacing="0.3">CARACAS</text>
     </g>
   </g>
 
