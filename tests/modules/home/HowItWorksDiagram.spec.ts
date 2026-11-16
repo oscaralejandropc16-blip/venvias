@@ -3,45 +3,60 @@ import { mount } from '@vue/test-utils'
 import HowItWorksDiagram from '@/modules/home/components/HowItWorksDiagram.vue'
 
 describe('HowItWorksDiagram', () => {
-  it('renderiza las 6 etapas del flujo oficial de la infografía con sus títulos y descripciones', () => {
+  it('renderiza la estructura de 3 tarjetas en grid horizontal con sus títulos y descripciones', () => {
     const w = mount(HowItWorksDiagram)
 
+    const grid = w.find('.diagram-grid')
+    expect(grid.exists()).toBe(true)
+
     const articles = w.findAll('article.diagram-card')
-    expect(articles).toHaveLength(6)
+    expect(articles).toHaveLength(3)
 
     expect(w.text()).toContain('Circula por el peaje')
     expect(w.text()).toContain('Se identifica la placa')
-    expect(w.text()).toContain('Se calcula la tarifa')
-    expect(w.text()).toContain('Se verifica el pago')
-    expect(w.text()).toContain('Sin pago válido · Se genera una deuda')
-    expect(w.text()).toContain('Se cancela el pendiente')
+    expect(w.text()).toContain('Conciliación y pago')
   })
 
-  it('renderiza las tarjetas inferiores de información oficial de la infografía', () => {
+  it('integra elementos textuales construidos en HTML y Tailwind por encima y por debajo de las imágenes', () => {
+    const w = mount(HowItWorksDiagram)
+
+    // Letreros de peaje construidos en HTML (Paso 1)
+    expect(w.text()).toContain('FREE FLOW')
+    expect(w.text()).toContain('TELEPEAJE')
+    expect(w.text()).toContain('CARRIL HABILITADO')
+    expect(w.text()).toContain('HASTA 80 KM/H')
+
+    // Indicadores ALPR y placa venezolana oficial en HTML (Paso 2)
+    expect(w.text()).toContain('ESCÁNER ALPR 360°')
+    expect(w.text()).toContain('VENEZUELA')
+    expect(w.text()).toContain('AA 123 BB')
+    expect(w.text()).toContain('MATRÍCULA AUDITADA')
+
+    // Letrero de liquidación e indicadores duales en HTML (Paso 3)
+    expect(w.text()).toContain('LIQUIDACIÓN DE PEAJE')
+    expect(w.text()).toContain('CON SALDO')
+    expect(w.text()).toContain('SIN SALDO')
+  })
+
+  it('renderiza las imágenes con loading="lazy" y anchos responsivos w-full max-w-[280px]', () => {
+    const w = mount(HowItWorksDiagram)
+
+    const imgs = w.findAll('.diagram-card__img-box img')
+    expect(imgs).toHaveLength(3)
+
+    imgs.forEach((img) => {
+      expect(img.attributes('loading')).toBe('lazy')
+      expect(img.classes()).toContain('w-full')
+      expect(img.classes()).toContain('max-w-[280px]')
+    })
+  })
+
+  it('renderiza las tarjetas inferiores de información oficial', () => {
     const w = mount(HowItWorksDiagram)
 
     expect(w.text()).toContain('¿QUÉ INCLUYE Y DÓNDE SE PAGA?')
     expect(w.text()).toContain('Deuda = tasa de peaje + cargos administrativos')
     expect(w.text()).toContain('SOBRE LA OBLIGACIÓN DE PAGO')
-    expect(w.text()).toContain('La obligación de pago del peaje nace con la utilización efectiva')
-  })
-
-  it('renderiza las ilustraciones de alta fidelidad para los 6 pasos y el hero banner', () => {
-    const w = mount(HowItWorksDiagram)
-
-    const heroImg = w.find('img.diagram-hero-banner__img')
-    expect(heroImg.exists()).toBe(true)
-
-    const images = w.findAll('img.diagram-img')
-    expect(images).toHaveLength(6)
-
-    // Verifica que las imágenes tienen atributos alt descriptivos
-    expect(images[0].attributes('alt')).toContain('Free Flow')
-    expect(images[1].attributes('alt')).toContain('ALPR')
-    expect(images[2].attributes('alt')).toContain('tasa de peaje')
-    expect(images[3].attributes('alt')).toContain('pago')
-    expect(images[4].attributes('alt')).toContain('obligación pendiente')
-    expect(images[5].attributes('alt')).toContain('cancelación')
   })
 
   it('permite accionar la impresión de la ficha técnica', async () => {
