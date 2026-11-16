@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="100%" height="100%" fill="none">
+  <defs>
+    <!-- Filtros de sombra -->
+    <filter id="debt-doc-shadow" x="-20%" y="-15%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#78350f" flood-opacity="0.14" />
+    </filter>
+    <filter id="alert-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#d97706" flood-opacity="0.38" />
+    </filter>
+
+    <!-- Gradientes -->
+    <radialGradient id="bg-halo-5" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#fef3c7" stop-opacity="0.85" />
+      <stop offset="50%" stop-color="#fffbeb" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#f8fafc" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Sello ámbar de alerta -->
+    <linearGradient id="alert-seal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+
+    <linearGradient id="doc-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f8fafc" />
+    </linearGradient>
+  </defs>
+
+  <!-- Halo de iluminación de fondo -->
+  <ellipse cx="160" cy="100" rx="140" ry="85" fill="url(#bg-halo-5)" />
+
+  <!-- Badge superior: SIN PAGO VÁLIDO · SE GENERA OBLIGACIÓN -->
+  <g transform="translate(55, 12)">
+    <rect x="0" y="0" width="210" height="26" rx="13" fill="#fffbeb" stroke="#fcd34d" stroke-width="1.2" />
+    <circle cx="16" cy="13" r="7.5" fill="#f59e0b" />
+    <!-- Signo de exclamación pequeño en badge -->
+    <rect x="15" y="9" width="2" height="5" rx="1" fill="#ffffff" />
+    <circle cx="16" cy="16" r="1.1" fill="#ffffff" />
+    <text x="30" y="16.5" font-family="'Segoe UI', Inter, sans-serif" font-size="8" font-weight="800" fill="#b45309" letter-spacing="0.5">SIN PAGO VÁLIDO · SE GENERA DEUDA</text>
+  </g>
+
+  <!-- Documento oficial de Notificación de Deuda Pendiente -->
+  <g id="debt-document" transform="translate(95, 44)" filter="url(#debt-doc-shadow)">
+    <!-- Hoja de papel base -->
+    <rect x="0" y="0" width="130" height="142" rx="10" fill="url(#doc-grad)" stroke="#cbd5e1" stroke-width="1.2" />
+
+    <!-- Borde decorativo superior sutil en ámbar -->
+    <path d="M0 10 Q0 0 10 0 L120 0 Q130 0 130 10 L130 14 L0 14 Z" fill="#fef3c7" />
+    <line x1="0" y1="14" x2="130" y2="14" stroke="#fcd34d" stroke-width="1" />
+
+    <!-- Título formal: DEUDA PENDIENTE -->
+    <text x="65" y="34" font-family="'Segoe UI', Inter, sans-serif" font-size="14" font-weight="900" fill="#122142" text-anchor="middle" letter-spacing="1">DEUDA</text>
+    <text x="65" y="49" font-family="'Segoe UI', Inter, sans-serif" font-size="13" font-weight="900" fill="#122142" text-anchor="middle" letter-spacing="1.2">PENDIENTE</text>
+
+    <!-- Línea divisora formal -->
+    <line x1="20" y1="58" x2="110" y2="58" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" />
+
+    <!-- Filas de detalle simuladas (registro contable por placa) -->
+    <rect x="20" y="66" width="70" height="7" rx="3.5" fill="#94a3b8" />
+    <rect x="20" y="79" width="55" height="7" rx="3.5" fill="#cbd5e1" />
+    <rect x="20" y="92" width="45" height="7" rx="3.5" fill="#e2e8f0" />
+    <rect x="20" y="105" width="35" height="7" rx="3.5" fill="#f1f5f9" />
+
+    <!-- Sello de plazo reglamentario en pie de documento -->
+    <g transform="translate(18, 120)">
+      <rect x="0" y="0" width="94" height="15" rx="4" fill="#fffbeb" stroke="#fde68a" stroke-width="0.8" />
+      <text x="47" y="10.5" font-family="'Segoe UI', Inter, sans-serif" font-size="5.5" font-weight="800" fill="#b45309" text-anchor="middle" letter-spacing="0.5">SIN RECARGOS DENTRO DEL LAPSO</text>
+    </g>
+  </g>
+
+  <!-- Gran Sello Oficial de Advertencia / Notificación Pendiente -->
+  <g id="alert-warning-badge" transform="translate(186, 102)" filter="url(#alert-shadow)">
+    <!-- Aro blanco exterior protector -->
+    <circle cx="28" cy="28" r="30" fill="#ffffff" />
+    <!-- Círculo ámbar vibrante -->
+    <circle cx="28" cy="28" r="27" fill="url(#alert-seal)" stroke="#ffffff" stroke-width="3" />
+    <!-- Signo de exclamación en relieve blanco -->
+    <path d="M25 15 L31 15 L30 30 L26 30 Z" fill="#ffffff" />
+    <circle cx="28" cy="37" r="3" fill="#ffffff" />
+  </g>
+
+  <!-- Flecha indicadora de marcha continua sin retención física -->
+  <g transform="translate(24, 115)" opacity="0.8">
+    <path d="M10 20 Q25 5 40 20" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" fill="none" />
+    <polygon points="40,15 47,22 38,24" fill="#f59e0b" />
+    <text x="28" y="32" font-family="'Segoe UI', Inter, sans-serif" font-size="5" font-weight="700" fill="#92400e" text-anchor="middle">PASO LIBRE</text>
+  </g>
+</svg>

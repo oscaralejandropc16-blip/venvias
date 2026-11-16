@@ -8,13 +8,13 @@ import {
   type DiagramStep,
 } from '../constants/howItWorks.diagram'
 
-// Ilustraciones de alta fidelidad para las 6 etapas del flujo oficial
-import step1Img from '@/assets/how-it-works/step-1-circula.webp'
-import step2Img from '@/assets/how-it-works/step-2-identifica.webp'
-import step3Img from '@/assets/how-it-works/step-3-calcula.webp'
-import step4Img from '@/assets/how-it-works/step-4-verifica.webp'
-import step5Img from '@/assets/how-it-works/step-5-deuda.webp'
-import step6Img from '@/assets/how-it-works/step-6-cancela.webp'
+// Ilustraciones vectoriales SVG de alta definición para las 6 etapas del flujo oficial
+import step1Svg from '@/assets/how-it-works/step-1-circula.svg'
+import step2Svg from '@/assets/how-it-works/step-2-identifica.svg'
+import step3Svg from '@/assets/how-it-works/step-3-calcula.svg'
+import step4Svg from '@/assets/how-it-works/step-4-verifica.svg'
+import step5Svg from '@/assets/how-it-works/step-5-deuda.svg'
+import step6Svg from '@/assets/how-it-works/step-6-cancela.svg'
 
 export default defineComponent({
   name: 'HowItWorksDiagram',
@@ -24,16 +24,16 @@ export default defineComponent({
       diagram: HOW_IT_WORKS_DIAGRAM,
       routeNames: ROUTE_NAMES,
       stepImages: {
-        circula: step1Img,
-        identifica: step2Img,
-        calcula: step3Img,
-        verifica: step4Img,
-        deuda: step5Img,
-        cancela: step6Img,
+        circula: step1Svg,
+        identifica: step2Svg,
+        calcula: step3Svg,
+        verifica: step4Svg,
+        deuda: step5Svg,
+        cancela: step6Svg,
         // Alias de compatibilidad
-        freeFlow: step1Img,
-        alpr: step2Img,
-        payment: step4Img,
+        freeFlow: step1Svg,
+        alpr: step2Svg,
+        payment: step4Svg,
       } as Record<string, string>,
     }
   },
